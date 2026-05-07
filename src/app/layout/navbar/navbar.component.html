@@ -1,0 +1,27 @@
+<nav class="navbar">
+  <div class="navbar-top">
+    <div class="logo">FC SUPRA</div>
+
+    <button class="menu-btn" (click)="menuOpen = !menuOpen">
+      ☰
+    </button>
+
+    <div class="desktop-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+      <a routerLink="/matches" routerLinkActive="active">Matches</a>
+      <a routerLink="/players" routerLinkActive="active">Players</a>
+      <a routerLink="/standings" routerLinkActive="active">Standings</a>
+      <a routerLink="/admin" routerLinkActive="active">Admin</a>
+    </div>
+  </div>
+
+  @if(menuOpen) {
+    <div class="mobile-menu">
+      <a routerLink="/" (click)="menuOpen=false">Home</a>
+      <a routerLink="/matches" (click)="menuOpen=false">Matches</a>
+      <a routerLink="/players" (click)="menuOpen=false">Players</a>
+      <a routerLink="/standings" (click)="menuOpen=false">Standings</a>
+      <a routerLink="/admin" (click)="menuOpen=false">Admin</a>
+    </div>
+  }
+</nav>

@@ -16,7 +16,7 @@ export class NavbarComponent {
   menuOpen = false;
   user: Signal<User | null>;
 
-  constructor(private supabaseService: SupabaseService) {
+  constructor(public supabaseService: SupabaseService) {
     this.user = this.supabaseService.user;
   }
 
@@ -28,4 +28,6 @@ export class NavbarComponent {
     const metadata = this.user()?.user_metadata;
     return metadata?.['username'] || 'Anonyme';
   });
+
+  avatarDisplay = computed(() => this.supabaseService.getAvatarDisplay());
 }

@@ -28,4 +28,44 @@ export class SupabaseService {
   async signOut() {
     await this.supabase.auth.signOut();
   }
+
+  async uploadProfileImage(file: File): Promise<string | null> {
+    if (!this.user()) return null;
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${this.user()!.id}.${fileExt}`;
+    const filePath = `avatars/${fileName}`;
+
+    const { error: uploadError } = await this.supabase.storage
+      .from('avatars')
+      .upload(filePath, file, { upsert: true });
+
+    if (uploadError) {
+      console.error('Error uploading avatar:', uploadError);
+      return null;
+    }
+
+    const { data } = this.supabase.storage
+      .from('avatars')
+      .getPublicUrl(filePath);
+
+    // Update user metadata
+    await this.supabase.auth.updateUser({
+      data: { avatar_url: data.publicUrl }
+    });
+
+    return data.publicUrl;
+  }
+
+  getAvatarUrl(): string | null {
+    return this.user()?.user_metadata?.['avatar_url'] || null;
+  }
+
+  getAvatarDisplay(): string {
+    const avatarUrl = this.getAvatarUrl();
+    if (avatarUrl) return avatarUrl;
+
+    const username = this.user()?.user_metadata?.['username'];
+    return username ? username.charAt(0).toUpperCase() : '?';
+  }
 }

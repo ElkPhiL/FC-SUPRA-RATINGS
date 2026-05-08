@@ -22,7 +22,13 @@
       <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" required minlength="6" />
     </label>
 
-    <button type="submit" [disabled]="!email || !password || !confirmPassword">Créer un compte</button>
+    <label>
+      Image de profil (optionnel)
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+      <small>Formats acceptés : JPG, PNG, GIF. Taille max : 5MB</small>
+    </label>
+
+    <button type="submit" [disabled]="!username || !email || !password || !confirmPassword">Créer un compte</button>
   </form>
 
   @if (message) {

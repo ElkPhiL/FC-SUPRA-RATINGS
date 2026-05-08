@@ -15,9 +15,17 @@ export class RegisterComponent {
   email = '';
   password = '';
   confirmPassword = '';
+  selectedFile: File | null = null;
   message = '';
 
   constructor(private supabaseService: SupabaseService) {}
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
+    }
+  }
 
   async register() {
     const username = this.username.trim();
@@ -54,6 +62,14 @@ export class RegisterComponent {
     });
 
     if (!error) {
+      // Upload avatar if selected
+      if (this.selectedFile) {
+        const avatarUrl = await this.supabaseService.uploadProfileImage(this.selectedFile);
+        if (avatarUrl) {
+          console.log('Avatar uploaded:', avatarUrl);
+        }
+      }
+
       console.log('registered', data);
       this.message = 'Inscription réussie. Vérifie ton email pour confirmer.';
     } else {

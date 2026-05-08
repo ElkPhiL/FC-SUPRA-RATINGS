@@ -16,9 +16,32 @@ import { computed } from '@angular/core';
 export class ProfileComponent {
   user: Signal<User | null>;
   message = '';
+  selectedFile: File | null = null;
 
-  constructor(private supabaseService: SupabaseService) {
+  constructor(public supabaseService: SupabaseService) {
     this.user = this.supabaseService.user;
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
+    }
+  }
+
+  async uploadAvatar() {
+    if (!this.selectedFile) {
+      this.message = 'Veuillez sélectionner une image.';
+      return;
+    }
+
+    const avatarUrl = await this.supabaseService.uploadProfileImage(this.selectedFile);
+    if (avatarUrl) {
+      this.message = 'Image de profil mise à jour avec succès.';
+      this.selectedFile = null;
+    } else {
+      this.message = 'Erreur lors de l\'upload de l\'image.';
+    }
   }
 
   async signOut() {
@@ -30,4 +53,6 @@ export class ProfileComponent {
     const metadata = this.user()?.user_metadata;
     return metadata?.['username'] || 'Anonyme';
   });
+
+  avatarDisplay = computed(() => this.supabaseService.getAvatarDisplay());
 }

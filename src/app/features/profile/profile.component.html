@@ -2,9 +2,35 @@
   <h1>Mon profil</h1>
 
   @if (user()) {
-    <p><strong>Nom d’utilisateur :</strong> {{ username() }}</p>
-    <p><strong>Email :</strong> {{ user()?.email }}</p>
-    <p><strong>Statut :</strong> {{ user()?.email_confirmed_at ? 'Confirmé' : 'Non confirmé' }}</p>
+    <div class="avatar-section">
+      <h2>Image de profil</h2>
+      <div class="current-avatar">
+        <div class="avatar-circle large">
+          @if (supabaseService.getAvatarUrl()) {
+            <img [src]="supabaseService.getAvatarUrl()" alt="Avatar actuel" />
+          } @else {
+            <span class="avatar-letter">{{ avatarDisplay() }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="avatar-upload">
+        <label>
+          Changer d'image
+          <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+        </label>
+        @if (selectedFile) {
+          <p>Fichier sélectionné : {{ selectedFile.name }}</p>
+          <button type="button" (click)="uploadAvatar()">Mettre à jour</button>
+        }
+      </div>
+    </div>
+
+    <div class="profile-info">
+      <p><strong>Nom d'utilisateur :</strong> {{ username() }}</p>
+      <p><strong>Email :</strong> {{ user()?.email }}</p>
+      <p><strong>Statut :</strong> {{ user()?.email_confirmed_at ? 'Confirmé' : 'Non confirmé' }}</p>
+    </div>
 
     <button type="button" (click)="signOut()">Se déconnecter</button>
   }

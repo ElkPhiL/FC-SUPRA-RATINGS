@@ -13,35 +13,37 @@
       <a routerLink="/standings" routerLinkActive="active">Standings</a>
       <a routerLink="/admin" routerLinkActive="active">Admin</a>
 
-      <ng-container *ngIf="!user()">
+      @if (!user()) {
         <a routerLink="/login" routerLinkActive="active">Login</a>
         <a routerLink="/register" routerLinkActive="active">Register</a>
-      </ng-container>
+      }
 
-      <ng-container *ngIf="user()">
+      @if (user()) {
         <a routerLink="/profile" routerLinkActive="active" class="profile-link">
-          👤 {{ user()?.user_metadata?.username || user()?.email }}
+          {{ username() }}
         </a>
         <button class="logout-btn" type="button" (click)="logout()">Déconnexion</button>
-      </ng-container>
+      }
     </div>
   </div>
 
-  <div class="mobile-menu" *ngIf="menuOpen">
-    <a routerLink="/" (click)="menuOpen=false">Home</a>
-    <a routerLink="/matches" (click)="menuOpen=false">Matches</a>
-    <a routerLink="/players" (click)="menuOpen=false">Players</a>
-    <a routerLink="/standings" (click)="menuOpen=false">Standings</a>
-    <a routerLink="/admin" (click)="menuOpen=false">Admin</a>
+  @if (menuOpen) {
+    <div class="mobile-menu">
+      <a routerLink="/" (click)="menuOpen=false">Home</a>
+      <a routerLink="/matches" (click)="menuOpen=false">Matches</a>
+      <a routerLink="/players" (click)="menuOpen=false">Players</a>
+      <a routerLink="/standings" (click)="menuOpen=false">Standings</a>
+      <a routerLink="/admin" (click)="menuOpen=false">Admin</a>
 
-    <ng-container *ngIf="!user()">
-      <a routerLink="/login" (click)="menuOpen=false">Login</a>
-      <a routerLink="/register" (click)="menuOpen=false">Register</a>
-    </ng-container>
+      @if (!user()) {
+        <a routerLink="/login" (click)="menuOpen=false">Login</a>
+        <a routerLink="/register" (click)="menuOpen=false">Register</a>
+      }
 
-    <ng-container *ngIf="user()">
-      <a routerLink="/profile" (click)="menuOpen=false">Profil</a>
-      <button type="button" (click)="logout(); menuOpen=false">Déconnexion</button>
-    </ng-container>
-  </div>
+      @if (user()) {
+        <a routerLink="/profile" (click)="menuOpen=false">Profil</a>
+        <button type="button" (click)="logout(); menuOpen=false">Déconnexion</button>
+      }
+    </div>
+  }
 </nav>

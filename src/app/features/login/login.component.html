@@ -15,5 +15,7 @@
     <button type="submit" [disabled]="!email || !password">Se connecter</button>
   </form>
 
-  <p class="message" *ngIf="message">{{ message }}</p>
+  @if (message) {
+    <p class="message">{{ message }}</p>
+  }
 </div>

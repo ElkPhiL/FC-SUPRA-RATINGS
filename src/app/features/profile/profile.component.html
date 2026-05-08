@@ -1,17 +1,17 @@
 <div class="page profile-page">
   <h1>Mon profil</h1>
 
-  <ng-container *ngIf="user()">
-    <p><strong>Nom d’utilisateur :</strong> {{ user()?.user_metadata?.username || 'Anonyme' }}</p>
+  @if (user()) {
+    <p><strong>Nom d’utilisateur :</strong> {{ username() }}</p>
     <p><strong>Email :</strong> {{ user()?.email }}</p>
     <p><strong>Statut :</strong> {{ user()?.email_confirmed_at ? 'Confirmé' : 'Non confirmé' }}</p>
 
     <button type="button" (click)="signOut()">Se déconnecter</button>
-  </ng-container>
+  }
 
-  <ng-container *ngIf="!user()">
+  @if (!user()) {
     <p>Tu n’es pas connecté.</p>
     <a routerLink="/login">Aller à la connexion</a>
-  </ng-container>
+  }
 
 </div>

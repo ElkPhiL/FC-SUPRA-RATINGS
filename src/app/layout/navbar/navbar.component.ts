@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SupabaseService } from '../../core/services/supabase.service';
 import { type User } from '@supabase/supabase-js';
+import { computed } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -22,4 +23,9 @@ export class NavbarComponent {
   async logout() {
     await this.supabaseService.signOut();
   }
+
+  username = computed(() => {
+    const metadata = this.user()?.user_metadata;
+    return metadata?.['username'] || 'Anonyme';
+  });
 }

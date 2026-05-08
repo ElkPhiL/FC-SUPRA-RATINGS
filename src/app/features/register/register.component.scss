@@ -1,0 +1,298 @@
+// Variables CSS
+:root {
+    $primary-color: #2563eb;
+    $primary-hover: #1d4ed8;
+    $error-color: #dc2626;
+    $success-color: #10b981;
+    $warning-color: #f59e0b;
+    $text-color: #1e293b;
+    $text-muted: #64748b;
+    $border-color: #e2e8f0;
+    $background-color: #f8fafc;
+    $card-background: #ffffff;
+    $shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    $transition: all 0.2s ease-in-out;
+}
+
+// Layout principal
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--background-color) 0%, #e2e8f0 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+// Formulaire
+.register-form {
+  width: 100%;
+  max-width: 480px;
+  background: var(--card-background);
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--text-color);
+    font-size: 1.875rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 16px;
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 14px;
+
+    input {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      padding: 12px 16px;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 16px;
+      background: var(--card-background);
+      transition: var(--transition);
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+      }
+
+      &.error {
+        border-color: var(--error-color);
+        box-shadow: 0 0 0 3px rgb(220 38 38 / 0.1);
+      }
+
+      &.password-strength-weak {
+        border-color: var(--error-color);
+      }
+
+      &.password-strength-medium {
+        border-color: var(--warning-color);
+      }
+
+      &.password-strength-strong {
+        border-color: var(--success-color);
+      }
+
+      &:hover:not(:focus):not(.error) {
+        border-color: var(--text-muted);
+      }
+    }
+  }
+
+  // Upload de fichier stylisé
+  .file-upload-label {
+    .file-input {
+      position: absolute;
+      opacity: 0;
+      width: 0.1px;
+      height: 0.1px;
+      overflow: hidden;
+    }
+
+    .file-upload-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      background: rgb(248 250 252 / 0.5);
+      transition: var(--transition);
+      cursor: pointer;
+      margin-top: 6px;
+
+      &:hover {
+        border-color: var(--primary-color);
+        background: rgb(37 99 235 / 0.02);
+      }
+
+      .file-upload-icon {
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+
+      .file-upload-text {
+        color: var(--text-muted);
+        font-size: 14px;
+        text-align: center;
+      }
+    }
+
+    .file-hint {
+      display: block;
+      margin-top: 4px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 400;
+    }
+  }
+
+  .register-button {
+    width: 100%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    &:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+}
+
+// Erreurs de champ
+.field-error {
+  display: block;
+  margin-top: 4px;
+  color: var(--error-color);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+// Indicateur de force du mot de passe
+.password-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+
+  .strength-weak { color: var(--error-color); }
+  .strength-medium { color: var(--warning-color); }
+  .strength-strong { color: var(--success-color); }
+}
+
+// Messages
+.message {
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 16px;
+  max-width: 480px;
+
+  &.message-success {
+    background: rgb(16 185 129 / 0.1);
+    color: var(--success-color);
+    border: 1px solid rgb(16 185 129 / 0.2);
+  }
+
+  &.message-error {
+    background: rgb(220 38 38 / 0.1);
+    color: var(--error-color);
+    border: 1px solid rgb(220 38 38 / 0.2);
+  }
+
+  &.message-info {
+    background: rgb(245 158 11 / 0.1);
+    color: var(--warning-color);
+    border: 1px solid rgb(245 158 11 / 0.2);
+  }
+}
+
+// Spinner de chargement
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Lien d'authentification
+.auth-link {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 640px) {
+  .register-page {
+    padding: 16px;
+  }
+
+  .register-form {
+    padding: 24px 20px;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    label input {
+      padding: 14px 16px;
+      font-size: 16px; // Empêche le zoom sur iOS
+    }
+
+    .file-upload-area {
+      padding: 16px;
+    }
+
+    .register-button {
+      padding: 14px 20px;
+    }
+  }
+}
+
+// Accessibilité
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}

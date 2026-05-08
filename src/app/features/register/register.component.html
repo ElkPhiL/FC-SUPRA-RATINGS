@@ -1,37 +1,122 @@
 <div class="page register-page">
   <h1>Inscription</h1>
 
-  <form (ngSubmit)="register()" class="register-form">
+  <form (ngSubmit)="register()" class="register-form" novalidate>
     <label>
-      Nom d’utilisateur
-      <input type="text" name="username" [(ngModel)]="username" required />
+      Nom d'utilisateur
+      <input
+        type="text"
+        name="username"
+        [(ngModel)]="username"
+        (input)="onUsernameChange()"
+        [class.error]="fieldErrors['username']"
+        required
+        autocomplete="username"
+        placeholder="Au moins 3 caractères" />
+      @if (fieldErrors['username']) {
+        <span class="field-error">{{ fieldErrors['username'] }}</span>
+      }
     </label>
 
     <label>
       Email
-      <input type="email" name="email" [(ngModel)]="email" required />
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        (input)="onEmailChange()"
+        [class.error]="fieldErrors['email']"
+        required
+        autocomplete="email"
+        placeholder="votre.email@exemple.com" />
+      @if (fieldErrors['email']) {
+        <span class="field-error">{{ fieldErrors['email'] }}</span>
+      }
     </label>
 
     <label>
       Mot de passe
-      <input type="password" name="password" [(ngModel)]="password" required minlength="6" />
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        (input)="onPasswordChange()"
+        [class.error]="fieldErrors['password']"
+        [class]="'password-strength-' + passwordStrength"
+        required
+        autocomplete="new-password"
+        placeholder="Au moins 8 caractères" />
+      @if (fieldErrors['password']) {
+        <span class="field-error">{{ fieldErrors['password'] }}</span>
+      } @else if (password) {
+        <span class="password-hint">
+          Force du mot de passe:
+          <span [class]="'strength-' + passwordStrength">
+            @if (passwordStrength === 'weak') { Faible }
+            @else if (passwordStrength === 'medium') { Moyen }
+            @else if (passwordStrength === 'strong') { Fort }
+          </span>
+        </span>
+      }
     </label>
 
     <label>
       Confirmer le mot de passe
-      <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" required minlength="6" />
+      <input
+        type="password"
+        name="confirmPassword"
+        [(ngModel)]="confirmPassword"
+        (input)="onConfirmPasswordChange()"
+        [class.error]="fieldErrors['confirmPassword']"
+        required
+        autocomplete="new-password"
+        placeholder="Répétez votre mot de passe" />
+      @if (fieldErrors['confirmPassword']) {
+        <span class="field-error">{{ fieldErrors['confirmPassword'] }}</span>
+      }
     </label>
 
-    <label>
+    <label class="file-upload-label">
       Image de profil (optionnel)
-      <input type="file" accept="image/*" (change)="onFileSelected($event)" />
-      <small>Formats acceptés : JPG, PNG, GIF. Taille max : 5MB</small>
+      <input
+        type="file"
+        accept="image/*"
+        (change)="onFileSelected($event)"
+        class="file-input" />
+      <div class="file-upload-area">
+        <span class="file-upload-icon">📷</span>
+        <span class="file-upload-text">
+          @if (selectedFile) {
+            {{ selectedFile.name }}
+          } @else {
+            Cliquez pour choisir une image
+          }
+        </span>
+      </div>
+      <small class="file-hint">Formats acceptés : JPG, PNG, GIF. Taille max : 5MB</small>
     </label>
 
-    <button type="submit" [disabled]="!username || !email || !password || !confirmPassword">Créer un compte</button>
+    <button
+      class="register-button"
+      type="submit"
+      [disabled]="!isFormValid || isLoading">
+      @if (isLoading) {
+        <span class="spinner"></span>
+        Création du compte...
+      } @else {
+        Créer un compte
+      }
+    </button>
   </form>
 
   @if (message) {
-    <p class="message">{{ message }}</p>
+    <div class="message" [class]="'message-' + messageType">
+      {{ message }}
+    </div>
   }
+
+  <p class="auth-link">
+    Déjà un compte ?
+    <a routerLink="/login">Connecte-toi ici</a>
+  </p>
 </div>

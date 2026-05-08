@@ -1,21 +1,58 @@
 <div class="page login-page">
   <h1>Connexion</h1>
 
-  <form (ngSubmit)="login()" class="login-form">
+  <form (ngSubmit)="login()" class="login-form" novalidate>
     <label>
       Email
-      <input type="email" name="email" [(ngModel)]="email" required />
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        (input)="onEmailChange()"
+        [class.error]="fieldErrors['email']"
+        required
+        autocomplete="email" />
+      @if (fieldErrors['email']) {
+        <span class="field-error">{{ fieldErrors['email'] }}</span>
+      }
     </label>
 
     <label>
       Mot de passe
-      <input type="password" name="password" [(ngModel)]="password" required />
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        (input)="onPasswordChange()"
+        [class.error]="fieldErrors['password']"
+        required
+        autocomplete="current-password" />
+      @if (fieldErrors['password']) {
+        <span class="field-error">{{ fieldErrors['password'] }}</span>
+      }
     </label>
 
-    <button type="submit" [disabled]="!email || !password">Se connecter</button>
+    <button
+      type="submit"
+      [disabled]="!isFormValid || isLoading"
+      class="login-button">
+      @if (isLoading) {
+        <span class="spinner"></span>
+        Connexion en cours...
+      } @else {
+        Se connecter
+      }
+    </button>
   </form>
 
   @if (message) {
-    <p class="message">{{ message }}</p>
+    <div class="message" [class]="'message-' + messageType">
+      {{ message }}
+    </div>
   }
+
+  <p class="auth-link">
+    Pas encore de compte ?
+    <a routerLink="/register">Inscris-toi ici</a>
+  </p>
 </div>

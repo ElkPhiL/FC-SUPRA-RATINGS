@@ -1,1 +1,135 @@
-<p>admin works!</p>
+<div class="admin-page">
+  <header class="page-header">
+    <div>
+      <h1>Admin</h1>
+      <p>Gère les joueurs et les matchs depuis cette page.</p>
+    </div>
+  </header>
+
+  <section class="admin-grid">
+    <article class="admin-panel">
+      <div class="panel-header">
+        <h2>Créer un joueur</h2>
+        <p>Ajoute un joueur actif pour l’équipe.</p>
+      </div>
+
+      <form class="admin-form" (ngSubmit)="createPlayer()" novalidate>
+        <div class="form-row">
+          <label>
+            Nom
+            <input type="text" [(ngModel)]="createPlayerPayload.name" name="playerName" required />
+          </label>
+          <label>
+            Pseudonyme
+            <input type="text" [(ngModel)]="createPlayerPayload.username" name="playerUsername" required />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>
+            Numéro
+            <input type="number" [(ngModel)]="createPlayerPayload.number" name="playerNumber" min="1" required />
+          </label>
+          <label>
+            Position
+            <input type="text" [(ngModel)]="createPlayerPayload.position" name="playerPosition" />
+          </label>
+        </div>
+
+        <div class="form-row form-actions">
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="createPlayerPayload.active" name="playerActive" />
+            Actif
+          </label>
+          <button type="submit">Créer le joueur</button>
+        </div>
+      </form>
+
+      @if (playerMessage()) {
+        <div class="form-message">{{ playerMessage() }}</div>
+      }
+
+      <div class="list-block">
+        <h3>Joueurs existants</h3>
+        @if (loadingPlayers()) {
+          <div class="loader">Chargement des joueurs…</div>
+        } @else if (!players().length) {
+          <div class="empty-state">Aucun joueur n'a encore été créé.</div>
+        } @else {
+          <ul class="item-list">
+            @for (player of players(); track player.id) {
+              <li>
+                <strong>{{ getPlayerLabel(player) }}</strong>
+                <span>#{{ player.number }} · {{ player.position || 'Position non renseignée' }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </article>
+
+    <article class="admin-panel">
+      <div class="panel-header">
+        <h2>Créer un match</h2>
+        <p>Ajoute un match dans le calendrier.</p>
+      </div>
+
+      <form class="admin-form" (ngSubmit)="createMatch()" novalidate>
+        <div class="form-row">
+          <label>
+            Date
+            <input type="datetime-local" [(ngModel)]="createMatchPayload.date" name="matchDate" required />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>
+            Équipe à domicile
+            <input type="text" [(ngModel)]="createMatchPayload.home_team" name="homeTeam" required />
+          </label>
+          <label>
+            Équipe visiteuse
+            <input type="text" [(ngModel)]="createMatchPayload.away_team" name="awayTeam" required />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>
+            Score domicile
+            <input type="number" [(ngModel)]="createMatchPayload.home_score" name="homeScore" min="0" />
+          </label>
+          <label>
+            Score visiteur
+            <input type="number" [(ngModel)]="createMatchPayload.away_score" name="awayScore" min="0" />
+          </label>
+        </div>
+
+        <div class="form-row form-actions">
+          <button type="submit">Créer le match</button>
+        </div>
+      </form>
+
+      @if (matchMessage()) {
+        <div class="form-message">{{ matchMessage() }}</div>
+      }
+
+      <div class="list-block">
+        <h3>Matches existants</h3>
+        @if (loadingMatches()) {
+          <div class="loader">Chargement des matchs…</div>
+        } @else if (!matches().length) {
+          <div class="empty-state">Aucun match n'a encore été ajouté.</div>
+        } @else {
+          <ul class="item-list">
+            @for (match of matches(); track match.id) {
+              <li>
+                <strong>{{ getMatchLabel(match) }}</strong>
+                <span>{{ match.date | date:'short' }} · {{ match.status || 'Statut inconnu' }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </article>
+  </section>
+</div>

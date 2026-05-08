@@ -2,16 +2,19 @@ import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 
 export interface Player {
-  id: string;
-  name: string;
-  username?: string;
+  id: number;
+  first_name: string | null;
+  last_name: string | null;
+  display_name: string;
   number: number;
-  position?: string;
+  position: string | null;
+  nationality: string | null;
+  photo_url: string | null;
   active: boolean;
-  avatar_url?: string;
+  created_at: string | null;
 }
 
-export type CreatePlayerPayload = Omit<Player, 'id' | 'avatar_url'>;
+export type CreatePlayerPayload = Omit<Player, 'id' | 'created_at'>;
 
 @Injectable({
   providedIn: 'root',
@@ -20,11 +23,15 @@ export class PlayersService {
   constructor(private supabaseService: SupabaseService) {}
 
   async getPlayers(): Promise<Player[]> {
+    console.log('Tentative de récupération des joueurs...');
+
     const { data, error } = await this.supabaseService.supabase
       .from('players')
       .select('*')
       .eq('active', true)
       .order('number');
+
+    console.log('Résultat de la requête:', { data, error });
 
     if (error) {
       console.error('Error fetching players:', error);

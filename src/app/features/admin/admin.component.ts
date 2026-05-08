@@ -20,32 +20,42 @@ export class AdminComponent {
   matchMessage = signal('');
 
   createPlayerPayload = {
-    name: '',
-    username: '',
+    first_name: '',
+    last_name: '',
+    display_name: '',
     number: null as number | null,
     position: '',
+    nationality: '',
+    photo_url: '',
     active: true,
   } as {
-    name: string;
-    username: string;
+    first_name: string;
+    last_name: string;
+    display_name: string;
     number: number | null;
     position: string;
+    nationality: string;
+    photo_url: string;
     active: boolean;
   };
 
   createMatchPayload = {
-    date: '',
-    home_team: '',
-    away_team: '',
-    home_score: 0,
-    away_score: 0,
+    match_date: '',
+    opponent: '',
+    competition: '',
+    home_away: '',
+    venue: '',
+    fc_supra_score: 0,
+    opponent_score: 0,
     status: 'scheduled',
   } as {
-    date: string;
-    home_team: string;
-    away_team: string;
-    home_score: number;
-    away_score: number;
+    match_date: string;
+    opponent: string;
+    competition: string;
+    home_away: string;
+    venue: string;
+    fc_supra_score: number;
+    opponent_score: number;
     status: string;
   };
 
@@ -65,7 +75,8 @@ export class AdminComponent {
         this.playerMessage.set('Aucun joueur actif pour l’instant.');
       }
     } catch (error) {
-      this.playerMessage.set('Impossible de charger les joueurs.');
+      console.error('Error loading players:', error);
+      this.playerMessage.set(this.formatErrorMessage(error, 'Impossible de charger les joueurs.'));
     } finally {
       this.loadingPlayers.set(false);
     }
@@ -74,28 +85,45 @@ export class AdminComponent {
   async createPlayer() {
     this.playerMessage.set('');
 
-    const name = this.createPlayerPayload.name.trim();
-    const username = this.createPlayerPayload.username.trim();
+    const displayName = this.createPlayerPayload.display_name.trim();
     const number = this.createPlayerPayload.number;
 
-    if (!name || !username || number === null || number <= 0) {
-      this.playerMessage.set('Merci de remplir le nom, le pseudonyme et le numéro du joueur.');
+    if (!displayName) {
+      this.playerMessage.set('Le nom d’affichage est requis.');
+      return;
+    }
+
+    if (number === null || number <= 0) {
+      this.playerMessage.set('Le numéro du joueur doit être un entier supérieur à 0.');
       return;
     }
 
     try {
       await this.playersService.createPlayer({
-        name,
-        username,
+        first_name: this.createPlayerPayload.first_name.trim() || null,
+        last_name: this.createPlayerPayload.last_name.trim() || null,
+        display_name: displayName,
         number,
-        position: this.createPlayerPayload.position.trim(),
+        position: this.createPlayerPayload.position.trim() || null,
+        nationality: this.createPlayerPayload.nationality.trim() || null,
+        photo_url: this.createPlayerPayload.photo_url.trim() || null,
         active: this.createPlayerPayload.active,
       });
       this.playerMessage.set('Joueur créé avec succès.');
-      this.createPlayerPayload = { name: '', username: '', number: null, position: '', active: true };
+      this.createPlayerPayload = {
+        first_name: '',
+        last_name: '',
+        display_name: '',
+        number: null,
+        position: '',
+        nationality: '',
+        photo_url: '',
+        active: true,
+      };
       await this.loadPlayers();
     } catch (error) {
-      this.playerMessage.set('Erreur lors de la création du joueur.');
+      console.error('Error creating player:', error);
+      this.playerMessage.set(this.formatErrorMessage(error, 'Erreur lors de la création du joueur.'));
     }
   }
 
@@ -110,7 +138,8 @@ export class AdminComponent {
         this.matchMessage.set('Aucun match enregistré pour l’instant.');
       }
     } catch (error) {
-      this.matchMessage.set('Impossible de charger les matchs.');
+      console.error('Error loading matches:', error);
+      this.matchMessage.set(this.formatErrorMessage(error, 'Impossible de charger les matchs.'));
     } finally {
       this.loadingMatches.set(false);
     }
@@ -119,36 +148,67 @@ export class AdminComponent {
   async createMatch() {
     this.matchMessage.set('');
 
-    const payload = {
-      date: this.createMatchPayload.date,
-      home_team: this.createMatchPayload.home_team.trim(),
-      away_team: this.createMatchPayload.away_team.trim(),
-      home_score: this.createMatchPayload.home_score,
-      away_score: this.createMatchPayload.away_score,
+    const payload: CreateMatchPayload = {
+      match_date: this.createMatchPayload.match_date || null,
+      opponent: this.createMatchPayload.opponent.trim(),
+      competition: this.createMatchPayload.competition.trim() || null,
+      home_away: this.createMatchPayload.home_away.trim() || null,
+      venue: this.createMatchPayload.venue.trim() || null,
+      fc_supra_score: this.createMatchPayload.fc_supra_score ?? null,
+      opponent_score: this.createMatchPayload.opponent_score ?? null,
       status: this.createMatchPayload.status.trim() || 'scheduled',
     };
 
-    if (!payload.date || !payload.home_team || !payload.away_team) {
-      this.matchMessage.set('Merci de remplir la date et les équipes du match.');
+    if (!payload.match_date || !payload.opponent) {
+      this.matchMessage.set('La date et l’adversaire sont requis pour créer un match.');
       return;
     }
 
     try {
       await this.matchesService.createMatch(payload);
       this.matchMessage.set('Match créé avec succès.');
-      this.createMatchPayload = { date: '', home_team: '', away_team: '', home_score: 0, away_score: 0, status: 'scheduled' };
+      this.createMatchPayload = {
+        match_date: '',
+        opponent: '',
+        competition: '',
+        home_away: '',
+        venue: '',
+        fc_supra_score: 0,
+        opponent_score: 0,
+        status: 'scheduled',
+      };
       await this.loadMatches();
     } catch (error) {
-      this.matchMessage.set('Erreur lors de la création du match.');
+      console.error('Error creating match:', error);
+      this.matchMessage.set(this.formatErrorMessage(error, 'Erreur lors de la création du match.'));
     }
   }
 
   getPlayerLabel(player: Player) {
-    return player.username || player.name || 'Joueur inconnu';
+    return player.display_name || `${player.first_name || ''} ${player.last_name || ''}`.trim() || 'Joueur inconnu';
   }
 
   getMatchLabel(match: Match) {
-    return `${match.home_team} vs ${match.away_team}`;
+    const location = match.home_away ? `${match.home_away} · ` : '';
+    return `${location}${match.opponent}`;
+  }
+
+  private formatErrorMessage(error: any, fallback: string): string {
+    if (error?.message === 'permission denied for table players' || 
+        error?.message?.includes('permission denied')) {
+      return 'Erreur de permissions : La table players n\'est pas accessible. Configure les RLS (Row Level Security) dans Supabase pour permettre l\'INSERT. Va dans Supabase Dashboard > Authentication > Policies et ajoute une politique permettant à tout utilisateur connecté d\'insérer des joueurs.';
+    }
+    if (error?.message === 'permission denied for table matches' || 
+        error?.message?.includes('permission denied')) {
+      return 'Erreur de permissions : La table matches n\'est pas accessible. Configure les RLS pour cette table dans le Supabase Dashboard.';
+    }
+    if (error?.message) {
+      return `Erreur : ${error.message}`;
+    }
+    if (error?.details) {
+      return `Erreur : ${error.details}`;
+    }
+    return fallback;
   }
 }
 

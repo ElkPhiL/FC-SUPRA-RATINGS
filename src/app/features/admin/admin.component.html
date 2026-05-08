@@ -10,18 +10,29 @@
     <article class="admin-panel">
       <div class="panel-header">
         <h2>Créer un joueur</h2>
-        <p>Ajoute un joueur actif pour l’équipe.</p>
+        <p>Ajoute un joueur actif dans la table <code>players</code>.</p>
       </div>
 
       <form class="admin-form" (ngSubmit)="createPlayer()" novalidate>
         <div class="form-row">
           <label>
-            Nom
-            <input type="text" [(ngModel)]="createPlayerPayload.name" name="playerName" required />
+            Prénom
+            <input type="text" [(ngModel)]="createPlayerPayload.first_name" name="playerFirstName" />
           </label>
           <label>
-            Pseudonyme
-            <input type="text" [(ngModel)]="createPlayerPayload.username" name="playerUsername" required />
+            Nom
+            <input type="text" [(ngModel)]="createPlayerPayload.last_name" name="playerLastName" />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>
+            Nom à afficher
+            <input type="text" [(ngModel)]="createPlayerPayload.display_name" name="playerDisplayName" required />
+          </label>
+          <label>
+            Nationalité
+            <input type="text" [(ngModel)]="createPlayerPayload.nationality" name="playerNationality" />
           </label>
         </div>
 
@@ -36,11 +47,18 @@
           </label>
         </div>
 
-        <div class="form-row form-actions">
+        <div class="form-row">
+          <label>
+            Photo URL
+            <input type="text" [(ngModel)]="createPlayerPayload.photo_url" name="playerPhotoUrl" />
+          </label>
           <label class="checkbox-label">
             <input type="checkbox" [(ngModel)]="createPlayerPayload.active" name="playerActive" />
             Actif
           </label>
+        </div>
+
+        <div class="form-row form-actions">
           <button type="submit">Créer le joueur</button>
         </div>
       </form>
@@ -61,6 +79,9 @@
               <li>
                 <strong>{{ getPlayerLabel(player) }}</strong>
                 <span>#{{ player.number }} · {{ player.position || 'Position non renseignée' }}</span>
+                @if (player.nationality) {
+                  <span>{{ player.nationality }}</span>
+                }
               </li>
             }
           </ul>
@@ -71,36 +92,51 @@
     <article class="admin-panel">
       <div class="panel-header">
         <h2>Créer un match</h2>
-        <p>Ajoute un match dans le calendrier.</p>
+        <p>Ajoute un match dans la table <code>matches</code>.</p>
       </div>
 
       <form class="admin-form" (ngSubmit)="createMatch()" novalidate>
         <div class="form-row">
           <label>
-            Date
-            <input type="datetime-local" [(ngModel)]="createMatchPayload.date" name="matchDate" required />
+            Date du match
+            <input type="datetime-local" [(ngModel)]="createMatchPayload.match_date" name="matchDate" required />
+          </label>
+          <label>
+            Adversaire
+            <input type="text" [(ngModel)]="createMatchPayload.opponent" name="matchOpponent" required />
           </label>
         </div>
 
         <div class="form-row">
           <label>
-            Équipe à domicile
-            <input type="text" [(ngModel)]="createMatchPayload.home_team" name="homeTeam" required />
+            Compétition
+            <input type="text" [(ngModel)]="createMatchPayload.competition" name="matchCompetition" />
           </label>
           <label>
-            Équipe visiteuse
-            <input type="text" [(ngModel)]="createMatchPayload.away_team" name="awayTeam" required />
+            Domicile / Extérieur
+            <input type="text" [(ngModel)]="createMatchPayload.home_away" name="matchHomeAway" />
           </label>
         </div>
 
         <div class="form-row">
           <label>
-            Score domicile
-            <input type="number" [(ngModel)]="createMatchPayload.home_score" name="homeScore" min="0" />
+            Lieu
+            <input type="text" [(ngModel)]="createMatchPayload.venue" name="matchVenue" />
           </label>
           <label>
-            Score visiteur
-            <input type="number" [(ngModel)]="createMatchPayload.away_score" name="awayScore" min="0" />
+            Statut
+            <input type="text" [(ngModel)]="createMatchPayload.status" name="matchStatus" />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>
+            Score FC Supra
+            <input type="number" [(ngModel)]="createMatchPayload.fc_supra_score" name="matchFcSupraScore" min="0" />
+          </label>
+          <label>
+            Score adversaire
+            <input type="number" [(ngModel)]="createMatchPayload.opponent_score" name="matchOpponentScore" min="0" />
           </label>
         </div>
 
@@ -124,7 +160,8 @@
             @for (match of matches(); track match.id) {
               <li>
                 <strong>{{ getMatchLabel(match) }}</strong>
-                <span>{{ match.date | date:'short' }} · {{ match.status || 'Statut inconnu' }}</span>
+                <span>{{ match.match_date | date:'short' }} · {{ match.competition || 'Compétition inconnue' }}</span>
+                <span>{{ match.home_away || 'Domicile / Extérieur non défini' }} · {{ match.venue || 'Lieu non renseigné' }}</span>
               </li>
             }
           </ul>

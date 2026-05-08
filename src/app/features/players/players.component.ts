@@ -29,16 +29,26 @@ export class PlayersComponent {
       if (!players.length) {
         this.message.set('Aucun joueur actif trouvé.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erreur lors du chargement des joueurs', error);
-      this.message.set('Impossible de charger la liste des joueurs.');
+      console.error('Détails de l\'erreur:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      });
+      this.message.set(`Erreur de chargement: ${error.message || 'Erreur inconnue'}`);
     } finally {
       this.loading.set(false);
     }
   }
 
   getAvatarInitial(player: Player) {
-    const label = player.name || player.username || 'Joueur';
+    const label = player.display_name || player.first_name || player.last_name || 'Joueur';
     return label.charAt(0).toUpperCase();
+  }
+
+  getPlayerName(player: Player) {
+    return player.display_name || `${player.first_name || ''} ${player.last_name || ''}`.trim() || 'Joueur inconnu';
   }
 }

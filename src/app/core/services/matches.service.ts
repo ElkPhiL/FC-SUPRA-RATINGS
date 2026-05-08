@@ -2,16 +2,19 @@ import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 
 export interface Match {
-  id: string;
-  date: string;
-  home_team: string;
-  away_team: string;
-  home_score?: number;
-  away_score?: number;
-  status?: string;
+  id: number;
+  match_date: string | null;
+  opponent: string;
+  competition: string | null;
+  home_away: string | null;
+  venue: string | null;
+  fc_supra_score: number | null;
+  opponent_score: number | null;
+  status: string | null;
+  created_at: string | null;
 }
 
-export type CreateMatchPayload = Omit<Match, 'id'>;
+export type CreateMatchPayload = Omit<Match, 'id' | 'created_at'>;
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +26,7 @@ export class MatchesService {
     const { data, error } = await this.supabaseService.supabase
       .from('matches')
       .select('*')
-      .order('date');
+      .order('match_date');
 
     if (error) {
       console.error('Error fetching matches:', error);

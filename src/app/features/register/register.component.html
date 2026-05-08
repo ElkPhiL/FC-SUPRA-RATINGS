@@ -1,0 +1,29 @@
+<div class="page register-page">
+  <h1>Inscription</h1>
+
+  <form (ngSubmit)="register()" class="register-form">
+    <label>
+      Nom d’utilisateur
+      <input type="text" name="username" [(ngModel)]="username" required />
+    </label>
+
+    <label>
+      Email
+      <input type="email" name="email" [(ngModel)]="email" required />
+    </label>
+
+    <label>
+      Mot de passe
+      <input type="password" name="password" [(ngModel)]="password" required minlength="6" />
+    </label>
+
+    <label>
+      Confirmer le mot de passe
+      <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" required minlength="6" />
+    </label>
+
+    <button type="submit" [disabled]="!email || !password || !confirmPassword">Créer un compte</button>
+  </form>
+
+  <p class="message" *ngIf="message">{{ message }}</p>
+</div>

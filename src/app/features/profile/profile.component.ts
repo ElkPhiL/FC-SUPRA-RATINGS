@@ -1,25 +1,26 @@
 import { Component, Signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { SupabaseService } from '../../core/services/supabase.service';
 import { type User } from '@supabase/supabase-js';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-profile',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, CommonModule],
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  imports: [CommonModule, RouterLink],
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss'],
 })
-export class NavbarComponent {
-  menuOpen = false;
+export class ProfileComponent {
   user: Signal<User | null>;
+  message = '';
 
   constructor(private supabaseService: SupabaseService) {
     this.user = this.supabaseService.user;
   }
 
-  async logout() {
+  async signOut() {
     await this.supabaseService.signOut();
+    this.message = 'Déconnecté.';
   }
 }

@@ -1,0 +1,37 @@
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1>Nouveau joueur</h1>
+      <p>Créer un joueur avec nom, numéro, poste, nationalité et photo.</p>
+    </div>
+    <a routerLink="/admin/players" class="button secondary">Retour à la liste</a>
+  </header>
+
+  <article class="panel">
+    <form class="form-grid">
+      <label>
+        Nom
+        <input type="text" placeholder="Nom" />
+      </label>
+      <label>
+        Numéro
+        <input type="number" min="1" placeholder="Numéro" />
+      </label>
+      <label>
+        Poste
+        <input type="text" placeholder="Poste" />
+      </label>
+      <label>
+        Nationalité
+        <input type="text" placeholder="Nationalité" />
+      </label>
+      <label>
+        Photo URL
+        <input type="text" placeholder="URL de la photo" />
+      </label>
+      <div class="form-actions">
+        <button type="button" class="button">Créer</button>
+      </div>
+    </form>
+  </article>
+</section>

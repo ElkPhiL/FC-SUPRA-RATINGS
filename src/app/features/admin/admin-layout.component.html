@@ -1,0 +1,18 @@
+<div class="admin-layout">
+  <aside class="admin-menu">
+    <div class="admin-brand">
+      <h1>Admin FC Supra</h1>
+      <p>Back-office</p>
+    </div>
+
+    <nav>
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+      <a routerLink="/admin/players" routerLinkActive="active">Players</a>
+      <a routerLink="/admin/matches" routerLinkActive="active">Matches</a>
+    </nav>
+  </aside>
+
+  <main class="admin-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -8,6 +8,7 @@ import { AdminComponent } from './features/admin/admin.component';
 import { LoginComponent } from './features/login/login.component';
 import { RegisterComponent } from './features/register/register.component';
 import { ProfileComponent } from './features/profile/profile.component';
+import { MatchDetailComponent } from './features/match-detail/match-detail.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,4 +19,5 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'matches/:id', component: MatchDetailComponent }
 ];

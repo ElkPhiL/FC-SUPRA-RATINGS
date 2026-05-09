@@ -11,7 +11,7 @@
       <a class="nav-btn" routerLink="/matches" routerLinkActive="active">Matchs</a>
       <a class="nav-btn" routerLink="/players" routerLinkActive="active">Joueurs</a>
       <a class="nav-btn" routerLink="/standings" routerLinkActive="active">Classement</a>
-      <a class="nav-btn" routerLink="/admin" routerLinkActive="active">Admin</a>
+      <a class="nav-btn" routerLink="/admin" routerLinkActive="active">Administrer</a>
 
       @if (!user()) {
         <a class="nav-btn" routerLink="/login" routerLinkActive="active">Connexion</a>
@@ -37,7 +37,7 @@
       <a routerLink="/matches" (click)="menuOpen=false">Matchs</a>
       <a routerLink="/players" (click)="menuOpen=false">Joueurs</a>
       <a routerLink="/standings" (click)="menuOpen=false">Classement</a>
-      <a routerLink="/admin" (click)="menuOpen=false">Admin</a>
+      <a routerLink="/admin" (click)="menuOpen=false">Administrer</a>
 
       @if (!user()) {
         <a routerLink="/login" (click)="menuOpen=false">Connexion</a>

@@ -1,0 +1,82 @@
+<div class="match-detail-container">
+  <!-- Loading state -->
+  @if (loading()) {
+    <div class="loading">
+      <p>Chargement du match...</p>
+    </div>
+  }
+
+  <!-- Error state -->
+  @if (error()) {
+    <div class="error">
+      <p>{{ error() }}</p>
+    </div>
+  }
+
+  <!-- Match content -->
+  @if (match() && !loading()) {
+    <div class="match-header">
+      <h1>{{ match()!.opponent }}</h1>
+      <p class="competition">{{ match()!.competition }}</p>
+      <p class="match-date">{{ match()!.match_date | date: 'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+
+    <!-- Score Section -->
+    <section class="match-section score-section">
+      <h2>Score</h2>
+      <div class="score-display">
+        <div class="team-score">
+          <span class="team-name">FC Supra</span>
+          <span class="score">{{ match()!.fc_supra_score ?? '-' }}</span>
+        </div>
+        <div class="vs">vs</div>
+        <div class="team-score">
+          <span class="team-name">{{ match()!.opponent }}</span>
+          <span class="score">{{ match()!.opponent_score ?? '-' }}</span>
+        </div>
+      </div>
+      <p class="venue">{{ match()!.venue }}</p>
+    </section>
+
+    <!-- Lineup Section -->
+    <section class="match-section lineup-section">
+      <h2>Composition</h2>
+      <div class="lineup-content">
+        <p class="placeholder">Contenu de la composition à venir...</p>
+      </div>
+    </section>
+
+    <!-- Ratings Section -->
+    <section class="match-section ratings-section">
+      <h2>Notes</h2>
+      <div class="ratings-content">
+        <p class="placeholder">Notation des joueurs à venir...</p>
+      </div>
+    </section>
+
+    <!-- Man of the Match Section -->
+    <section class="match-section motm-section">
+      <h2>Homme du Match</h2>
+      <div class="motm-content">
+        <p class="placeholder">Homme du match à venir...</p>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="match-section stats-section">
+      <h2>Statistiques</h2>
+      <div class="stats-content">
+        <p class="placeholder">Statistiques détaillées à venir...</p>
+      </div>
+    </section>
+
+    <!-- Comments Section -->
+    <section class="match-section comments-section">
+      <h2>Commentaires</h2>
+      <div class="comments-content">
+        <p class="placeholder">Commentaires à venir...</p>
+      </div>
+    </section>
+  }
+</div>
+

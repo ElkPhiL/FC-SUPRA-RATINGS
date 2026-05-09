@@ -127,6 +127,22 @@ export class AdminComponent {
     }
   }
 
+  deletePlayer(playerId: number) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?')) {
+      return;
+    }
+
+    this.playersService.deletePlayer(playerId)
+      .then(() => {
+        this.playerMessage.set('Joueur supprimé avec succès.');
+        this.loadPlayers();
+      })
+      .catch(error => {
+        console.error('Error deleting player:', error);
+        this.playerMessage.set(this.formatErrorMessage(error, 'Erreur lors de la suppression du joueur.'));
+      });
+  }
+
   async loadMatches() {
     this.loadingMatches.set(true);
     this.matchMessage.set('');

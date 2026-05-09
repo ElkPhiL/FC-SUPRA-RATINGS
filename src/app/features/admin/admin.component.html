@@ -82,6 +82,7 @@
                 @if (player.nationality) {
                   <span>{{ player.nationality }}</span>
                 }
+                <button class="delete-btn" (click)="deletePlayer(player.id)">Supprimer</button>
               </li>
             }
           </ul>

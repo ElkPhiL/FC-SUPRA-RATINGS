@@ -55,4 +55,16 @@ export class PlayersService {
 
     return data as Player;
   }
+
+  async deletePlayer(playerId: number): Promise<void> {
+    const { error } = await this.supabaseService.supabase
+      .from('players')
+      .delete()
+      .eq('id', playerId);
+
+    if (error) {
+      console.error('Error deleting player:', error);
+      throw error;
+    }
+  }
 }

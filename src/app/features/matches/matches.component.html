@@ -1,1 +1,31 @@
-<h1>Matches</h1>
+<div class="page matches-page">
+  <header class="matches-header">
+    <div>
+      <h1>Matchs</h1>
+      <p>Liste des matchs triés par date, récupérée depuis la table <code>matches</code>.</p>
+    </div>
+    @if (loading()) {
+      <div class="loader">Chargement des matchs…</div>
+    }
+  </header>
+
+  @if (message() && !loading()) {
+    <div class="message">{{ message() }}</div>
+  }
+
+  @if (!loading() && matches().length) {
+    <section class="matches-grid">
+      @for (match of matches(); track match.id) {
+        <article [routerLink]="['/matches', match.id]" class="match-card">
+          <div class="match-details">
+            <h2>{{ match.opponent }}</h2>
+            <p class="match-date">{{ match.match_date }}</p>
+            @if (match.competition) {
+              <p class="match-competition">{{ match.competition }}</p>
+            }
+          </div>
+        </article>
+      }
+    </section>
+  }
+</div>

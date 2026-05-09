@@ -1,0 +1,26 @@
+.matches-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.match-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+  padding: 24px;
+  cursor: pointer;
+
+  .match-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+
+    .match-date {
+      font-size: 0.95rem;
+      color: #6b7280;
+    }
+  }
+}

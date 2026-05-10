@@ -21,6 +21,30 @@ export class PlayersService {
     return data as Player[];
   }
 
+  async getActive(): Promise<Player[]> {
+    const { data, error } = await this.supabase.supabase
+      .from('players')
+      .select('*')
+      .eq('active', true)
+      .order('number');
+
+    if (error) throw error;
+
+    return data as Player[];
+  }
+
+  async getNonActive(): Promise<Player[]> {
+    const { data, error } = await this.supabase.supabase
+      .from('players')
+      .select('*')
+      .eq('active', false)
+      .order('number');
+
+    if (error) throw error;
+
+    return data as Player[];
+  }
+
   async getById(id: number): Promise<Player> {
     const { data, error } = await this.supabase.supabase
       .from('players')

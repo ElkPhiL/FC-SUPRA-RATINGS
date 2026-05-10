@@ -12,7 +12,8 @@ import { Player } from './models/player.model';
   styleUrls: ['./admin-players.component.scss'],
 })
 export class AdminPlayersComponent {
-  players = signal<Player[]>([]);
+  activePlayers = signal<Player[]>([]);
+  nonActivePlayers = signal<Player[]>([]);
   loading = signal(true);
   message = signal('');
 
@@ -21,18 +22,38 @@ export class AdminPlayersComponent {
   }
 
   async loadPlayers() {
+    this.loadActivePlayers();
+    this.loadNonActivePlayers();
+  }
+
+  async loadActivePlayers() {
     this.loading.set(true);
     this.message.set('');
-
     try {
-      const players = await this.playersService.getAll();
-      this.players.set(players);
-
+      const players = await this.playersService.getActive();
+      this.activePlayers.set(players);
       if (!players.length) {
         this.message.set('Aucun joueur actif trouvé.');
       }
     } catch (error: any) {
-      console.error('Erreur lors du chargement des joueurs', error);
+      console.error('Erreur lors du chargement des joueurs actifs', error);
+      this.message.set(`Erreur de chargement: ${error?.message ?? 'Erreur inconnue'}`);
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  async loadNonActivePlayers() {
+    this.loading.set(true);
+    this.message.set('');
+    try {
+      const players = await this.playersService.getNonActive();
+      this.nonActivePlayers.set(players);
+      if (!players.length) {
+        this.message.set('Aucun joueur non actif trouvé.');
+      }
+    } catch (error: any) {
+      console.error('Erreur lors du chargement des joueurs non actifs', error);
       this.message.set(`Erreur de chargement: ${error?.message ?? 'Erreur inconnue'}`);
     } finally {
       this.loading.set(false);
@@ -43,6 +64,14 @@ export class AdminPlayersComponent {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?')) {
       return;
     }
+    this.playersService.delete(id)
+      .then(() => {
+        this.message.set('Joueur supprimé');
+        this.loadPlayers();
+      })
+      .catch(() => {
+        this.message.set('Erreur suppression joueur');
+      });
   }
 }
 

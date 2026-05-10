@@ -1,0 +1,47 @@
+<form [formGroup]="form" class="form-grid">
+
+  <label>
+    Prénom
+    <input type="text" formControlName="first_name">
+  </label>
+
+  <label>
+    Nom
+    <input type="text" formControlName="last_name">
+  </label>
+
+  <label>
+    Nom affiché
+    <input type="text" formControlName="display_name">
+  </label>
+
+  <label>
+    Numéro
+    <input type="number" formControlName="number">
+  </label>
+
+  <label>
+    Poste
+    <input type="text" formControlName="position">
+  </label>
+
+  <label>
+    Nationalité
+    <input type="text" formControlName="nationality">
+  </label>
+
+  <label>
+    Photo URL
+    <input type="text" formControlName="photo_url">
+  </label>
+
+  <label>
+    Actif
+    <input type="checkbox" formControlName="active">
+  </label>
+
+  <button type="button" (click)="submit()" [disabled]="loading">
+    {{ mode === 'create' ? 'Créer' : 'Modifier' }}
+  </button>
+
+</form>

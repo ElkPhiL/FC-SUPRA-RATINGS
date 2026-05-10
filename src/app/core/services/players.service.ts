@@ -1,70 +1,69 @@
+// src/app/core/services/players.service.ts
+
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-
-export interface Player {
-  id: number;
-  first_name: string | null;
-  last_name: string | null;
-  display_name: string;
-  number: number;
-  position: string | null;
-  nationality: string | null;
-  photo_url: string | null;
-  active: boolean;
-  created_at: string | null;
-}
-
-export type CreatePlayerPayload = Omit<Player, 'id' | 'created_at'>;
+import { Player, PlayerPayload } from '../../features/admin/players/models/player.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlayersService {
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(private supabase: SupabaseService) {}
 
-  async getPlayers(): Promise<Player[]> {
-    console.log('Tentative de récupération des joueurs...');
-
-    const { data, error } = await this.supabaseService.supabase
+  async getAll(): Promise<Player[]> {
+    const { data, error } = await this.supabase.supabase
       .from('players')
       .select('*')
-      .eq('active', true)
       .order('number');
 
-    console.log('Résultat de la requête:', { data, error });
+    if (error) throw error;
 
-    if (error) {
-      console.error('Error fetching players:', error);
-      throw error;
-    }
-
-    return (data as Player[]) ?? [];
+    return data as Player[];
   }
 
-  async createPlayer(player: CreatePlayerPayload): Promise<Player> {
-    const { data, error } = await this.supabaseService.supabase
+  async getById(id: number): Promise<Player> {
+    const { data, error } = await this.supabase.supabase
       .from('players')
-      .insert([player])
-      .select()
+      .select('*')
+      .eq('id', id)
       .single();
 
-    if (error) {
-      console.error('Error creating player:', error);
-      throw error;
-    }
+    if (error) throw error;
 
     return data as Player;
   }
 
-  async deletePlayer(playerId: number): Promise<void> {
-    const { error } = await this.supabaseService.supabase
+  async create(payload: PlayerPayload): Promise<Player> {
+    const { data, error } = await this.supabase.supabase
+      .from('players')
+      .insert(payload)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return data as Player;
+  }
+
+  async update(id: number, payload: Partial<PlayerPayload>): Promise<Player> {
+    const { data, error } = await this.supabase.supabase
+      .from('players')
+      .update(payload)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return data as Player;
+  }
+
+  async delete(id: number): Promise<void> {
+    const { error } = await this.supabase.supabase
       .from('players')
       .delete()
-      .eq('id', playerId);
+      .eq('id', id);
 
-    if (error) {
-      console.error('Error deleting player:', error);
-      throw error;
-    }
+    if (error) throw error;
   }
 }

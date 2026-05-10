@@ -1,0 +1,49 @@
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1>Nouveau joueur</h1>
+      <p>Créer un joueur avec nom, numéro, poste, nationalité et photo.</p>
+    </div>
+    <a routerLink="/admin/players" class="button secondary">Retour à la liste</a>
+  </header>
+
+  <article class="panel">
+    <form class="form-grid">
+      <label>
+        Prénom
+        <input type="text" [(ngModel)]="createPlayerPayload.first_name" name="firstName" placeholder="Prénom" />
+      </label>
+      <label>
+        Nom
+        <input type="text" [(ngModel)]="createPlayerPayload.last_name" name="lastName" placeholder="Nom" />
+      </label>
+      <label>
+        Nom d’affichage
+        <input type="text" [(ngModel)]="createPlayerPayload.display_name" name="displayName" placeholder="Nom d’affichage" />
+      </label>
+      <label>
+        Nationalité
+        <input type="text" [(ngModel)]="createPlayerPayload.nationality" name="nationality" placeholder="Nationalité" />
+      </label>
+      <label>
+        Numéro
+        <input type="number" [(ngModel)]="createPlayerPayload.number" name="number" min="1" max="99" placeholder="Numéro" />
+      </label>
+      <label>
+        Poste
+        <input type="text" [(ngModel)]="createPlayerPayload.position" name="position" placeholder="Poste" />
+      </label>
+      <label>
+        Photo URL
+        <input type="text" [(ngModel)]="createPlayerPayload.photo_url" name="photoUrl" placeholder="URL de la photo" />
+      </label>
+      <label class="checkbox-label">
+        Actif
+        <input type="checkbox" [(ngModel)]="createPlayerPayload.active" name="playerActive" />
+      </label>
+      <div class="form-actions">
+        <button type="button" class="button" (click)="createPlayer()">Créer</button>
+      </div>
+    </form>
+  </article>
+</section>

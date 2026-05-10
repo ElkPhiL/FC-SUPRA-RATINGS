@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PlayersService, type Player } from '../../core/services/players.service';
+import { PlayersService } from '../../core/services/players.service';
+import { Player } from '../admin/players/models/player.model';
 
 @Component({
   selector: 'app-players',
@@ -23,7 +24,7 @@ export class PlayersComponent {
     this.message.set('');
 
     try {
-      const players = await this.playersService.getPlayers();
+      const players = await this.playersService.getAll();
       this.players.set(players);
 
       if (!players.length) {

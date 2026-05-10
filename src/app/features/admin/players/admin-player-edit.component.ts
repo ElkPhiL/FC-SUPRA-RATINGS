@@ -1,0 +1,75 @@
+import { Component, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { PlayerFormComponent } from './components/player-form.component';
+import { PlayersService } from '../../../core/services/players.service';
+import { Player } from './models/player.model';
+
+@Component({
+  selector: 'app-admin-player-edit',
+  standalone: true,
+  imports: [CommonModule, PlayerFormComponent],
+  template: `
+    <h1>Modifier joueur</h1>
+
+    <p *ngIf="loading()">Chargement...</p>
+
+    <app-player-form
+      *ngIf="player()"
+      mode="edit"
+      [player]="player()"
+      [loading]="saving()"
+      (submitForm)="update($event)">
+    </app-player-form>
+
+    <p>{{ message() }}</p>
+  `,
+})
+export class AdminPlayerEditComponent implements OnInit {
+  player = signal<Player | null>(null);
+
+  loading = signal(true);
+  saving = signal(false);
+  message = signal('');
+
+  id!: number;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private playersService: PlayersService
+  ) {}
+
+  ngOnInit() {
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
+    this.load();
+  }
+
+  async load() {
+    try {
+      const data = await this.playersService.getById(this.id);
+      this.player.set(data);
+    } catch {
+      this.message.set('Erreur chargement joueur');
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  async update(payload: any) {
+    try {
+      this.saving.set(true);
+
+      await this.playersService.update(this.id, payload);
+
+      this.message.set('Joueur modifié');
+
+      this.router.navigate(['/admin/players']);
+
+    } catch {
+      this.message.set('Erreur modification');
+    } finally {
+      this.saving.set(false);
+    }
+  }
+}

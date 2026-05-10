@@ -1,8 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PlayersService, type CreatePlayerPayload, type Player } from '../../core/services/players.service';
+import { PlayersService } from '../../core/services/players.service';
 import { MatchesService, type CreateMatchPayload, type Match } from '../../core/services/matches.service';
+import { Player } from '../admin/players/models/player.model';
 
 @Component({
   selector: 'app-admin',
@@ -69,7 +70,7 @@ export class AdminComponent {
     this.playerMessage.set('');
 
     try {
-      const players = await this.playersService.getPlayers();
+      const players = await this.playersService.getAll();
       this.players.set(players);
       if (!players.length) {
         this.playerMessage.set('Aucun joueur actif pour l’instant.');
@@ -99,7 +100,7 @@ export class AdminComponent {
     }
 
     try {
-      await this.playersService.createPlayer({
+      await this.playersService.create({
         first_name: this.createPlayerPayload.first_name.trim() || null,
         last_name: this.createPlayerPayload.last_name.trim() || null,
         display_name: displayName,
@@ -132,7 +133,7 @@ export class AdminComponent {
       return;
     }
 
-    this.playersService.deletePlayer(playerId)
+    this.playersService.delete(playerId)
       .then(() => {
         this.playerMessage.set('Joueur supprimé avec succès.');
         this.loadPlayers();

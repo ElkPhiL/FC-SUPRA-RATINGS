@@ -12,9 +12,9 @@ import { MatchDetailComponent } from './features/match-detail/match-detail.compo
 import { AdminGuard } from './features/admin/admin.guard';
 import { AdminLayoutComponent } from './features/admin/admin-layout.component';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard.component';
-import { AdminPlayersComponent } from './features/admin/admin-players.component';
-import { AdminPlayerCreateComponent } from './features/admin/admin-player-create.component';
-import { AdminPlayerEditComponent } from './features/admin/admin-player-edit.component';
+import { AdminPlayersComponent } from './features/admin/players/admin-players.component';
+import { AdminPlayerCreateComponent } from './features/admin/players/admin-player-create.component';
+import { AdminPlayerEditComponent } from './features/admin/players/admin-player-edit.component';
 import { AdminMatchesComponent } from './features/admin/admin-matches.component';
 import { AdminMatchCreateComponent } from './features/admin/admin-match-create.component';
 import { AdminMatchDetailComponent } from './features/admin/admin-match-detail.component';

@@ -1,46 +1,51 @@
 <form [formGroup]="form" class="form-grid">
 
-  <label>
+  <label class="champ">
     Prénom
     <input type="text" formControlName="first_name">
   </label>
 
-  <label>
+  <label class="champ">
     Nom
     <input type="text" formControlName="last_name">
   </label>
 
-  <label>
+  <label class="champ">
     Nom affiché
     <input type="text" formControlName="display_name">
   </label>
 
-  <label>
+  <label class="champ">
     Numéro
-    <input type="number" formControlName="number">
+    <input type="number" min=1 max=99 oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2);" formControlName="number">
   </label>
 
-  <label>
+  <label class="champ">
     Poste
-    <input type="text" formControlName="position">
+    <select formControlName="position">
+        <option value="">Choisir</option>
+        <option *ngFor="let pos of positions" [value]="pos">
+        {{ pos }}
+        </option>
+    </select>
   </label>
 
-  <label>
+  <label class="champ">
     Nationalité
     <input type="text" formControlName="nationality">
   </label>
 
-  <label>
+  <label class="champ">
     Photo URL
     <input type="text" formControlName="photo_url">
   </label>
 
-  <label>
+  <label class="checkbox-label">
     Actif
     <input type="checkbox" formControlName="active">
   </label>
 
-  <button type="button" (click)="submit()" [disabled]="loading">
+  <button class="button" type="button" (click)="submit()" [disabled]="loading">
     {{ mode === 'create' ? 'Créer' : 'Modifier' }}
   </button>
 

@@ -20,13 +20,14 @@
         <div class="player-main">
           <span class="player-number">#{{ player.number }}</span>
           <div>
-            <strong>{{ getPlayerName(player) }}</strong>
+            <strong>{{ player.display_name }}</strong>
             <p>{{ player.position || 'Position non renseignée' }} · {{ player.nationality || 'Nationalité inconnue' }}</p>
           </div>
         </div>
 
         <div class="player-actions">
           <a routerLink="/admin/players/{{ player.id }}/edit" class="link-button">Modifier</a>
+          <button class="link-button danger" (click)="deletePlayer(player.id)">Supprimer</button>
         </div>
       </li>
     </ul>

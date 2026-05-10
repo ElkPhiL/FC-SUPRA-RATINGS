@@ -1,10 +1,12 @@
+import { PlayerPosition } from "../../../../shared/constants/player.constants";
+
 export interface Player {
   id: number;
   first_name: string | null;
   last_name: string | null;
   display_name: string;
   number: number;
-  position: string | null;
+  position: PlayerPosition | null;
   nationality: string | null;
   photo_url: string | null;
   active: boolean;
@@ -16,7 +18,7 @@ export interface PlayerPayload {
   last_name: string | null;
   display_name: string;
   number: number;
-  position: string | null;
+  position: PlayerPosition | null;
   nationality: string | null;
   photo_url: string | null;
   active: boolean;

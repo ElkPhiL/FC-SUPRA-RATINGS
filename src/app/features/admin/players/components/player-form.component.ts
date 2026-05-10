@@ -7,12 +7,14 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import { Player } from '../models/player.model';
+import { PLAYER_POSITIONS } from '../../../../shared/constants/player.constants';
 
 @Component({
   selector: 'app-player-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './player-form.component.html',
+  styleUrls: ['./player-form.component.scss'],
 })
 export class PlayerFormComponent implements OnChanges {
   @Input() mode: 'create' | 'edit' = 'create';
@@ -22,6 +24,7 @@ export class PlayerFormComponent implements OnChanges {
   @Output() submitForm = new EventEmitter<any>();
 
   form: FormGroup;
+  positions = PLAYER_POSITIONS;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({

@@ -39,12 +39,10 @@ export class AdminPlayersComponent {
     }
   }
 
-  getPlayerName(player: Player) {
-    return (
-      player.display_name ||
-      `${player.first_name ?? ''} ${player.last_name ?? ''}`.trim() ||
-      'Joueur inconnu'
-    );
+  deletePlayer(id: number) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?')) {
+      return;
+    }
   }
 }
 

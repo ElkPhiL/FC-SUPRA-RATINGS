@@ -13,13 +13,4 @@ export interface Player {
   created_at: string | null;
 }
 
-export interface PlayerPayload {
-  first_name: string | null;
-  last_name: string | null;
-  display_name: string;
-  number: number;
-  position: PlayerPosition | null;
-  nationality: string | null;
-  photo_url: string | null;
-  active: boolean;
-}
+export type PlayerPayload = Omit<Player, 'id' | 'created_at'>;

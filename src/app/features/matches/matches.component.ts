@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
-import { MatchesService, type Match } from '../../core/services/matches.service';
+import { MatchesService } from '../../core/services/matches.service';
 import { RouterLink } from '@angular/router';
+import { Match } from '../admin/matches/models/match.model';
 
 @Component({
   selector: 'app-matches',
@@ -22,7 +23,7 @@ export class MatchesComponent {
     this.message.set('');
 
     try {
-      const matches = await this.matchesService.getMatches();
+      const matches = await this.matchesService.getAll();
       this.matches.set(matches);
 
       if (!matches.length) {

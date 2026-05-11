@@ -63,4 +63,11 @@
   padding: 10px 14px;
   border-radius: 999px;
   border: 1px solid #2563eb;
+  cursor: pointer;
+  background: transparent;
+}
+
+.danger {
+  color: #dc2626;
+  border-color: #dc2626;
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { SupabaseService } from '../../core/services/supabase.service';
-import { type Match } from '../../core/services/matches.service';
+import { Match } from '../admin/matches/models/match.model';
 
 @Component({
   selector: 'app-match-detail',

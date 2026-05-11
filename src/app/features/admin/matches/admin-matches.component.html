@@ -21,11 +21,14 @@
           <strong>{{ getMatchTitle(match) }}</strong>
           <p>{{ match.match_date | date: 'dd/MM/yyyy HH:mm' }} · {{ match.competition || 'Compétition inconnue' }}</p>
           <p>{{ match.home_away || 'Domicile/Extérieur' }} · {{ match.venue || 'Lieu non renseigné' }}</p>
+          <p>Score : {{ match.fc_supra_score ?? '?' }} - {{ match.opponent_score ?? '?' }}</p>
+          <p>Status : {{ match.status || 'Inconnu' }}</p>
         </div>
 
         <div class="match-actions">
           <a routerLink="/admin/matches/{{ match.id }}" class="link-button">Détails</a>
           <a routerLink="/admin/matches/{{ match.id }}/edit" class="link-button">Modifier</a>
+          <button class="link-button danger" (click)="deleteMatch(match.id)">Supprimer</button>
         </div>
       </li>
     </ul>

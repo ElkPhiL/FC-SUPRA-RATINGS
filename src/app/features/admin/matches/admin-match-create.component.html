@@ -1,33 +1,9 @@
-<section class="page-shell">
-  <header class="page-header">
-    <div>
-      <h1>Nouveau match</h1>
-      <p>Créer un nouveau match pour le calendrier.</p>
-    </div>
-    <a routerLink="/admin/matches" class="button secondary">Retour aux matchs</a>
-  </header>
+<h1>Créer Match</h1>
 
-  <article class="panel">
-    <form class="form-grid">
-      <label>
-        Adversaire
-        <input type="text" placeholder="Adversaire" />
-      </label>
-      <label>
-        Date du match
-        <input type="datetime-local" />
-      </label>
-      <label>
-        Lieu
-        <input type="text" placeholder="Lieu" />
-      </label>
-      <label>
-        Compétition
-        <input type="text" placeholder="Compétition" />
-      </label>
-      <div class="form-actions">
-        <button type="button" class="button">Créer</button>
-      </div>
-    </form>
-  </article>
-</section>
+<app-match-form
+  mode="create"
+  [loading]="loading()"
+  (submitForm)="create($event)">
+</app-match-form>
+
+<p>{{ message() }}</p>

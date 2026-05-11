@@ -1,35 +1,13 @@
-<section class="page-shell">
-  <header class="page-header">
-    <div>
-      <h1>Modifier le match</h1>
-      <p>Mettre à jour les informations du match.</p>
-    </div>
-    <a routerLink="/admin/matches" class="button secondary">Retour aux matchs</a>
-  </header>
+<h1>Modifier match</h1>
 
-  <article class="panel">
-    <p class="meta">ID du match : {{ id || 'inconnu' }}</p>
+<p *ngIf="loading()">Chargement...</p>
 
-    <form class="form-grid">
-      <label>
-        Adversaire
-        <input type="text" placeholder="Adversaire" />
-      </label>
-      <label>
-        Date du match
-        <input type="datetime-local" />
-      </label>
-      <label>
-        Lieu
-        <input type="text" placeholder="Lieu" />
-      </label>
-      <label>
-        Compétition
-        <input type="text" placeholder="Compétition" />
-      </label>
-      <div class="form-actions">
-        <button type="button" class="button">Sauvegarder</button>
-      </div>
-    </form>
-  </article>
-</section>
+<app-match-form
+  *ngIf="match()"
+  mode="edit"
+  [match]="match()"
+  [loading]="saving()"
+  (submitForm)="update($event)">
+</app-match-form>
+
+<p>{{ message() }}</p>

@@ -1,5 +1,3 @@
-// admin-player-create.component.ts
-
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { PlayerFormComponent } from './components/player-form.component';

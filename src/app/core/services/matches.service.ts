@@ -1,20 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-
-export interface Match {
-  id: number;
-  match_date: string | null;
-  opponent: string;
-  competition: string | null;
-  home_away: string | null;
-  venue: string | null;
-  fc_supra_score: number | null;
-  opponent_score: number | null;
-  status: string | null;
-  created_at: string | null;
-}
-
-export type CreateMatchPayload = Omit<Match, 'id' | 'created_at'>;
+import { Match, MatchPayload } from '../../features/admin/matches/models/match.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +8,7 @@ export type CreateMatchPayload = Omit<Match, 'id' | 'created_at'>;
 export class MatchesService {
   constructor(private supabaseService: SupabaseService) {}
 
-  async getMatches(): Promise<Match[]> {
+  async getAll(): Promise<Match[]> {
     const { data, error } = await this.supabaseService.supabase
       .from('matches')
       .select('*')
@@ -36,7 +22,7 @@ export class MatchesService {
     return (data as Match[]) ?? [];
   }
 
-  async createMatch(match: CreateMatchPayload): Promise<Match> {
+  async create(match: MatchPayload): Promise<Match> {
     const { data, error } = await this.supabaseService.supabase
       .from('matches')
       .insert([match])
@@ -49,5 +35,44 @@ export class MatchesService {
     }
 
     return data as Match;
+  }
+
+  async getById(id: number): Promise<Match> {
+    const { data, error } = await this.supabaseService.supabase
+      .from('matches')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      console.error(`Error fetching match with id ${id}:`, error);
+      throw error;
+    }
+
+    return data as Match;
+  }
+
+  async update(id: number, match: MatchPayload): Promise<void> {
+    const { error } = await this.supabaseService.supabase
+      .from('matches')
+      .update(match)
+      .eq('id', id);
+
+    if (error) {
+      console.error(`Error updating match with id ${id}:`, error);
+      throw error;
+    }
+  }
+
+  async delete(id: number): Promise<void> {
+    const { error } = await this.supabaseService.supabase
+      .from('matches')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error(`Error deleting match with id ${id}:`, error);
+      throw error;
+    }
   }
 }

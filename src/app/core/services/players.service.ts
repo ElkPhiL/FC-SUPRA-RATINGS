@@ -1,5 +1,3 @@
-// src/app/core/services/players.service.ts
-
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { Player, PlayerPayload } from '../../features/admin/players/models/player.model';

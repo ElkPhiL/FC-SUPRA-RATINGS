@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatchFormComponent } from './components/match-form.component';
-import { MatchesService } from '../../../core/services/matches.service';
+import { MatchFormComponent } from '../../../components/match-form.component';
+import { MatchesService } from '../../../services/matches.service';
 
 @Component({
   selector: 'app-admin-match-create',

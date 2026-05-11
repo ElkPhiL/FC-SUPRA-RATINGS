@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-import { Match, MatchPayload } from '../../features/admin/matches/models/match.model';
+import { Match, MatchPayload } from '../models/match.model';
 
 @Injectable({
   providedIn: 'root',

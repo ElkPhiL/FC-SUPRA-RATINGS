@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DragDropModule, CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 
-import { PlayersService } from '../../../core/services/players.service';
-import { MatchPlayersService } from '../../../core/services/match-players.service';
-import { Player } from '../players/models/player.model';
+import { PlayersService } from '../../../services/players.service';
+import { MatchPlayersService } from '../../../services/match-players.service';
+import { Player } from '../../../models/player.model';
 
 @Component({
   selector: 'app-admin-lineup',

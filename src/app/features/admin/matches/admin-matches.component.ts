@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatchesService } from '../../../core/services/matches.service';
-import { Match } from './models/match.model';
+import { MatchesService } from '../../../services/matches.service';
+import { Match } from '../../../models/match.model';
 
 @Component({
   selector: 'app-admin-matches',

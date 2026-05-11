@@ -1,4 +1,4 @@
-import { PlayerPosition } from "../../../../shared/constants/player.constants";
+import { PlayerPosition } from "../shared/constants/player.constants";
 
 export interface Player {
   id: number;

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Player } from '../../admin/players/models/player.model';
+import { Player } from '../models/player.model';
 
 @Component({
   selector: 'app-player-card',

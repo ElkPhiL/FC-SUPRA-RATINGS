@@ -1,9 +1,9 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatchFormComponent } from './components/match-form.component';
-import { MatchesService } from '../../../core/services/matches.service';
-import { Match } from './models/match.model';
+import { MatchFormComponent } from '../../../components/match-form.component';
+import { MatchesService } from '../../../services/matches.service';
+import { Match } from '../../../models/match.model';
 
 @Component({
   selector: 'app-admin-match-edit',

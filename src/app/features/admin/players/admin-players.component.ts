@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { PlayersService } from '../../../core/services/players.service';
-import { Player } from './models/player.model';
-import { PlayerCardComponent } from '../../players/components/player-card.component';
+import { PlayersService } from '../../../services/players.service';
+import { Player } from '../../../models/player.model';
+import { PlayerCardComponent } from '../../../components/player-card.component';
 
 @Component({
   selector: 'app-admin-players',

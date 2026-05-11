@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
-import { MatchesService } from '../../core/services/matches.service';
+import { MatchesService } from '../../services/matches.service';
 import { RouterLink } from '@angular/router';
-import { Match } from '../admin/matches/models/match.model';
+import { Match } from '../../models/match.model';
 
 @Component({
   selector: 'app-matches',

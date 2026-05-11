@@ -7,7 +7,7 @@ import {
   Player,
   PlayerPayload,
   PlayerFormPayload
-} from '../../features/admin/players/models/player.model';
+} from '../models/player.model';
 
 @Injectable({
   providedIn: 'root',

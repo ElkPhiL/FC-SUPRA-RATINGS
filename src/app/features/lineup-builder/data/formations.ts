@@ -1,4 +1,4 @@
-import { Formation } from '../models/formation.model';
+import { Formation } from '../../../models/formation.model';
 
 export const FORMATIONS: Formation[] = [
 

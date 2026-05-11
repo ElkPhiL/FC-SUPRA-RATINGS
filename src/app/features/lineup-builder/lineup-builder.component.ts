@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Player } from '../admin/players/models/player.model';
-import { PlayersService } from '../../core/services/players.service';
+import { Player } from '../../models/player.model';
+import { PlayersService } from '../../services/players.service';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FORMATIONS } from './data/formations';
 

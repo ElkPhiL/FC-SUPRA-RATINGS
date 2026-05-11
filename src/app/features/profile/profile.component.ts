@@ -1,7 +1,7 @@
 import { Component, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { SupabaseService } from '../../core/services/supabase.service';
+import { SupabaseService } from '../../services/supabase.service';
 import { type User } from '@supabase/supabase-js';
 import { computed } from '@angular/core';
 

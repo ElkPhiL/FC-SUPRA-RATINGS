@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { PlayerFormComponent } from './components/player-form.component';
-import { PlayersService } from '../../../core/services/players.service';
+import { PlayerFormComponent } from '../../../components/player-form.component';
+import { PlayersService } from '../../../services/players.service';
 
 @Component({
   selector: 'app-admin-player-create',

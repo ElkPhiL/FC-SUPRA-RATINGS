@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import { Player } from '../models/player.model';
-import { PLAYER_POSITIONS } from '../../../../shared/constants/player.constants';
+import { PLAYER_POSITIONS } from '../shared/constants/player.constants';
 
 @Component({
   selector: 'app-player-form',

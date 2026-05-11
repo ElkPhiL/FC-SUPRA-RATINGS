@@ -35,10 +35,15 @@
     <input type="text" formControlName="nationality">
   </label>
 
-  <label class="champ">
-    Photo URL
-    <input type="text" formControlName="photo_url">
+  <label class="upload-box">
+    Drop image here or click to upload
+    <input type="file" accept="image/*" (change)="onFileSelected($event)">
   </label>
+
+  <div class="image-preview" *ngIf="imagePreview">
+    <p>Aperçu de l'image sélectionnée :</p>
+    <img [src]="imagePreview" alt="Aperçu de l'image" class="preview-img">
+  </div>
 
   <label class="checkbox-label">
     Actif

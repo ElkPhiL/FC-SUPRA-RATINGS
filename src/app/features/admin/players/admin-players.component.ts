@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PlayersService } from '../../../core/services/players.service';
 import { Player } from './models/player.model';
+import { PlayerCardComponent } from '../../players/components/player-card.component';
 
 @Component({
   selector: 'app-admin-players',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, PlayerCardComponent],
   templateUrl: './admin-players.component.html',
   styleUrls: ['./admin-players.component.scss'],
 })

@@ -29,32 +29,80 @@ export class SupabaseService {
     await this.supabase.auth.signOut();
   }
 
+  // =====================================================
+  // PROFILE AVATAR
+  // =====================================================
+
   async uploadProfileImage(file: File): Promise<string | null> {
     if (!this.user()) return null;
 
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${this.user()!.id}.${fileExt}`;
-    const filePath = `avatars/${fileName}`;
+    const ext = file.name.split('.').pop();
+    const filePath = `avatars/${this.user()!.id}.${ext}`;
 
-    const { error: uploadError } = await this.supabase.storage
+    const { error } = await this.supabase.storage
       .from('avatars')
       .upload(filePath, file, { upsert: true });
 
-    if (uploadError) {
-      console.error('Error uploading avatar:', uploadError);
-      return null;
-    }
+    if (error) throw error;
 
     const { data } = this.supabase.storage
       .from('avatars')
       .getPublicUrl(filePath);
 
-    // Update user metadata
     await this.supabase.auth.updateUser({
       data: { avatar_url: data.publicUrl }
     });
 
     return data.publicUrl;
+  }
+
+  // =====================================================
+  // PLAYER PHOTOS
+  // =====================================================
+
+  async uploadPlayerImage(file: File): Promise<string> {
+
+    console.log('SupabaseService.uploadPlayerImage called with:', file);
+
+    const ext = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random()}.${ext}`;
+
+    console.log('Uploading to bucket with fileName:', fileName);
+
+    const { error } = await this.supabase.storage
+      .from('player-photos')
+      .upload(fileName, file);
+
+    if (error) {
+      console.error('Upload error:', error);
+      throw error;
+    }
+
+    console.log('File uploaded successfully');
+
+    const { data } = this.supabase.storage
+      .from('player-photos')
+      .getPublicUrl(fileName);
+
+    console.log('Public URL:', data.publicUrl);
+
+    return data.publicUrl;
+  }
+
+  async deletePlayerImage(url: string): Promise<void> {
+
+    const marker = '/player-photos/';
+    const index = url.indexOf(marker);
+
+    if (index === -1) return;
+
+    const filePath = url.substring(index + marker.length);
+
+    const { error } = await this.supabase.storage
+      .from('player-photos')
+      .remove([filePath]);
+
+    if (error) throw error;
   }
 
   getAvatarUrl(): string | null {
@@ -63,9 +111,11 @@ export class SupabaseService {
 
   getAvatarDisplay(): string {
     const avatarUrl = this.getAvatarUrl();
+
     if (avatarUrl) return avatarUrl;
 
     const username = this.user()?.user_metadata?.['username'];
+
     return username ? username.charAt(0).toUpperCase() : '?';
   }
 }

@@ -1,12 +1,24 @@
+// players.service.ts
+
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-import { Player, PlayerPayload } from '../../features/admin/players/models/player.model';
+
+import {
+  Player,
+  PlayerPayload,
+  PlayerFormPayload
+} from '../../features/admin/players/models/player.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlayersService {
+
   constructor(private supabase: SupabaseService) {}
+
+  // =====================================================
+  // GET
+  // =====================================================
 
   async getAll(): Promise<Player[]> {
     const { data, error } = await this.supabase.supabase
@@ -17,6 +29,18 @@ export class PlayersService {
     if (error) throw error;
 
     return data as Player[];
+  }
+
+  async getById(id: number): Promise<Player> {
+    const { data, error } = await this.supabase.supabase
+      .from('players')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) throw error;
+
+    return data as Player;
   }
 
   async getActive(): Promise<Player[]> {
@@ -43,22 +67,36 @@ export class PlayersService {
     return data as Player[];
   }
 
-  async getById(id: number): Promise<Player> {
+  // =====================================================
+  // CREATE
+  // =====================================================
+
+  async create(payload: PlayerFormPayload): Promise<Player> {
+
+    console.log('PlayersService.create received:', payload);
+
+    let photoUrl = payload.photo_url ?? null;
+
+    if (payload.imageFile) {
+      console.log('Uploading image:', payload.imageFile);
+      photoUrl = await this.supabase.uploadPlayerImage(payload.imageFile);
+      console.log('Image uploaded, photoUrl:', photoUrl);
+    }
+
+    const dbPayload: PlayerPayload = {
+      first_name: payload.first_name,
+      last_name: payload.last_name,
+      display_name: payload.display_name,
+      number: payload.number,
+      position: payload.position,
+      nationality: payload.nationality,
+      photo_url: photoUrl,
+      active: payload.active
+    };
+
     const { data, error } = await this.supabase.supabase
       .from('players')
-      .select('*')
-      .eq('id', id)
-      .single();
-
-    if (error) throw error;
-
-    return data as Player;
-  }
-
-  async create(payload: PlayerPayload): Promise<Player> {
-    const { data, error } = await this.supabase.supabase
-      .from('players')
-      .insert(payload)
+      .insert(dbPayload)
       .select()
       .single();
 
@@ -67,10 +105,39 @@ export class PlayersService {
     return data as Player;
   }
 
-  async update(id: number, payload: Partial<PlayerPayload>): Promise<Player> {
+  // =====================================================
+  // UPDATE
+  // =====================================================
+
+  async update(id: number, payload: PlayerFormPayload): Promise<Player> {
+
+    const current = await this.getById(id);
+
+    let photoUrl = current.photo_url;
+
+    if (payload.imageFile) {
+
+      if (current.photo_url) {
+        await this.supabase.deletePlayerImage(current.photo_url);
+      }
+
+      photoUrl = await this.supabase.uploadPlayerImage(payload.imageFile);
+    }
+
+    const dbPayload: Partial<PlayerPayload> = {
+      first_name: payload.first_name,
+      last_name: payload.last_name,
+      display_name: payload.display_name,
+      number: payload.number,
+      position: payload.position,
+      nationality: payload.nationality,
+      photo_url: photoUrl,
+      active: payload.active
+    };
+
     const { data, error } = await this.supabase.supabase
       .from('players')
-      .update(payload)
+      .update(dbPayload)
       .eq('id', id)
       .select()
       .single();
@@ -79,8 +146,19 @@ export class PlayersService {
 
     return data as Player;
   }
+
+  // =====================================================
+  // DELETE
+  // =====================================================
 
   async delete(id: number): Promise<void> {
+
+    const current = await this.getById(id);
+
+    if (current.photo_url) {
+      await this.supabase.deletePlayerImage(current.photo_url);
+    }
+
     const { error } = await this.supabase.supabase
       .from('players')
       .delete()

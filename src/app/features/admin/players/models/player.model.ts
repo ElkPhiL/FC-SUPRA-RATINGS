@@ -14,3 +14,7 @@ export interface Player {
 }
 
 export type PlayerPayload = Omit<Player, 'id' | 'created_at'>;
+
+export type PlayerFormPayload = PlayerPayload & {
+  imageFile?: File | null;
+};

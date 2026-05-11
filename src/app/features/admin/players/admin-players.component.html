@@ -16,20 +16,15 @@
     </div>
 
     <ul class="player-table" *ngIf="!loading() && activePlayers().length">
-      <li *ngFor="let player of activePlayers()">
-        <div class="player-main">
-          <span class="player-number">#{{ player.number }}</span>
-          <div>
-            <strong>{{ player.display_name }}</strong>
-            <p>{{ player.position || 'Position non renseignée' }} · {{ player.nationality || 'Nationalité inconnue' }}</p>
-          </div>
-        </div>
-
-        <div class="player-actions">
-          <a routerLink="/admin/players/{{ player.id }}/edit" class="link-button">Modifier</a>
-          <button class="link-button danger" (click)="deletePlayer(player.id)">Supprimer</button>
-        </div>
-      </li>
+      @for (player of activePlayers(); track player.id) {
+        <li>
+          <app-player-card
+            [player]="player"
+            [showActions]="true"
+            (delete)="deletePlayer($event)">
+          </app-player-card>
+        </li>
+      }
     </ul>
   </article>
 
@@ -42,20 +37,15 @@
     </div>
 
     <ul class="player-table" *ngIf="!loading() && nonActivePlayers().length">
-      <li *ngFor="let player of nonActivePlayers()">
-        <div class="player-main">
-          <span class="player-number">#{{ player.number }}</span>
-          <div>
-            <strong>{{ player.display_name }}</strong>
-            <p>{{ player.position || 'Position non renseignée' }} · {{ player.nationality || 'Nationalité inconnue' }}</p>
-          </div>
-        </div>
-
-        <div class="player-actions">
-          <a routerLink="/admin/players/{{ player.id }}/edit" class="link-button">Modifier</a>
-          <button class="link-button danger" (click)="deletePlayer(player.id)">Supprimer</button>
-        </div>
-      </li>
+      @for (player of nonActivePlayers(); track player.id) {
+        <li>
+          <app-player-card
+            [player]="player"
+            [showActions]="true"
+            (delete)="deletePlayer($event)">
+          </app-player-card>
+        </li>
+      }
     </ul>
   </article>
 </section>

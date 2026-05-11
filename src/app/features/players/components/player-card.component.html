@@ -1,0 +1,66 @@
+<div class="player-card">
+  <div class="card-top">
+    <div class="photo-wrapper">
+      @if (player.photo_url) {
+        <img
+          class="player-photo"
+          [src]="player.photo_url"
+          [alt]="player.display_name"
+        />
+      } @else {
+        <div class="player-fallback">
+          {{ player.display_name.charAt(0) }}
+        </div>
+      }
+
+      <div class="player-number">
+        #{{ player.number }}
+      </div>
+    </div>
+
+    <div class="player-header">
+      <h3>{{ player.display_name }}</h3>
+
+      <p class="full-name">
+        {{ player.first_name || '' }} {{ player.last_name || '' }}
+      </p>
+
+      <div class="badges">
+        <span class="badge position">
+          {{ player.position || 'N/A' }}
+        </span>
+
+        <span class="badge nationality">
+          {{ player.nationality || 'Unknown' }}
+        </span>
+
+        <span class="badge status" [class.inactive]="!player.active">
+          {{ player.active ? 'Actif' : 'Inactif' }}
+        </span>
+      </div>
+    </div>
+
+    @if (showActions) {
+
+      <div class="actions">
+
+        <a
+          [routerLink]="['/admin/players', player.id, 'edit']"
+          class="btn edit"
+        >
+          Modifier
+        </a>
+
+        <button
+          type="button"
+          class="btn delete"
+          (click)="onDelete(player.id)"
+        >
+          Supprimer
+        </button>
+
+      </div>
+
+    }
+  </div>
+</div>

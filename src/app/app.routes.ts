@@ -17,7 +17,6 @@ import { AdminPlayerCreateComponent } from './features/admin/players/admin-playe
 import { AdminPlayerEditComponent } from './features/admin/players/admin-player-edit.component';
 import { AdminMatchesComponent } from './features/admin/matches/admin-matches.component';
 import { AdminMatchCreateComponent } from './features/admin/matches/admin-match-create.component';
-import { AdminMatchDetailComponent } from './features/admin/matches/admin-match-detail.component';
 import { AdminMatchEditComponent } from './features/admin/matches/admin-match-edit.component';
 import { AdminLineupComponent } from './features/admin/admin-lineup.component';
 import { AdminRatingsComponent } from './features/admin/admin-ratings.component';
@@ -42,7 +41,6 @@ export const routes: Routes = [
       { path: 'players/:id/edit', component: AdminPlayerEditComponent },
       { path: 'matches', component: AdminMatchesComponent },
       { path: 'matches/new', component: AdminMatchCreateComponent },
-      { path: 'matches/:id', component: AdminMatchDetailComponent },
       { path: 'matches/:id/edit', component: AdminMatchEditComponent },
       { path: 'matches/:id/lineup', component: AdminLineupComponent },
       { path: 'matches/:id/ratings', component: AdminRatingsComponent },

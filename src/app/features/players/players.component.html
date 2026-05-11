@@ -16,32 +16,7 @@
   @if (!loading() && players().length) {
     <section class="players-grid">
       @for (player of players(); track player.id) {
-        <article class="player-card">
-          <div class="avatar">
-            @if (player.photo_url) {
-              <img [src]="player.photo_url" [alt]="player.display_name || 'Avatar'" />
-            } @else {
-              <span>{{ getAvatarInitial(player) }}</span>
-            }
-          </div>
-
-          <div class="player-details">
-            <div class="player-title">
-              <span class="player-number">#{{ player.number }}</span>
-              <h2>{{ player.display_name || 'Joueur inconnu' }}</h2>
-            </div>
-            <p class="player-position">
-              @if (player.position) {
-                {{ player.position }}
-              } @else {
-                Position non renseignée
-              }
-            </p>
-            @if (player.nationality) {
-              <p class="player-nationality">{{ player.nationality }}</p>
-            }
-          </div>
-        </article>
+        <app-player-card [player]="player"></app-player-card>
       }
     </section>
   }

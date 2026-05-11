@@ -2,11 +2,12 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlayersService } from '../../core/services/players.service';
 import { Player } from '../admin/players/models/player.model';
+import { PlayerCardComponent } from './components/player-card.component';
 
 @Component({
   selector: 'app-players',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PlayerCardComponent],
   templateUrl: './players.component.html',
   styleUrls: ['./players.component.scss'],
 })

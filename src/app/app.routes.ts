@@ -18,7 +18,7 @@ import { AdminPlayerEditComponent } from './features/admin/players/admin-player-
 import { AdminMatchesComponent } from './features/admin/matches/admin-matches.component';
 import { AdminMatchCreateComponent } from './features/admin/matches/admin-match-create.component';
 import { AdminMatchEditComponent } from './features/admin/matches/admin-match-edit.component';
-import { AdminLineupComponent } from './features/admin/admin-lineup.component';
+import { AdminLineupComponent } from './features/admin/matches/admin-lineup.component';
 import { AdminRatingsComponent } from './features/admin/admin-ratings.component';
 
 export const routes: Routes = [

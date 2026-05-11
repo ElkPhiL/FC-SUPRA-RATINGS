@@ -26,7 +26,7 @@
         </div>
 
         <div class="match-actions">
-          <a routerLink="/admin/matches/{{ match.id }}" class="link-button">Détails</a>
+          <a routerLink="/admin/matches/{{ match.id }}/lineup" class="link-button">Effectif</a>
           <a routerLink="/admin/matches/{{ match.id }}/edit" class="link-button">Modifier</a>
           <button class="link-button danger" (click)="deleteMatch(match.id)">Supprimer</button>
         </div>

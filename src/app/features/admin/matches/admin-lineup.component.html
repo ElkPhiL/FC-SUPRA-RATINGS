@@ -1,0 +1,97 @@
+<div class="lineup-container">
+
+  <h1>Match Lineup Builder</h1>
+
+  <div class="grid">
+
+    <!-- AVAILABLE -->
+    <div class="box">
+      <h3>Hors-effectif</h3>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="available"
+        class="list"
+        (cdkDropListDropped)="drop($event, 'available')"
+      >
+        <div class="player" *ngFor="let p of available" cdkDrag>
+          {{ p.display_name }} #{{ p.number }}
+        </div>
+      </div>
+    </div>
+
+    <!-- STARTERS -->
+    <div class="box">
+      <h3>Starters</h3>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="starters"
+        class="list starters"
+        (cdkDropListDropped)="drop($event, 'starters')"
+      >
+        <div class="player" *ngFor="let p of starters" cdkDrag>
+          {{ p.display_name }}
+
+          <input placeholder="Pos" [(ngModel)]="p.position_played">
+          <input type="number" placeholder="In" [(ngModel)]="p.minutes_in">
+          <input type="number" placeholder="Out" [(ngModel)]="p.minutes_out">
+        </div>
+      </div>
+    </div>
+
+    <!-- BENCH -->
+    <div class="box">
+      <h3>Bench</h3>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="bench"
+        class="list bench"
+        (cdkDropListDropped)="drop($event, 'bench')"
+      >
+        <div class="player" *ngFor="let p of bench" cdkDrag>
+          {{ p.display_name }}
+        </div>
+      </div>
+    </div>
+
+    <!-- INJURED -->
+    <div class="box">
+      <h3>Injured</h3>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="injured"
+        class="list injured"
+        (cdkDropListDropped)="drop($event, 'injured')"
+      >
+        <div class="player" *ngFor="let p of injured" cdkDrag>
+          {{ p.display_name }}
+        </div>
+      </div>
+    </div>
+
+    <!-- SUSPENDED -->
+    <div class="box">
+      <h3>Suspended</h3>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="suspended"
+        class="list suspended"
+        (cdkDropListDropped)="drop($event, 'suspended')"
+      >
+        <div class="player" *ngFor="let p of suspended" cdkDrag>
+          {{ p.display_name }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="save" (click)="save()">
+    Save Lineup
+  </button>
+
+</div>

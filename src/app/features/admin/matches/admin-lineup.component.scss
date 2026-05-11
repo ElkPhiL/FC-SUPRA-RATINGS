@@ -1,0 +1,64 @@
+.lineup-container {
+  padding: 1rem;
+  color: white;
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.box {
+  background: #0f172a;
+  border-radius: 16px;
+  padding: 1rem;
+  min-height: 400px;
+}
+
+.list {
+  min-height: 300px;
+  padding: 0.5rem;
+  border: 1px dashed rgba(255,255,255,0.2);
+  border-radius: 12px;
+}
+
+.player {
+  background: #1e293b;
+  padding: 0.6rem;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.player input {
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.3rem;
+  border-radius: 6px;
+  border: none;
+}
+
+.save {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 1rem;
+  background: #2563eb;
+  border: none;
+  color: white;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

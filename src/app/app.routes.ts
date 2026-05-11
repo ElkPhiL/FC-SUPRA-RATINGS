@@ -4,6 +4,7 @@ import { HomeComponent } from './features/home/home.component';
 import { MatchesComponent } from './features/matches/matches.component';
 import { PlayersComponent } from './features/players/players.component';
 import { StandingsComponent } from './features/standings/standings.component';
+import { LineupBuilderComponent } from './features/lineup-builder/lineup-builder.component';
 import { LoginComponent } from './features/login/login.component';
 import { RegisterComponent } from './features/register/register.component';
 import { ProfileComponent } from './features/profile/profile.component';
@@ -27,6 +28,7 @@ export const routes: Routes = [
   { path: 'matches/:id', component: MatchDetailComponent },
   { path: 'players', component: PlayersComponent },
   { path: 'standings', component: StandingsComponent },
+  { path: 'lineup-builder', component: LineupBuilderComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },

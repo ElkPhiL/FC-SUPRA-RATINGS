@@ -1,0 +1,59 @@
+<div class="builder">
+
+    <div
+    class="sidebar"
+    cdkDropList
+    id="playersList"
+    [cdkDropListData]="players()"
+    [cdkDropListConnectedTo]="slotIds()">
+      <div
+      *ngFor="let player of players()"
+      cdkDrag
+      [cdkDragData]="player"
+      [class.used]="isPlayerUsed(player)"
+      class="player-element">
+
+      {{ player.number }} - {{ player.display_name }}
+
+      </div>
+    </div>
+
+    <div class="pitch-section">
+      <div class="formation-selector">
+        <label for="formation">Formation:</label>
+          <select (change)="changeFormation($event)">
+            <option *ngFor="let f of formations" [value]="f.name">
+            {{ f.name }}
+            </option>
+          </select>
+        <button (click)="resetLineup()">Reset Lineup</button>
+      </div>
+      <div class="pitch">
+        <div
+        *ngFor="let slot of selectedFormation().slots"
+        class="slot"
+        cdkDropList
+        [id]="slot.key"
+        [cdkDropListConnectedTo]="allDropLists()"
+        (cdkDropListDropped)="dropPlayer($event, slot.key)"
+        [style.left.%]="slot.x"
+        [style.top.%]="slot.y">
+
+          @if (lineup()[slot.key]) {
+            <div class="player-on-pitch">
+              @if (lineup()[slot.key]?.photo_url) {
+                <img [src]="lineup()[slot.key]?.photo_url" alt="{{ lineup()[slot.key]?.display_name }}" class="player-photo">
+              }
+              {{ lineup()[slot.key]?.number }} - {{ lineup()[slot.key]?.display_name }}
+            </div>
+          } @else {
+            <div class="empty-slot">
+              {{ slot.label }}
+            </div>
+          }       
+
+        </div>
+      </div>
+    </div>
+
+</div>

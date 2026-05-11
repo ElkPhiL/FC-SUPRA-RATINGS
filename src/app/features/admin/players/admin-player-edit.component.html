@@ -1,59 +1,13 @@
-<section class="page-shell">
-  <header class="page-header">
-    <div>
-      <h1>Modifier le joueur</h1>
-      <p>Modifier les informations du joueur.</p>
-    </div>
-    <a routerLink="/admin/players" class="button secondary">Retour à la liste</a>
-  </header>
+<h1>Modifier joueur</h1>
 
-  <article class="panel">
-    <p class="meta">ID du joueur : {{ id || 'inconnu' }}</p>
+<p *ngIf="loading()">Chargement...</p>
 
-    <div *ngIf="message" class="message" [ngClass]="{'error': message.includes('Erreur'), 'success': message.includes('succès')}">
-      {{ message }}
-    </div>
+<app-player-form
+  *ngIf="player()"
+  mode="edit"
+  [player]="player()"
+  [loading]="saving()"
+  (submitForm)="update($event)">
+</app-player-form>
 
-    <div *ngIf="loading" class="loading">
-      Chargement du joueur...
-    </div>
-
-    <form *ngIf="!loading" class="form-grid">
-      <label>
-        Prénom
-        <input type="text" [(ngModel)]="editPlayerPayload.first_name" name="firstName" placeholder="Prénom" />
-      </label>
-      <label>
-        Nom
-        <input type="text" [(ngModel)]="editPlayerPayload.last_name" name="lastName" placeholder="Nom" />
-      </label>
-      <label>
-        Nom d’affichage
-        <input type="text" [(ngModel)]="editPlayerPayload.display_name" name="displayName" placeholder="Nom d’affichage" />
-      </label>
-      <label>
-        Nationalité
-        <input type="text" [(ngModel)]="editPlayerPayload.nationality" name="nationality" placeholder="Nationalité" />
-      </label>
-      <label>
-        Numéro
-        <input type="number" [(ngModel)]="editPlayerPayload.number" name="number" min="1" max="99" placeholder="Numéro" />
-      </label>
-      <label>
-        Poste
-        <input type="text" [(ngModel)]="editPlayerPayload.position" name="position" placeholder="Poste" />
-      </label>
-      <label>
-        Photo URL
-        <input type="text" [(ngModel)]="editPlayerPayload.photo_url" name="photoUrl" placeholder="URL de la photo" />
-      </label>
-      <label class="checkbox-label">
-        Actif
-        <input type="checkbox" [(ngModel)]="editPlayerPayload.active" name="playerActive" />
-      </label>
-      <div class="form-actions">
-        <button type="button" class="button" (click)="editPlayer()">Modifier</button>
-      </div>
-    </form>
-  </article>
-</section>
+<p>{{ message() }}</p>

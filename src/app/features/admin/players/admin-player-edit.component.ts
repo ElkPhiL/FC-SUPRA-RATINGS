@@ -9,21 +9,8 @@ import { Player } from './models/player.model';
   selector: 'app-admin-player-edit',
   standalone: true,
   imports: [CommonModule, PlayerFormComponent],
-  template: `
-    <h1>Modifier joueur</h1>
-
-    <p *ngIf="loading()">Chargement...</p>
-
-    <app-player-form
-      *ngIf="player()"
-      mode="edit"
-      [player]="player()"
-      [loading]="saving()"
-      (submitForm)="update($event)">
-    </app-player-form>
-
-    <p>{{ message() }}</p>
-  `,
+  templateUrl: './admin-player-edit.component.html',
+  styleUrls: ['./admin-player-edit.component.scss'],
 })
 export class AdminPlayerEditComponent implements OnInit {
   player = signal<Player | null>(null);

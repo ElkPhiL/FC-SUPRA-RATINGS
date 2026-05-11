@@ -9,17 +9,8 @@ import { PlayersService } from '../../../core/services/players.service';
   selector: 'app-admin-player-create',
   standalone: true,
   imports: [PlayerFormComponent],
-  template: `
-    <h1>Créer joueur</h1>
-
-    <app-player-form
-      mode="create"
-      [loading]="loading()"
-      (submitForm)="create($event)">
-    </app-player-form>
-
-    <p>{{ message() }}</p>
-  `,
+  templateUrl: './admin-player-create.component.html',
+  styleUrls: ['./admin-player-create.component.scss'],
 })
 export class AdminPlayerCreateComponent {
   loading = signal(false);

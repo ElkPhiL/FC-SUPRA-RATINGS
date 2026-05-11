@@ -1,0 +1,54 @@
+<form [formGroup]="form" class="form-grid">
+
+  <label class="champ">
+    Date du match
+    <input type="datetime-local" formControlName="match_date">
+  </label>
+
+  <label class="champ">
+    Adversaire
+    <input type="text" formControlName="opponent">
+  </label>
+
+  <label class="champ">
+    Compétition
+    <input type="text" formControlName="competition">
+  </label>
+
+  <label class="champ">
+    Domicile / Extérieur
+    <select formControlName="home_away">
+        <option value="home">Domicile</option>
+        <option value="away">Extérieur</option>
+    </select>
+  </label>
+
+  <label class="champ">
+    Lieu
+    <input type="text" formControlName="venue">
+  </label>
+
+  <label class="champ">
+    Score Supra
+    <input type="text" formControlName="supra_score">
+  </label>
+
+  <label class="champ">
+    Score Adversaire
+    <input type="text" formControlName="opponent_score">
+  </label>
+
+  <label class="checkbox-label">
+    Status
+    <select formControlName="status">
+        <option value="scheduled">Programmé</option>
+        <option value="played">Joué</option>
+        <option value="canceled">Annulé</option>
+    </select>
+  </label>
+
+  <button class="button" type="button" (click)="submit()" [disabled]="loading">
+    {{ mode === 'create' ? 'Créer' : 'Modifier' }}
+  </button>
+
+</form>

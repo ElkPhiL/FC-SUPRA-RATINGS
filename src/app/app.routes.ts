@@ -15,10 +15,10 @@ import { AdminDashboardComponent } from './features/admin/admin-dashboard.compon
 import { AdminPlayersComponent } from './features/admin/players/admin-players.component';
 import { AdminPlayerCreateComponent } from './features/admin/players/admin-player-create.component';
 import { AdminPlayerEditComponent } from './features/admin/players/admin-player-edit.component';
-import { AdminMatchesComponent } from './features/admin/admin-matches.component';
-import { AdminMatchCreateComponent } from './features/admin/admin-match-create.component';
-import { AdminMatchDetailComponent } from './features/admin/admin-match-detail.component';
-import { AdminMatchEditComponent } from './features/admin/admin-match-edit.component';
+import { AdminMatchesComponent } from './features/admin/matches/admin-matches.component';
+import { AdminMatchCreateComponent } from './features/admin/matches/admin-match-create.component';
+import { AdminMatchDetailComponent } from './features/admin/matches/admin-match-detail.component';
+import { AdminMatchEditComponent } from './features/admin/matches/admin-match-edit.component';
 import { AdminLineupComponent } from './features/admin/admin-lineup.component';
 import { AdminRatingsComponent } from './features/admin/admin-ratings.component';
 

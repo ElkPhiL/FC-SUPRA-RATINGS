@@ -6,16 +6,21 @@
     id="playersList"
     [cdkDropListData]="players()"
     [cdkDropListConnectedTo]="slotIds()">
+    <h2>Joueurs non-utilisés</h2>
+    @for (player of players(); track player.id) {
+      @if (!isPlayerUsed(player)) {
       <div
-      *ngFor="let player of players()"
       cdkDrag
       [cdkDragData]="player"
-      [class.used]="isPlayerUsed(player)"
       class="player-element">
-
       {{ player.number }} - {{ player.display_name }}
-
+      <div *cdkDragPreview class="cdk-drag-preview">
+        {{ player.number }}
       </div>
+      <div *cdkDragPlaceholder class="player-placeholder"></div>
+      </div>
+      }
+    }
     </div>
 
     <div class="pitch-section">
@@ -35,22 +40,30 @@
         cdkDropList
         [id]="slot.key"
         [cdkDropListConnectedTo]="allDropLists()"
+        (cdkDropListEntered)="previewSlot($event, slot.key)"
+        (cdkDropListExited)="clearPreview()"
         (cdkDropListDropped)="dropPlayer($event, slot.key)"
         [style.left.%]="slot.x"
         [style.top.%]="slot.y">
 
-          @if (lineup()[slot.key]) {
-            <div class="player-on-pitch">
-              @if (lineup()[slot.key]?.photo_url) {
-                <img [src]="lineup()[slot.key]?.photo_url" alt="{{ lineup()[slot.key]?.display_name }}" class="player-photo">
-              }
-              {{ lineup()[slot.key]?.number }} - {{ lineup()[slot.key]?.display_name }}
+        @if (previewingSlot() === slot.key && previewPlayer(); as p) {
+          <app-player-on-pitch [player]="p"></app-player-on-pitch>
+        } @else if (lineup()[slot.key]; as currentPlayer) {
+          <div cdkDrag [cdkDragData]="currentPlayer">
+            <div *cdkDragPreview class="cdk-drag-preview">
+              {{ currentPlayer.number }}
             </div>
-          } @else {
-            <div class="empty-slot">
-              {{ slot.label }}
-            </div>
-          }       
+            <div *cdkDragPlaceholder class="player-placeholder"></div>
+            <app-player-on-pitch
+              [player]="currentPlayer"
+              (remove)="deleteFromSlot(slot.key)">
+            </app-player-on-pitch>
+          </div>
+        } @else {
+          <div class="empty-slot">
+            {{ slot.label }}
+          </div>
+        }
 
         </div>
       </div>

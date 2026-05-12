@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PlayersService } from '../../../services/players.service';
 import { Player } from '../../../models/player.model';
-import { PlayerCardComponent } from '../../../components/player-card.component';
+import { PlayerCardComponent } from '../../../components/player-card/player-card.component';
 
 @Component({
   selector: 'app-admin-players',

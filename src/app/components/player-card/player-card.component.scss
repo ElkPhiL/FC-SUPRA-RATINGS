@@ -1,12 +1,15 @@
+@use '../../../styles/abstracts/' as *;
+
 .player-card {
-  background: #0f172a;
+  background: white;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 20px;
-  padding: 1rem;
   color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1rem;
+  padding: 0 1rem;
+  align-items: center;
   box-shadow: 0 12px 30px rgba(0,0,0,0.22);
   transition: 0.25s ease;
 }
@@ -15,67 +18,25 @@
   transform: translateY(-4px);
 }
 
-.card-top {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.photo-wrapper {
-  position: relative;
-  flex-shrink: 0;
-}
-
-.player-photo,
-.player-fallback {
-  width: 84px;
-  height: 84px;
-  border-radius: 18px;
-  object-fit: cover;
+.player-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $supra-blue;
 }
 
 .player-photo {
-  border: 2px solid rgba(255,255,255,0.08);
-}
-
-.player-fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #2563eb, #0ea5e9);
-  font-size: 2rem;
-  font-weight: 700;
-}
-
-.player-number {
-  position: absolute;
-  bottom: -8px;
-  right: -8px;
-  background: #facc15;
-  color: black;
-  min-width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 0.9rem;
+  object-fit: cover;
+  width: 120px;
+  height: 120px;
 }
 
 .player-header {
-  flex: 1;
+  color: $supra-blue;
   min-width: 0;
-}
-
-.player-header h3 {
-  margin: 0;
-  font-size: 1.15rem;
-  line-height: 1.2;
+  padding: 10px;
 }
 
 .full-name {
-  margin: 0.2rem 0 0.7rem;
   color: #94a3b8;
   font-size: 0.92rem;
 }
@@ -108,19 +69,17 @@
   color: #86efac;
 }
 
-.status.inactive {
-  background: rgba(239,68,68,0.16);
-  color: #fca5a5;
-}
-
 .actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: row;
   gap: 0.7rem;
-  margin-top: 0.3rem;
+  padding: 0.5rem;
+  justify-content: flex-end;
 }
 
 .btn {
+  max-width: 120px;
+  max-height: 40px;
   border: none;
   border-radius: 12px;
   padding: 0.8rem;
@@ -150,12 +109,7 @@
 }
 
 @media (max-width: 640px) {
-  .card-top {
-    align-items: flex-start;
-  }
-
-  .player-photo,
-  .player-fallback {
+  .player-photo {
     width: 72px;
     height: 72px;
   }

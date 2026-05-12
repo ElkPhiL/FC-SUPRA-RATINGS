@@ -91,7 +91,8 @@ export class PlayersService {
       position: payload.position,
       nationality: payload.nationality,
       photo_url: photoUrl,
-      active: payload.active
+      active: payload.active,
+      date_of_birth: payload.date_of_birth
     };
 
     const { data, error } = await this.supabase.supabase
@@ -132,7 +133,8 @@ export class PlayersService {
       position: payload.position,
       nationality: payload.nationality,
       photo_url: photoUrl,
-      active: payload.active
+      active: payload.active,
+      date_of_birth: payload.date_of_birth
     };
 
     const { data, error } = await this.supabase.supabase

@@ -1,0 +1,59 @@
+<div class="player-card">
+  <div class="player-number">
+    {{ player.number }}
+  </div>
+  <div class="photo-wrapper">
+    @if (player.photo_url) {
+      <img
+        class="player-photo"
+        [src]="player.photo_url"
+        [alt]="player.display_name"
+      />
+    }
+  </div>
+
+  <div class="player-header">
+    <h3>{{ player.display_name }}</h3>
+
+    <p class="full-name">
+      {{ player.first_name || '' }} {{ player.last_name || '' }}
+    </p>
+
+    <div class="badges">
+      <span class="badge position">
+        {{ player.position || 'N/A' }}
+      </span>
+
+      <span class="badge age">
+        @if (player.date_of_birth) {
+          {{ calculateAge(player.date_of_birth) }} ans
+        } @else {
+          Age inconnu
+        }
+      </span>
+    </div>
+  </div>
+
+  @if (showActions) {
+
+    <div class="actions">
+
+      <a
+        [routerLink]="['/admin/players', player.id, 'edit']"
+        class="btn edit"
+      >
+        Modifier
+      </a>
+
+      <button
+        type="button"
+        class="btn delete"
+        (click)="onDelete(player.id)"
+      >
+        Supprimer
+      </button>
+
+    </div>
+
+  }
+</div>

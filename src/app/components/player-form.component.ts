@@ -40,6 +40,7 @@ export class PlayerFormComponent implements OnChanges {
       nationality: [''],
       photo_url: [''],
       active: [true],
+      date_of_birth: ['']
     });
   }
 

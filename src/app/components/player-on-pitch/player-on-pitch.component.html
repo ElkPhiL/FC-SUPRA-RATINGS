@@ -1,0 +1,8 @@
+<div class="player-on-pitch">
+    @if (player.photo_url) {
+      <div class="photo-wrapper">
+        <img [src]="player.photo_url" alt="{{ player.display_name }}" class="player-photo">
+      </div>
+    }
+    <div class="name">{{ player.display_name }}</div>
+</div>

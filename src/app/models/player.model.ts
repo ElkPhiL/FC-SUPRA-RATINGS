@@ -11,6 +11,7 @@ export interface Player {
   photo_url: string | null;
   active: boolean;
   created_at: string | null;
+  date_of_birth: string | null;
 }
 
 export type PlayerPayload = Omit<Player, 'id' | 'created_at'>;

@@ -1,26 +1,26 @@
 import { Routes } from '@angular/router';
 
-import { HomeComponent } from './features/home/home.component';
-import { MatchesComponent } from './features/matches/matches.component';
-import { PlayersComponent } from './features/players/players.component';
-import { StandingsComponent } from './features/standings/standings.component';
-import { LineupBuilderComponent } from './features/lineup-builder/lineup-builder.component';
-import { LoginComponent } from './features/login/login.component';
-import { RegisterComponent } from './features/register/register.component';
-import { ProfileComponent } from './features/profile/profile.component';
-import { MatchDetailComponent } from './features/match-detail/match-detail.component';
+import { HomeComponent } from './pages/home/home.component';
+import { MatchesComponent } from './pages/matches/matches.component';
+import { PlayersComponent } from './pages/players/players.component';
+import { StandingsComponent } from './pages/standings/standings.component';
+import { LineupBuilderComponent } from './pages/lineup-builder/lineup-builder.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { MatchDetailComponent } from './pages/match-detail/match-detail.component';
 
-import { AdminGuard } from './features/admin/admin.guard';
-import { AdminLayoutComponent } from './features/admin/admin-layout.component';
-import { AdminDashboardComponent } from './features/admin/admin-dashboard.component';
-import { AdminPlayersComponent } from './features/admin/players/admin-players.component';
-import { AdminPlayerCreateComponent } from './features/admin/players/admin-player-create.component';
-import { AdminPlayerEditComponent } from './features/admin/players/admin-player-edit.component';
-import { AdminMatchesComponent } from './features/admin/matches/admin-matches.component';
-import { AdminMatchCreateComponent } from './features/admin/matches/admin-match-create.component';
-import { AdminMatchEditComponent } from './features/admin/matches/admin-match-edit.component';
-import { AdminLineupComponent } from './features/admin/matches/admin-lineup.component';
-import { AdminRatingsComponent } from './features/admin/admin-ratings.component';
+import { AdminGuard } from './pages/admin/admin.guard';
+import { AdminLayoutComponent } from './pages/admin/admin-layout.component';
+import { AdminDashboardComponent } from './pages/admin/admin-dashboard.component';
+import { AdminPlayersComponent } from './pages/admin/players/admin-players.component';
+import { AdminPlayerCreateComponent } from './pages/admin/players/admin-player-create.component';
+import { AdminPlayerEditComponent } from './pages/admin/players/admin-player-edit.component';
+import { AdminMatchesComponent } from './pages/admin/matches/admin-matches.component';
+import { AdminMatchCreateComponent } from './pages/admin/matches/admin-match-create.component';
+import { AdminMatchEditComponent } from './pages/admin/matches/admin-match-edit.component';
+import { AdminLineupComponent } from './pages/admin/matches/admin-lineup.component';
+import { AdminRatingsComponent } from './pages/admin/admin-ratings.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },

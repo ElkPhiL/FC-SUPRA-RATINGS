@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Player } from '../../models/player.model';
 import { PlayersService } from '../../services/players.service';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { FORMATIONS } from './data/formations';
+import { FORMATIONS } from '../../shared/constants/formations';
 
 @Component({
     selector: 'app-lineup-builder',

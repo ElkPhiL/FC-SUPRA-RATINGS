@@ -42,7 +42,8 @@ justify-content: flex-end;
 
 .pitch{
 position:relative;
-background:green;
+background: url('../../../assets/pitch.png') no-repeat bottom center;
+background-size: cover;
 min-height:700px;
 max-height:900px;
 padding:20px;

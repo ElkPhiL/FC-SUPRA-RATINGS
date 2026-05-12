@@ -1,3 +1,5 @@
+@use '../../../styles/abstracts/' as *;
+
 .player-on-pitch {
   display: flex;
   flex-direction: column;
@@ -5,15 +7,21 @@
 }
 
 .photo-wrapper {
-  width: 160px;
-  height: 160px;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(0deg, rgb(216, 188, 27) 0%, rgba(255,255,255,0) 80%);
+  display: inline-block;
+  height: 120px;
+  width: 120px;
+  aspect-ratio: 1/1;
   overflow: hidden;
 }
 
 .player-photo {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  transform: scale(1.4);
+
 /* filter: drop-shadow(1px 1px 1px white) 
         drop-shadow(-1px -1px 1px white) 
         drop-shadow(1px -1px 1px white) 
@@ -22,8 +30,14 @@
 
 .name {
   font-weight: 700;
-  background: white;
-  padding: 4px 6px;
+  font-family: 'Inter', sans-serif;
+  background: $supra-blue;
+  color: white;
+  padding: 6px 0;
   width: 100%;
   text-align: center;
+  text-transform: uppercase;
+  border-radius: 0 0 10px 10px;
+  border-bottom: 3px $supra-red solid;
+  box-shadow: 0 3px 0 white;
 }

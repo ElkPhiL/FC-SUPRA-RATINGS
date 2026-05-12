@@ -25,9 +25,18 @@
 }
 
 .player-photo {
-  object-fit: cover;
+  display: block;
   width: 120px;
   height: 120px;
+  transform: scale(1.5);
+}
+
+.photo-wrapper {
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.1);
+  display: inline-block;
 }
 
 .player-header {

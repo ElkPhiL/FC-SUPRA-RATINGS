@@ -2,13 +2,14 @@
 
 .builder{
 display:grid;
-grid-template-columns:320px 1fr;
+grid-template-columns: 1fr 2fr;
 gap:20px;
 height:90vh;
 }
 
-.sidebar{
+.player-pool{
 background:#f0f0f0;
+border-radius:5px;
 padding:10px;
 overflow-y:auto;
 }
@@ -40,8 +41,14 @@ align-items:center;
 justify-content: flex-end;
 }
 
+.pitch-color {
+background-color: rgb(9, 23, 100);
+max-width: 1200px;
+}
+
 .pitch{
 position:relative;
+background-color:green;
 background: url('../../../assets/pitch.png') no-repeat bottom center;
 background-size: cover;
 min-height:700px;
@@ -51,7 +58,7 @@ margin: 20px;
 }
 
 .slot{
-transform:translate(-50%, -50%);
+transform:translate(-64%, -64%);
 display:flex;
 align-items:center;
 justify-content:center;
@@ -68,6 +75,12 @@ height:90px;
 background:rgba(255,255,255,0.5);
 border:2px dashed rgba(255,255,255,0.8);
 border-radius:50%;
+
+  &:hover {
+  background:rgba(255,255,255,0.7);
+  border-color:rgba(255,255,255,1);
+  cursor: pointer;
+  }
 }
 
 .cdk-drag-preview {

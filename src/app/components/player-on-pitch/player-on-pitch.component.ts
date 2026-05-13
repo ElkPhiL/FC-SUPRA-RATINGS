@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Input } from '@angular/core';
+import { Input, Output, EventEmitter } from '@angular/core';
 import { Player } from '../../models/player.model';
 import { CommonModule } from '@angular/common';
 
@@ -11,4 +11,5 @@ import { CommonModule } from '@angular/common';
 })
 export class PlayerOnPitch {
   @Input() player!: Player;
+  @Output() remove = new EventEmitter<void>();
 }

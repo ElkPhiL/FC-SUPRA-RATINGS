@@ -1,0 +1,53 @@
+@if (visible()) {
+<div class="overlay" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <div class="header">
+      <h2>Add Player - {{ slotLabel() }}</h2>
+      <button class="close-btn" (click)="closeModal()">✕</button>
+    </div>
+
+    <input
+      type="text"
+      placeholder="Search player..."
+      [ngModel]="search()"
+      (ngModelChange)="search.set($event)"
+      class="search-input"
+    />
+
+    <div class="filters">
+      <button
+        [class.active]="selectedFilter() === 'favorite'"
+        (click)="selectedFilter.set('favorite')">
+        Suggested
+      </button>
+
+      <button
+        [class.active]="selectedFilter() === 'all'"
+        (click)="selectedFilter.set('all')">
+        All Players
+      </button>
+    </div>
+
+    <div class="results">
+      @for (player of filteredPlayers(); track player.id) {
+        <div class="player-row" (click)="choose(player)">
+          <div class="number">{{ player.number }}</div>
+
+          <div class="infos">
+            <div class="name">{{ player.display_name }}</div>
+            <div class="meta">
+              {{ player.position }}
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (filteredPlayers().length === 0) {
+        <div class="empty">No players found</div>
+      }
+    </div>
+
+  </div>
+</div>
+}

@@ -1,15 +1,16 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Player } from '../../models/player.model';
 import { PlayersService } from '../../services/players.service';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FORMATIONS } from '../../shared/constants/formations';
 import { PlayerOnPitch } from '../../components/player-on-pitch/player-on-pitch.component';
+import { PlayerSearchComponent } from '../../components/player-search/player-search.component';
 
 @Component({
     selector: 'app-lineup-builder',
     standalone: true,
-    imports: [CommonModule, DragDropModule, PlayerOnPitch],
+    imports: [CommonModule, DragDropModule, PlayerOnPitch, PlayerSearchComponent],
     templateUrl: './lineup-builder.component.html',
     styleUrls: ['./lineup-builder.component.scss'],
 })
@@ -18,6 +19,13 @@ export class LineupBuilderComponent {
     players = signal<Player[]>([]);
     loading = signal(true);
     message = signal('');
+
+    availablePlayers = computed(() =>
+        this.players().filter(player => !this.isPlayerUsed(player))
+    );
+
+    searchOpen = signal(false);
+    selectedSlot = signal<any | null>(null);
 
     formations = FORMATIONS;
     selectedFormation = signal(this.formations[0]);
@@ -42,15 +50,9 @@ export class LineupBuilderComponent {
             if (!players.length) {
             this.message.set('Aucun joueur actif trouvé.');
             }
+
         } catch (error: any) {
-            console.error('Erreur lors du chargement des joueurs', error);
-            console.error('Détails de l\'erreur:', {
-            message: error.message,
-            details: error.details,
-            hint: error.hint,
-            code: error.code
-            });
-            this.message.set(`Erreur de chargement: ${error.message || 'Erreur inconnue'}`);
+            this.message.set('Erreur de chargement');
         } finally {
             this.loading.set(false);
         }
@@ -67,7 +69,8 @@ export class LineupBuilderComponent {
     }
 
     isPlayerUsed(player: Player): boolean {
-        return Object.values(this.lineup()).some(p => p?.id === player.id);
+        return Object.values(this.lineup())
+            .some(p => p?.id === player.id);
     }
 
     dropPlayer(event: any, slotKey: string) {
@@ -132,5 +135,41 @@ export class LineupBuilderComponent {
             if (player?.id === playerId) return slot;
         }
         return null;
+    }
+
+    addPlayerToSlot(slotKey: string) {
+        const playerId = parseInt(prompt('Entrez l\'ID du joueur à ajouter :') || '', 10);
+        if (isNaN(playerId)) {
+            alert('ID invalide');
+            return;
+        }
+        const player = this.players().find(p => p.id === playerId);
+        if (!player) {
+            alert('Joueur non trouvé');
+            return;
+        }
+        if (this.isPlayerUsed(player)) {
+            alert('Ce joueur est déjà dans la composition');
+            return;
+        }
+        const current = { ...this.lineup() };
+        current[slotKey] = player;
+        this.lineup.set(current);
+    }
+
+    openSearch(slot: any) {
+        this.selectedSlot.set(slot);
+        this.searchOpen.set(true);
+    }
+
+    assignPlayerFromSearch(player: Player) {
+        const slot = this.selectedSlot();
+        if (!slot) return;
+
+        const current = { ...this.lineup() };
+        current[slot.key] = player;
+
+        this.lineup.set(current);
+        this.searchOpen.set(false);
     }
 }

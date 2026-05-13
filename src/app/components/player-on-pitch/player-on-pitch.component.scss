@@ -4,6 +4,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: translate(0, -5px) scale(1.15);
+
+    .remove-btn {
+      opacity: 1;
+    }
+  }
 }
 
 .photo-wrapper {
@@ -40,4 +49,30 @@
   border-radius: 0 0 10px 10px;
   border-bottom: 3px $supra-red solid;
   box-shadow: 0 3px 0 white;
+}
+
+.remove-btn {
+  opacity: 0;
+  position: absolute;
+  top: 10px;
+  right: -12px;
+  background: $supra-red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+    background: darken($supra-red, 10%);
+  }
+
+  &:active {
+    background: darken($supra-red, 20%);
+  }
 }

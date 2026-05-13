@@ -1,7 +1,7 @@
 <div class="builder">
 
     <div
-    class="sidebar"
+    class="player-pool"
     cdkDropList
     id="playersList"
     [cdkDropListData]="players()"
@@ -33,38 +33,48 @@
           </select>
         <button (click)="resetLineup()">Reset Lineup</button>
       </div>
-      <div class="pitch">
-        <div
-        *ngFor="let slot of selectedFormation().slots"
-        class="slot"
-        cdkDropList
-        [id]="slot.key"
-        [cdkDropListConnectedTo]="allDropLists()"
-        (cdkDropListEntered)="previewSlot($event, slot.key)"
-        (cdkDropListExited)="clearPreview()"
-        (cdkDropListDropped)="dropPlayer($event, slot.key)"
-        [style.left.%]="slot.x"
-        [style.top.%]="slot.y">
+        <div class="pitch-color">
+        <div class="pitch">
+          <div
+          *ngFor="let slot of selectedFormation().slots"
+          class="slot"
+          cdkDropList
+          [id]="slot.key"
+          [cdkDropListConnectedTo]="allDropLists()"
+          (cdkDropListEntered)="previewSlot($event, slot.key)"
+          (cdkDropListExited)="clearPreview()"
+          (cdkDropListDropped)="dropPlayer($event, slot.key)"
+          [style.left.%]="slot.x"
+          [style.top.%]="slot.y">
 
-        @if (previewingSlot() === slot.key && previewPlayer(); as p) {
-          <app-player-on-pitch [player]="p"></app-player-on-pitch>
-        } @else if (lineup()[slot.key]; as currentPlayer) {
-          <div cdkDrag [cdkDragData]="currentPlayer">
-            <div *cdkDragPreview class="cdk-drag-preview">
-              {{ currentPlayer.number }}
+          @if (previewingSlot() === slot.key && previewPlayer(); as p) {
+            <app-player-on-pitch [player]="p"></app-player-on-pitch>
+          } @else if (lineup()[slot.key]; as currentPlayer) {
+            <div cdkDrag [cdkDragData]="currentPlayer">
+              <div *cdkDragPreview class="cdk-drag-preview">
+                {{ currentPlayer.number }}
+              </div>
+              <div *cdkDragPlaceholder class="player-placeholder"></div>
+              <app-player-on-pitch
+                [player]="currentPlayer"
+                (remove)="deleteFromSlot(slot.key)">
+              </app-player-on-pitch>
             </div>
-            <div *cdkDragPlaceholder class="player-placeholder"></div>
-            <app-player-on-pitch
-              [player]="currentPlayer"
-              (remove)="deleteFromSlot(slot.key)">
-            </app-player-on-pitch>
-          </div>
-        } @else {
-          <div class="empty-slot">
-            {{ slot.label }}
-          </div>
-        }
+          } @else {
+            <div class="empty-slot" (click)="openSearch(slot)">
+              {{ slot.label }}
+            </div>
+          }
 
+          </div>
+          <app-player-search
+              [visible]="searchOpen()"
+              [players]="availablePlayers()"
+              [slotKey]="selectedSlot()?.key || ''"
+              [slotLabel]="selectedSlot()?.label || ''"
+              (close)="searchOpen.set(false)"
+              (selectPlayer)="assignPlayerFromSearch($event)">
+          </app-player-search>
         </div>
       </div>
     </div>

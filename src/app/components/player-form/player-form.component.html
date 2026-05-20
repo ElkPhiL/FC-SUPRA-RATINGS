@@ -22,12 +22,13 @@
 
   <label class="champ">
     Poste
-    <select formControlName="position">
-        <option value="">Choisir</option>
-        <option *ngFor="let pos of positions" [value]="pos">
-        {{ pos }}
-        </option>
-    </select>
+    <app-position-picker
+      [favoritePosition]="form.get('best_position')?.value"
+      [positionsSelected]="form.get('positions')?.value || []"
+
+      (favoritePositionChange)="onFavoritePositionChange($event)"
+      (positionsSelectedChange)="onPositionsSelectedChange($event)"
+    ></app-position-picker>
   </label>
 
   <label class="champ">
@@ -40,9 +41,33 @@
     <input type="date" formControlName="date_of_birth">
   </label>
 
-  <label class="upload-box">
+  <label class="champ">
+    Pied fort
+    <select formControlName="best_foot">
+        <option value="">Choisir</option>
+        <option value="left">Gauche</option>
+        <option value="right">Droit</option>
+    </select>
+  </label>
+
+  <label class="champ">
+    Taille (cm)
+    <input type="number" min=50 max=250 formControlName="height_cm">
+  </label>
+
+  <label
+    class="upload-box"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
     Drop image here or click to upload
-    <input type="file" accept="image/*" (change)="onFileSelected($event)">
+
+    <input
+      type="file"
+      accept="image/*"
+      (change)="onFileSelected($event)"
+    >
   </label>
 
   <div class="image-preview" *ngIf="imagePreview">

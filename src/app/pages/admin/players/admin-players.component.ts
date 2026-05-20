@@ -4,17 +4,17 @@ import { RouterModule } from '@angular/router';
 import { PlayersService } from '../../../services/players.service';
 import { Player } from '../../../models/player.model';
 import { PlayerCardComponent } from '../../../components/player-card/player-card.component';
+import { SearchBarComponent } from '../../../components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-admin-players',
   standalone: true,
-  imports: [CommonModule, RouterModule, PlayerCardComponent],
+  imports: [CommonModule, RouterModule, PlayerCardComponent, SearchBarComponent],
   templateUrl: './admin-players.component.html',
   styleUrls: ['./admin-players.component.scss'],
 })
 export class AdminPlayersComponent {
-  activePlayers = signal<Player[]>([]);
-  nonActivePlayers = signal<Player[]>([]);
+  players = signal<Player[]>([]);
   loading = signal(true);
   message = signal('');
 
@@ -23,39 +23,16 @@ export class AdminPlayersComponent {
   }
 
   async loadPlayers() {
-    this.loadActivePlayers();
-    this.loadNonActivePlayers();
-  }
-
-  async loadActivePlayers() {
     this.loading.set(true);
-    this.message.set('');
     try {
-      const players = await this.playersService.getActive();
-      this.activePlayers.set(players);
-      if (!players.length) {
-        this.message.set('Aucun joueur actif trouvé.');
-      }
-    } catch (error: any) {
-      console.error('Erreur lors du chargement des joueurs actifs', error);
-      this.message.set(`Erreur de chargement: ${error?.message ?? 'Erreur inconnue'}`);
-    } finally {
-      this.loading.set(false);
-    }
-  }
-
-  async loadNonActivePlayers() {
-    this.loading.set(true);
-    this.message.set('');
-    try {
-      const players = await this.playersService.getNonActive();
-      this.nonActivePlayers.set(players);
-      if (!players.length) {
-        this.message.set('Aucun joueur non actif trouvé.');
-      }
-    } catch (error: any) {
-      console.error('Erreur lors du chargement des joueurs non actifs', error);
-      this.message.set(`Erreur de chargement: ${error?.message ?? 'Erreur inconnue'}`);
+      const [players] = await Promise.all([
+        this.playersService.getAll(),
+        this.playersService.getActive(),
+        this.playersService.getNonActive(),
+      ]);
+      this.players.set(players);
+    } catch (error) {
+      this.message.set('Erreur chargement joueurs');
     } finally {
       this.loading.set(false);
     }

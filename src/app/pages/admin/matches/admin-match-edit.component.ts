@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatchFormComponent } from '../../../components/match-form.component';
+import { MatchFormComponent } from '../../../components/match-form/match-form.component';
 import { MatchesService } from '../../../services/matches.service';
 import { Match } from '../../../models/match.model';
 

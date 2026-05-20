@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatchFormComponent } from '../../../components/match-form.component';
+import { MatchFormComponent } from '../../../components/match-form/match-form.component';
 import { MatchesService } from '../../../services/matches.service';
 
 @Component({

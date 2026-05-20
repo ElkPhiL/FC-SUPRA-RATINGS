@@ -6,13 +6,14 @@ import {
   Validators,
   ReactiveFormsModule
 } from '@angular/forms';
-import { Player } from '../models/player.model';
-import { PLAYER_POSITIONS } from '../shared/constants/player.constants';
+import { Player } from '../../models/player.model';
+import { PLAYER_POSITIONS, PlayerPosition } from '../../shared/constants/player.constants';
+import { PositionPickerComponent } from '../position-picker/position-picker.component';
 
 @Component({
   selector: 'app-player-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, PositionPickerComponent],
   templateUrl: './player-form.component.html',
   styleUrls: ['./player-form.component.scss'],
 })
@@ -36,11 +37,15 @@ export class PlayerFormComponent implements OnChanges {
       last_name: [''],
       display_name: ['', Validators.required],
       number: [null, [Validators.required, Validators.min(1), Validators.max(99)]],
-      position: [''],
+      best_position: [''],
+      positions: [[]],
       nationality: [''],
       photo_url: [''],
       active: [true],
-      date_of_birth: ['']
+      date_of_birth: [''],
+      best_foot: [''],
+      height_cm: [null, [Validators.min(0)]],
+      weight_kg: [null, [Validators.min(0)]],
     });
   }
 
@@ -74,9 +79,12 @@ export class PlayerFormComponent implements OnChanges {
 
   onDrop(event: DragEvent) {
     event.preventDefault();
+    event.stopPropagation();
+
     this.dragActive = false;
 
     const file = event.dataTransfer?.files?.[0];
+
     if (file) {
       this.handleFile(file);
     }
@@ -104,6 +112,18 @@ export class PlayerFormComponent implements OnChanges {
     this.selectedFile = null;
     this.imagePreview = null;
     this.form.patchValue({ photo_url: '' });
+  }
+
+  onFavoritePositionChange(position: PlayerPosition | null) {
+    this.form.patchValue({
+      best_position: position ?? ''
+    });
+  }
+
+  onPositionsSelectedChange(positions: PlayerPosition[]) {
+    this.form.patchValue({
+      positions: positions
+    });
   }
 
   submit() {

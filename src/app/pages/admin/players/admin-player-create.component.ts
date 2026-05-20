@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { PlayerFormComponent } from '../../../components/player-form.component';
+import { PlayerFormComponent } from '../../../components/player-form/player-form.component';
 import { PlayersService } from '../../../services/players.service';
 
 @Component({

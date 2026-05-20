@@ -8,13 +8,14 @@ import {
   PlayerPayload,
   PlayerFormPayload
 } from '../models/player.model';
+import { PlayerPositionsService } from './player-positions.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlayersService {
 
-  constructor(private supabase: SupabaseService) {}
+  constructor(private supabase: SupabaseService, private playerPositionsService: PlayerPositionsService) {}
 
   // =====================================================
   // GET
@@ -83,25 +84,34 @@ export class PlayersService {
       console.log('Image uploaded, photoUrl:', photoUrl);
     }
 
-    const dbPayload: PlayerPayload = {
+    const playerInsert = {
       first_name: payload.first_name,
       last_name: payload.last_name,
       display_name: payload.display_name,
       number: payload.number,
-      position: payload.position,
+      best_position: payload.best_position,
       nationality: payload.nationality,
       photo_url: photoUrl,
       active: payload.active,
-      date_of_birth: payload.date_of_birth
+      date_of_birth: payload.date_of_birth,
+      best_foot: payload.best_foot,
+      height_cm: payload.height_cm,
+      weight_kg: payload.weight_kg
     };
 
     const { data, error } = await this.supabase.supabase
       .from('players')
-      .insert(dbPayload)
+      .insert(playerInsert)
       .select()
       .single();
 
     if (error) throw error;
+
+    await this.playerPositionsService
+    .createPlayerPositions(
+      data.id,
+      payload.positions
+    );
 
     return data as Player;
   }
@@ -125,26 +135,35 @@ export class PlayersService {
       photoUrl = await this.supabase.uploadPlayerImage(payload.imageFile);
     }
 
-    const dbPayload: Partial<PlayerPayload> = {
+    const playerUpdate: Partial<PlayerPayload> = {
       first_name: payload.first_name,
       last_name: payload.last_name,
       display_name: payload.display_name,
       number: payload.number,
-      position: payload.position,
+      best_position: payload.best_position,
       nationality: payload.nationality,
       photo_url: photoUrl,
       active: payload.active,
-      date_of_birth: payload.date_of_birth
+      date_of_birth: payload.date_of_birth,
+      best_foot: payload.best_foot,
+      height_cm: payload.height_cm,
+      weight_kg: payload.weight_kg
     };
 
     const { data, error } = await this.supabase.supabase
       .from('players')
-      .update(dbPayload)
+      .update(playerUpdate)
       .eq('id', id)
       .select()
       .single();
 
     if (error) throw error;
+
+    await this.playerPositionsService
+    .updatePlayerPositions(
+      data.id,
+      payload.positions
+    );
 
     return data as Player;
   }

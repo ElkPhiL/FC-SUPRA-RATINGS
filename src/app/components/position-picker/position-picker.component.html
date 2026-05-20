@@ -1,0 +1,16 @@
+<div class="pitch">
+
+  <div
+    *ngFor="let pos of positions"
+    class="position"
+    [class.selected]="isSelected(pos.code)"
+    [class.favorite]="isFavorite(pos.code)"
+    [style.top]="pos.top"
+    [style.left]="pos.left"
+    (click)="onPositionLeftClick(pos.code)"
+    (contextmenu)="onPositionRightClick($event, pos.code)"
+  >
+    {{ pos.code }}
+  </div>
+
+</div>

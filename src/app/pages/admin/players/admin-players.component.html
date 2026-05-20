@@ -8,36 +8,17 @@
   </header>
 
   <article class="panel">
-    <h2>Liste des joueurs actifs</h2>
+    <h2>Liste des joueurs</h2>
+
+    <app-search-bar></app-search-bar>
 
     <div class="status-row">
       <p class="status-message" *ngIf="loading()">Chargement des joueurs…</p>
       <p class="status-message" *ngIf="!loading() && message()">{{ message() }}</p>
     </div>
 
-    <ul class="player-table" *ngIf="!loading() && activePlayers().length">
-      @for (player of activePlayers(); track player.id) {
-        <li>
-          <app-player-card
-            [player]="player"
-            [showActions]="true"
-            (delete)="deletePlayer($event)">
-          </app-player-card>
-        </li>
-      }
-    </ul>
-  </article>
-
-  <article class="panel">
-    <h2>Liste des joueurs non actifs</h2>
-
-    <div class="status-row">
-      <p class="status-message" *ngIf="loading()">Chargement des joueurs…</p>
-      <p class="status-message" *ngIf="!loading() && message()">{{ message() }}</p>
-    </div>
-
-    <ul class="player-table" *ngIf="!loading() && nonActivePlayers().length">
-      @for (player of nonActivePlayers(); track player.id) {
+    <ul class="player-table">
+      @for (player of players(); track player.id) {
         <li>
           <app-player-card
             [player]="player"

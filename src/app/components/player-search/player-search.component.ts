@@ -52,9 +52,9 @@ export class PlayerSearchComponent {
         const matchesFavorite =
           this.selectedFilter() === 'all'
             ? true
-            : player.position === this.slotLabel();
+            : player.best_position === this.slotLabel();
 
-        console.log(`Filtering player ${player.display_name} (position: ${player.position}) - ${this.slotLabel()}`);
+        console.log(`Filtering player ${player.display_name} (position: ${player.best_position}) - ${this.slotLabel()}`);
 
         return matchesSearch && matchesFavorite;
       })

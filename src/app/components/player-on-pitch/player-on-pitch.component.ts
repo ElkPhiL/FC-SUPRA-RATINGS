@@ -5,9 +5,10 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-player-on-pitch',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './player-on-pitch.component.html',
-  styleUrl: './player-on-pitch.component.scss',
+  styleUrls: ['./player-on-pitch.component.scss'],
 })
 export class PlayerOnPitch {
   @Input() player!: Player;

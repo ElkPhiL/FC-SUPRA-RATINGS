@@ -9,6 +9,7 @@ import {
   PlayerFormPayload
 } from '../models/player.model';
 import { PlayerPositionsService } from './player-positions.service';
+import { PlayerPosition } from '../shared/constants/player.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -66,6 +67,33 @@ export class PlayersService {
     if (error) throw error;
 
     return data as Player[];
+  }
+
+  async getPlayersWithPositions() {
+    const { data, error } = await this.supabase.supabase
+      .from('players')
+      .select(`
+        *,
+        player_positions (
+          position
+        )
+      `);
+
+    if (error) {
+      throw error;
+    }
+
+    return data.map(player => ({
+      ...player,
+      positions:
+        player.player_positions?.map((p: any) => p.position) || []
+        
+      .sort((a: PlayerPosition, b: PlayerPosition) => {
+        if (a === player.best_position) return -1;
+        if (b === player.best_position) return 1;
+        return 0;
+      })
+    }));
   }
 
   // =====================================================

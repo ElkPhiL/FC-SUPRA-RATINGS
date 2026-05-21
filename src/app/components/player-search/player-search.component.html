@@ -3,48 +3,39 @@
   <div class="modal" (click)="$event.stopPropagation()">
 
     <div class="header">
-      <h2>Add Player - {{ slotLabel() }}</h2>
+      <h2>Ajouter un joueur - {{ slotLabel() }}</h2>
       <button class="close-btn" (click)="closeModal()">✕</button>
     </div>
 
     <input
       type="text"
-      placeholder="Search player..."
+      placeholder="Rechercher un joueur..."
       [ngModel]="search()"
       (ngModelChange)="search.set($event)"
       class="search-input"
     />
 
-    <div class="filters">
-      <button
-        [class.active]="selectedFilter() === 'favorite'"
-        (click)="selectedFilter.set('favorite')">
-        Suggested
-      </button>
-
-      <button
-        [class.active]="selectedFilter() === 'all'"
-        (click)="selectedFilter.set('all')">
-        All Players
-      </button>
-    </div>
-
     <div class="results">
       @for (player of filteredPlayers(); track player.id) {
         <div class="player-row" (click)="choose(player)">
-          <div class="number">{{ player.number }}</div>
+          <div class="number"
+          [class.primary-slot]="player.best_position === slotLabel()"
+          [class.secondary-slot]="player.positions.includes(slotLabel()) && player.best_position !== slotLabel()"
+          >{{ player.number }}</div>
 
           <div class="infos">
             <div class="name">{{ player.display_name }}</div>
-            <div class="meta">
-              {{ player.best_position }}
+            <div class="positions">
+              @for (position of player.positions; track position) {
+                <div class="position" [class.concerned-slot]="position === slotLabel()">{{ position }}</div>
+              }
             </div>
           </div>
         </div>
       }
 
       @if (filteredPlayers().length === 0) {
-        <div class="empty">No players found</div>
+        <div class="empty">Aucun joueur trouvé</div>
       }
     </div>
 

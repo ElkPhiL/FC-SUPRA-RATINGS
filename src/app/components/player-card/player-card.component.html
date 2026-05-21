@@ -9,20 +9,32 @@
         [src]="player.photo_url"
         [alt]="player.display_name"
       />
+    } @else {
+      <img
+        class="player-photo"
+        src="../../../assets/genericPlayer.png"
+        [alt]="player.display_name"
+      />
     }
   </div>
 
   <div class="player-header">
-    <h3>{{ player.display_name }}</h3>
+    <div class="display-name">{{ player.display_name }}</div>
 
-    <p class="full-name">
+    <div class="full-name">
       {{ player.first_name || '' }} {{ player.last_name || '' }}
-    </p>
+    </div>
 
     <div class="badges">
-      <span class="badge position">
+      <span class="badge best-position">
         {{ player.best_position || 'N/A' }}
       </span>
+
+      @for (position of player.positions; track position) {
+        @if (position !== player.best_position) {
+          <span class="badge position">{{ position }}</span>
+        }
+      }
 
       <span class="badge age">
         @if (player.date_of_birth) {

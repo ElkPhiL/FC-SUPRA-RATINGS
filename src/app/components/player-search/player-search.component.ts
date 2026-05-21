@@ -10,6 +10,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Player } from '../../models/player.model';
+import { PlayerPosition } from '../../shared/constants/player.constants';
 
 @Component({
   selector: 'app-player-search',
@@ -21,45 +22,57 @@ import { Player } from '../../models/player.model';
 export class PlayerSearchComponent {
   visible = input(false);
   players = input<Player[]>([]);
-  slotLabel = input('');
-  slotKey = input('');
+  slotLabel = input<PlayerPosition>();
 
   @Output() close = new EventEmitter<void>();
   @Output() selectPlayer = new EventEmitter<Player>();
 
   search = signal('');
-  selectedFilter = signal<'all' | 'favorite'>('favorite');
 
   constructor() {
     effect(() => {
       if (this.visible()) {
         this.search.set('');
-        this.selectedFilter.set('favorite');
       }
     });
   }
 
   filteredPlayers = computed(() => {
     const term = this.search().toLowerCase().trim();
+    const slot = this.slotLabel();
 
-    return this.players()
-      .filter(player => {
-        const matchesSearch =
-          !term ||
-          player.display_name.toLowerCase().includes(term) ||
-          player.number.toString().includes(term);
+    const filtered = this.players().filter(player => {
+      const matchesSearch =
+        !term ||
+        player.display_name.toLowerCase().includes(term) ||
+        player.number.toString().includes(term);
 
-        const matchesFavorite =
-          this.selectedFilter() === 'all'
-            ? true
-            : player.best_position === this.slotLabel();
+      return matchesSearch;
+    });
 
-        console.log(`Filtering player ${player.display_name} (position: ${player.best_position}) - ${this.slotLabel()}`);
+    const getPriority = (player: Player) => {
+      if (player.best_position === slot) return 2;
+      if (player.positions?.includes(slot)) return 1;
+      return 0;
+    };
 
-        return matchesSearch && matchesFavorite;
-      })
-      .sort((a,b) => a.number - b.number);
+    return filtered.sort((a, b) => {
+      const prioDiff =
+        getPriority(b) - getPriority(a);
+
+      if (prioDiff !== 0) return prioDiff;
+
+      return a.number - b.number;
+    });
   });
+
+  getPriority(player: Player): 0 | 1 | 2 {
+    const slot = this.slotLabel();
+
+    if (player.best_position === slot) return 2;
+    if (player.positions?.includes(slot)) return 1;
+    return 0;
+  }
 
   choose(player: Player) {
     this.selectPlayer.emit(player);

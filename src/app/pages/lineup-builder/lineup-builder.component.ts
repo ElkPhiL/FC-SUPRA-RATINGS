@@ -44,7 +44,7 @@ export class LineupBuilderComponent {
         this.message.set('');
 
         try {
-            const players = await this.playersService.getActive();
+            const players = await this.playersService.getPlayersWithPositions();
             this.players.set(players);
 
             if (!players.length) {
@@ -135,26 +135,6 @@ export class LineupBuilderComponent {
             if (player?.id === playerId) return slot;
         }
         return null;
-    }
-
-    addPlayerToSlot(slotKey: string) {
-        const playerId = parseInt(prompt('Entrez l\'ID du joueur à ajouter :') || '', 10);
-        if (isNaN(playerId)) {
-            alert('ID invalide');
-            return;
-        }
-        const player = this.players().find(p => p.id === playerId);
-        if (!player) {
-            alert('Joueur non trouvé');
-            return;
-        }
-        if (this.isPlayerUsed(player)) {
-            alert('Ce joueur est déjà dans la composition');
-            return;
-        }
-        const current = { ...this.lineup() };
-        current[slotKey] = player;
-        this.lineup.set(current);
     }
 
     openSearch(slot: any) {

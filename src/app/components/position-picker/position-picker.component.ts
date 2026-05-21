@@ -34,12 +34,16 @@ export class PositionPickerComponent {
 
   positions: PositionNode[] = [
     { code: 'GK', top: '88%', left: '50%' },
+    { code: 'LWB', top: '55%', left: '18%' },
+    { code: 'RWB', top: '55%', left: '82%' },
     { code: 'LB', top: '72%', left: '18%' },
     { code: 'CB', top: '72%', left: '50%' },
     { code: 'RB', top: '72%', left: '82%' },
     { code: 'CDM', top: '55%', left: '50%' },
     { code: 'CM', top: '42%', left: '50%' },
-    { code: 'CAM', top: '32%', left: '50%' },
+    { code: 'LM', top: '42%', left: '18%' },
+    { code: 'RM', top: '42%', left: '82%' },
+    { code: 'CAM', top: '29%', left: '50%' },
     { code: 'LW', top: '18%', left: '20%' },
     { code: 'RW', top: '18%', left: '80%' },
     { code: 'ST', top: '8%', left: '50%' },

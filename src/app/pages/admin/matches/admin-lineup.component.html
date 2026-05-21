@@ -1,92 +1,76 @@
-<!-- <div class="lineup-container">
+<div class="pitch-section">
 
-  <h1>Match Lineup Builder</h1>
-
-  <div class="grid">
-
-    <div class="box">
-      <h3>Hors-effectif</h3>
-
-      <div
-        cdkDropList
-        [cdkDropListData]="available"
-        class="list"
-        (cdkDropListDropped)="drop($event, 'available')"
-      >
-        <div class="player" *ngFor="let p of available" cdkDrag>
-          {{ p.display_name }} #{{ p.number }}
-        </div>
-      </div>
-    </div>
-
-    <div class="box">
-      <h3>Starters</h3>
-
-      <div
-        cdkDropList
-        [cdkDropListData]="starters"
-        class="list starters"
-        (cdkDropListDropped)="drop($event, 'starters')"
-      >
-        <div class="player" *ngFor="let p of starters" cdkDrag>
-          {{ p.display_name }}
-
-          <input placeholder="Pos" [(ngModel)]="p.position_played">
-          <input type="number" placeholder="In" [(ngModel)]="p.minutes_in">
-          <input type="number" placeholder="Out" [(ngModel)]="p.minutes_out">
-        </div>
-      </div>
-    </div>
-
-    <div class="box">
-      <h3>Bench</h3>
-
-      <div
-        cdkDropList
-        [cdkDropListData]="bench"
-        class="list bench"
-        (cdkDropListDropped)="drop($event, 'bench')"
-      >
-        <div class="player" *ngFor="let p of bench" cdkDrag>
-          {{ p.display_name }}
-        </div>
-      </div>
-    </div>
-
-    <div class="box">
-      <h3>Injured</h3>
-
-      <div
-        cdkDropList
-        [cdkDropListData]="injured"
-        class="list injured"
-        (cdkDropListDropped)="drop($event, 'injured')"
-      >
-        <div class="player" *ngFor="let p of injured" cdkDrag>
-          {{ p.display_name }}
-        </div>
-      </div>
-    </div>
-
-    <div class="box">
-      <h3>Suspended</h3>
-
-      <div
-        cdkDropList
-        [cdkDropListData]="suspended"
-        class="list suspended"
-        (cdkDropListDropped)="drop($event, 'suspended')"
-      >
-        <div class="player" *ngFor="let p of suspended" cdkDrag>
-          {{ p.display_name }}
-        </div>
-      </div>
-    </div>
-
+  <div class="formation-selector">
+    <label for="formation">Formation:</label>
+      <select id="formation" name="formation" (change)="changeFormation($event)">
+        <option *ngFor="let f of formations" [value]="f.name">
+        {{ f.name }}
+        </option>
+      </select>
+    <button (click)="resetLineup()">Reset Lineup</button>
   </div>
 
-  <button class="save" (click)="save()">
-    Save Lineup
-  </button>
+  <div class="pitch-color">
+    <div class="pitch">
+      <div
+      *ngFor="let slot of selectedFormation().slots"
+      class="slot"
+      [id]="slot.key"
+      [style.left.%]="slot.x"
+      [style.top.%]="slot.y">
 
-</div> -->
+      @if (previewingSlot() === slot.key && previewPlayer(); as p) {
+        <app-player-on-pitch [player]="p"></app-player-on-pitch>
+      } @else if (lineup()[slot.key]; as currentPlayer) {
+        <div>
+          <div class="player-placeholder"></div>
+          <app-player-on-pitch
+            [player]="currentPlayer"
+            (remove)="deleteFromSlot(slot.key)">
+          </app-player-on-pitch>
+        </div>
+      } @else {
+        <div class="empty-slot" (click)="openSearch(slot)">
+          {{ slot.label }}
+        </div>
+      }
+
+      </div>
+      <app-player-search
+          [visible]="searchOpen()"
+          [players]="availablePlayers()"
+          [slotLabel]="selectedSlot()?.label || ''"
+          (close)="searchOpen.set(false)"
+          (selectPlayer)="assignPlayerFromSearch($event)">
+      </app-player-search>
+    </div>
+  </div>
+
+</div>
+
+<div class="bench-section">
+  <h3>Remplaçants</h3>
+  <div class="bench-slots">
+    @for (slot of benchFormation().slots; track slot.key) {
+      <div class="bench-slot">
+        
+        @if (previewingSlot() === slot.key && previewPlayer(); as p) {
+          <app-player-on-pitch [player]="p"></app-player-on-pitch>
+        } @else if (lineup()[slot.key]; as currentPlayer) {
+          <div>
+            <div class="player-placeholder"></div>
+            <app-player-on-pitch
+              [player]="currentPlayer"
+              (remove)="deleteFromSlot(slot.key)">
+            </app-player-on-pitch>
+          </div>
+        } @else {
+          <div class="empty-slot bench-empty" (click)="openSearch(slot)">
+            + {{ slot.label }}
+          </div>
+        }
+
+      </div>
+    }
+  </div>
+</div>

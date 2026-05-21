@@ -26,9 +26,7 @@ export class AdminPlayersComponent {
     this.loading.set(true);
     try {
       const [players] = await Promise.all([
-        this.playersService.getAll(),
-        this.playersService.getActive(),
-        this.playersService.getNonActive(),
+        this.playersService.getPlayersWithPositions(),
       ]);
       this.players.set(players);
     } catch (error) {
@@ -36,6 +34,9 @@ export class AdminPlayersComponent {
     } finally {
       this.loading.set(false);
     }
+
+    //sort players by number
+    this.players.set(this.players().sort((a, b) => a.number - b.number));
   }
 
   deletePlayer(id: number) {

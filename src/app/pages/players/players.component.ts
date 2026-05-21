@@ -25,7 +25,10 @@ export class PlayersComponent {
     this.message.set('');
 
     try {
-      const players = await this.playersService.getAll();
+      const players = await this.playersService.getPlayersWithPositions();
+
+      console.log('Joueurs chargés avec positions:', players);
+
       this.players.set(players);
 
       if (!players.length) {

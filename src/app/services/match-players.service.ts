@@ -1,17 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from '../services/supabase.service';
-
-export interface MatchPlayer {
-  id: number;
-  match_id: number;
-  player_id: number;
-  role: string;
-  position_played: string | null;
-  minutes_in: number | null;
-  minutes_out: number | null;
-}
-
-export type MatchPlayerPayload = Omit<MatchPlayer, 'id'>;
+import { MatchPlayer, MatchPlayerPayload } from '../models/match-players.model';
 
 @Injectable({
   providedIn: 'root',

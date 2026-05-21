@@ -69,6 +69,23 @@ export const FORMATIONS: Formation[] = [
         { key:'9', label:'ST', x:50, y:15 },
         { key:'10', label:'RW', x:75, y:30 },
     ]
+},
+
+{
+    name: '5-3-2',
+    slots: [
+        { key:'1', label:'GK', x:50, y:85 },
+        { key:'5', label:'CB', x:33, y:67 },
+        { key:'4', label:'CB', x:50, y:62 },
+        { key:'2', label:'CB', x:67, y:67 },
+        { key:'3', label:'LWB', x:15, y:60 },
+        { key:'8', label:'CM', x:28, y:40 },
+        { key:'6', label:'CM', x:50, y:40 },
+        { key:'7', label:'CM', x:72, y:40 },
+        { key:'11', label:'RWB', x:85, y:60 },
+        { key:'9', label:'ST', x:35, y:15 },
+        { key:'10', label:'ST', x:65, y:15 },
+    ]
 }
 
 ];

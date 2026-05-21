@@ -2,7 +2,6 @@
 
 .player-card {
   background: white;
-  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 20px;
   color: white;
   display: flex;
@@ -12,6 +11,12 @@
   align-items: center;
   box-shadow: 0 12px 30px rgba(0,0,0,0.22);
   transition: 0.25s ease;
+
+  &:hover {
+    .actions {
+      opacity: 1;
+    }
+  }
 }
 
 .player-card:hover {
@@ -32,17 +37,28 @@
 }
 
 .photo-wrapper {
-  width: 120px;
+  width: 160px;
   height: 120px;
   overflow: hidden;
   background: rgba(255,255,255,0.1);
   display: inline-block;
+  justify-items: center;
 }
 
 .player-header {
   color: $supra-blue;
   min-width: 0;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.display-name {
+  text-transform: uppercase;
+  font-weight: 900;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.25rem;
 }
 
 .full-name {
@@ -57,37 +73,35 @@
 }
 
 .badge {
-  font-size: 0.78rem;
-  padding: 0.32rem 0.6rem;
+  font-size: 0.7rem;
+  padding: 0.3rem 0.5rem;
   border-radius: 999px;
   font-weight: 600;
 }
 
+.best-position {
+  background: rgba(17, 59, 128, 0.18);
+  color: #204269;
+  font-weight: 900;
+}
+
 .position {
   background: rgba(59,130,246,0.18);
-  color: #93c5fd;
-}
-
-.nationality {
-  background: rgba(16,185,129,0.16);
-  color: #6ee7b7;
-}
-
-.status {
-  background: rgba(34,197,94,0.16);
-  color: #86efac;
+  color: #77aeee;
 }
 
 .actions {
+  opacity: 0;
   display: flex;
-  flex-direction: row;
-  gap: 0.7rem;
-  padding: 0.5rem;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-left: auto;
+
+  transition: opacity 0.2s ease;
 }
 
 .btn {
-  max-width: 120px;
+  max-width: 150px;
   max-height: 40px;
   border: none;
   border-radius: 12px;

@@ -4,12 +4,17 @@ export const PLAYER_RULES = {
 };
 
 export const PLAYER_POSITIONS = [
+  undefined,
   'GK',
+  'LWB',
+  'RWB',
   'LB',
   'RB',
   'CB',
   'CDM',
   'CM',
+  'LM',
+  'RM',
   'CAM',
   'LW',
   'RW',

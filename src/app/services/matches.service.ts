@@ -64,6 +64,18 @@ export class MatchesService {
     }
   }
 
+  async updateFormation(id: number, formation: string): Promise<void> {
+    const { error } = await this.supabaseService.supabase
+      .from('matches')
+      .update({ formation })
+      .eq('id', id);
+
+    if (error) {
+      console.error(`Error updating formation for match with id ${id}:`, error);
+      throw error;
+    }
+  }
+
   async delete(id: number): Promise<void> {
     const { error } = await this.supabaseService.supabase
       .from('matches')

@@ -1,13 +1,14 @@
-<h1>Modifier joueur</h1>
+<span>Modifier joueur</span>
 
 <p *ngIf="loading()">Chargement...</p>
 
-<app-player-form
-  *ngIf="player()"
-  mode="edit"
-  [player]="player()"
-  [loading]="saving()"
-  (submitForm)="update($event)">
-</app-player-form>
+@if (player()) {
+  <app-player-form
+    mode="edit"
+    [player]="player()"
+    [loading]="saving()"
+    (submitForm)="update($event)">
+  </app-player-form>
+}
 
 <p>{{ message() }}</p>

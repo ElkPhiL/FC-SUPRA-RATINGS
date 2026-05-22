@@ -1,129 +1,259 @@
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.25rem;
+@use '../../../styles/abstracts/' as *;
 
-  max-width: 1000px;
-  margin: 0 auto;
+$supra-blue: if(global-variable-exists('supra-blue'), $supra-blue, #113b80);
+$slate-700: #334155;
+$slate-400: #94a3b8;
+$slate-100: #f1f5f9;
+
+.page {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3rem;
   padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .preview {
+    position: sticky;
+    top: 2rem; // La carte reste fixée au scroll pendant qu'on remplit le long formulaire !
+    padding: 1rem;
+    background: rgba(white, 0.5);
+    border-radius: 24px;
+    border: 1px dashed rgba(#113b80, 0.1);
+  }
+
+  .form-grid {
+    flex: 1;
+    margin: 0; // Annule le margin auto pour s'aligner avec le flex
+  }
 }
 
-.champ,
-.checkbox-label,
-.upload-box {
+// --- LE CONTENEUR GLOBAL ---
+.form-grid {
+  display: grid;
+  // Grille principale : 65% pour les champs, 35% pour le picker vertical
+  grid-template-columns: 1.8fr 1fr; 
+  gap: 2rem;
+  max-width: 1050px; // Élargi un peu pour accueillir le côte-à-côte
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+}
+
+// --- BLOC GAUCHE (Grille interne de 2 colonnes pour les inputs) ---
+.left-fields-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  align-content: start;
+}
+
+// --- BLOC DROITE (Le picker vertical) ---
+.right-picker-container {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 
-  font-size: 0.95rem;
-  font-weight: 500;
+  .label-text {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    color: $slate-700;
+  }
 }
 
-input,
-select {
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+// Permet au picker de s'adapter si la liste des postes est très longue
+.picker-scroll-wrapper {
+  flex: 1;
+  background: #fafafa;
+  border: 2px solid rgba($supra-blue, 0.05);
+  border-radius: 16px;
+  padding: 1rem;
+}
 
-  font-size: 1rem;
+// --- AJUSTEMENTS DES COMPOSANTS INTERNES ---
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+  .label-text {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    color: $slate-700;
+  }
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+  padding: 0.85rem 1rem;
+  border: 2px solid rgba($supra-blue, 0.1);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: $slate-700;
   width: 100%;
   box-sizing: border-box;
+  background-color: #fafafa;
+  transition: all 0.25s ease;
 
-  transition: border-color 0.2s ease;
+  &:focus {
+    outline: none;
+    border-color: $supra-blue;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba($supra-blue, 0.08);
+  }
 }
 
-input:focus,
-select:focus {
-  outline: none;
-  border-color: #2563eb;
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  &::after {
+    content: '▾';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $supra-blue;
+    font-weight: 700;
+    pointer-events: none;
+  }
+  select {
+    appearance: none;
+    padding-right: 2.5rem;
+  }
+}
+
+.media {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
 }
 
 .upload-box {
+  flex: 1;
+  display: flex;
+  min-height: 60px;
+  border: 2px dashed rgba($supra-blue, 0.25);
+  border-radius: 16px;
+  background-color: $slate-100;
+  cursor: pointer;
   justify-content: center;
   align-items: center;
 
-  min-height: 140px;
-  padding: 1rem;
-
-  border: 2px dashed #bbb;
-  border-radius: 12px;
-
-  text-align: center;
-  cursor: pointer;
-
-  transition: border-color 0.2s ease,
-              background-color 0.2s ease;
+  .upload-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .upload-icon { font-size: 1.5rem; }
+  .upload-text { font-size: 0.85rem; font-weight: 700; color: $supra-blue; }
+  input[type="file"] { display: none; }
 }
 
-.upload-box:hover {
-  border-color: #2563eb;
-  background-color: #f8fafc;
-}
-
-.upload-box input[type="file"] {
-  display: none;
-}
-
-.image-preview {
+// --- LE FOOTER ---
+.form-footer {
   grid-column: 1 / -1;
-
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.preview-img {
-  width: 180px;
-  height: 180px;
-
-  object-fit: cover;
-  border-radius: 12px;
-  border: 1px solid #ddd;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $slate-100;
 }
 
 .checkbox-label {
-  flex-direction: row;
+  display: flex;
   align-items: center;
   gap: 0.75rem;
-}
-
-.checkbox-label input {
-  width: auto;
-}
-
-.button {
-  grid-column: 1 / -1;
-
-  padding: 0.9rem 1.5rem;
-
-  border: none;
-  border-radius: 10px;
-
-  font-size: 1rem;
-  font-weight: 600;
-
   cursor: pointer;
-
-  transition: opacity 0.2s ease;
+  input { display: none; }
+  .checkbox-custom {
+    width: 22px;
+    height: 22px;
+    border: 2px solid $slate-400;
+    border-radius: 6px;
+    display: inline-block;
+    position: relative;
+  }
+  input:checked ~ .checkbox-custom {
+    background-color: $supra-blue;
+    border-color: $supra-blue;
+    &::after {
+      content: '✓';
+      position: absolute;
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 900;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
 }
 
-.button:hover:not(:disabled) {
-  opacity: 0.9;
+.submit-btn {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: white;
+  text-transform: uppercase;
+  background: linear-gradient(120deg, rgba($supra-blue, 0.85), $supra-blue, rgba($supra-blue, 0.85));
+  box-shadow: 0 4px 15px rgba($supra-blue, 0.25);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+  }
 }
 
-.button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-@media (max-width: 600px) {
+// --- RESPONSIVE DE GRILLE (Bascule sur une seule colonne sur tablette/mobile) ---
+@media (max-width: 850px) {
   .form-grid {
-    padding: 1rem;
+    grid-template-columns: 1fr; // Plus de gauche/droite
+    padding: 1.5rem;
   }
 
-  .preview-img {
-    width: 100%;
-    max-width: 250px;
-    height: auto;
+  .right-picker-container {
+    border-left: none;
+    border-top: 2px dashed rgba($supra-blue, 0.1);
+    padding-left: 0;
+    padding-top: 1.5rem;
+  }
+}
+
+@media (max-width: 550px) {
+  .left-fields-container {
+    grid-template-columns: 1fr; // Les inputs passent sur une colonne seule
+  }
+  
+  .form-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    .submit-btn { width: 100%; }
+  }
+}
+
+@media (max-width: 1100px) {
+  .page {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    .preview {
+      position: static;
+    }
   }
 }

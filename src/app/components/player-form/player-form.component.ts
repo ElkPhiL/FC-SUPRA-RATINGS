@@ -1,35 +1,38 @@
-import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Player } from '../../models/player.model';
 import { PLAYER_POSITIONS, PlayerPosition } from '../../shared/constants/player.constants';
 import { PositionPickerComponent } from '../position-picker/position-picker.component';
+import { PlayerCardComponent } from '../player-card/player-card.component';
 
 @Component({
   selector: 'app-player-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, PositionPickerComponent],
+  imports: [CommonModule, ReactiveFormsModule, PositionPickerComponent, PlayerCardComponent],
   templateUrl: './player-form.component.html',
   styleUrls: ['./player-form.component.scss'],
 })
-export class PlayerFormComponent implements OnChanges {
+export class PlayerFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() mode: 'create' | 'edit' = 'create';
-  @Input() player?: Player | null;
+  @Input() player!: Player;
   @Input() loading = false;
 
   @Output() submitForm = new EventEmitter<any>();
 
   form: FormGroup;
   positions = PLAYER_POSITIONS;
+  
+  // Objet qui alimente directement la carte de preview
+  playerPreview!: Player;
 
-  imagePreview: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
   dragActive = false;
+  
+  // Pour éviter les fuites de mémoire avec valueChanges
+  private destroy$ = new Subject<void>();
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -49,19 +52,45 @@ export class PlayerFormComponent implements OnChanges {
     });
   }
 
+  ngOnInit() {
+    // Initialise l'objet de preview par défaut
+    this.updatePreview(this.form.value);
+
+    // ⚡ LA MAGIE : Écoute en temps réel les changements des inputs du formulaire
+    this.form.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(formValues => {
+        this.updatePreview(formValues);
+      });
+  }
+
   ngOnChanges() {
     if (this.player) {
-      this.form.patchValue(this.player);
-
-      if (this.player.photo_url) {
-        this.imagePreview = this.player.photo_url;
-      }
+      this.form.patchValue(this.player, { emitEvent: false });
+      // Force la mise à jour de l'aperçu avec les données du joueur reçues
+      this.updatePreview(this.form.value);
     }
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  /**
+   * Fusionne les valeurs actuelles du formulaire avec l'état d'origine du joueur
+   */
+  private updatePreview(formValues: any) {
+    this.playerPreview = {
+      ...this.player,       // Garde l'ID ou autres propriétés hors formulaire
+      ...formValues,        // Écrase avec les saisies en cours (nom, prénom, numéro, etc.)
+      // Si une nouvelle photo locale est sélectionnée, on l'utilise, sinon on garde l'ancienne
+      photo_url: formValues.photo_url || (this.player?.photo_url ?? '')
+    };
   }
 
   onFileSelected(event: any) {
     const file = event.target.files?.[0];
-    console.log('File selected:', file);
     if (file) {
       this.handleFile(file);
     }
@@ -80,50 +109,36 @@ export class PlayerFormComponent implements OnChanges {
   onDrop(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
-
     this.dragActive = false;
-
     const file = event.dataTransfer?.files?.[0];
-
     if (file) {
       this.handleFile(file);
     }
   }
 
   handleFile(file: File) {
-    console.log('Handling file:', file.name, file.type, file.size);
-    if (!file.type.startsWith('image/')) {
-      console.log('Not an image, skipping');
-      return;
-    }
+    if (!file.type.startsWith('image/')) return;
 
     this.selectedFile = file;
-    console.log('Selected file set:', this.selectedFile);
 
+    // Convertit l'image locale en base64 pour que la balise <img> de ta carte puisse l'afficher instantanément
     const reader = new FileReader();
     reader.onload = () => {
-      this.imagePreview = reader.result;
-      console.log('Image preview loaded');
+      const base64Image = reader.result as string;
+      
+      // On pousse la string base64 dans le control 'photo_url' du formulaire.
+      // Cela va automatiquement déclencher le valueChanges et mettre à jour le playerPreview !
+      this.form.patchValue({ photo_url: base64Image });
     };
     reader.readAsDataURL(file);
   }
 
-  removeImage() {
-    this.selectedFile = null;
-    this.imagePreview = null;
-    this.form.patchValue({ photo_url: '' });
-  }
-
   onFavoritePositionChange(position: PlayerPosition | null) {
-    this.form.patchValue({
-      best_position: position ?? ''
-    });
+    this.form.patchValue({ best_position: position ?? '' });
   }
 
   onPositionsSelectedChange(positions: PlayerPosition[]) {
-    this.form.patchValue({
-      positions: positions
-    });
+    this.form.patchValue({ positions: positions });
   }
 
   submit() {
@@ -132,16 +147,17 @@ export class PlayerFormComponent implements OnChanges {
       return;
     }
 
+    // Avant d'envoyer le payload au parent, on peut nettoyer le photo_url 
+    // si c'est du base64 pour éviter de surcharger si ton backend préfère recevoir le `imageFile`.
+    const formValueRaw = { ...this.form.value };
+    if (this.selectedFile) {
+      formValueRaw.photo_url = this.player?.photo_url || ''; // Optionnel: reset à l'ancienne URL si le serveur gère l'upload
+    }
+
     const payload = {
-      ...this.form.value,
+      ...formValueRaw,
       imageFile: this.selectedFile
     };
-
-    console.log('Player Form Submit:', {
-      formValue: this.form.value,
-      selectedFile: this.selectedFile,
-      payload: payload
-    });
 
     this.submitForm.emit(payload);
   }

@@ -1,87 +1,103 @@
-<form [formGroup]="form" class="form-grid">
-
-  <label class="champ">
-    Prénom
-    <input type="text" formControlName="first_name">
-  </label>
-
-  <label class="champ">
-    Nom
-    <input type="text" formControlName="last_name">
-  </label>
-
-  <label class="champ">
-    Nom affiché
-    <input type="text" formControlName="display_name">
-  </label>
-
-  <label class="champ">
-    Numéro
-    <input type="number" min=1 max=99 oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2);" formControlName="number">
-  </label>
-
-  <label class="champ">
-    Poste
-    <app-position-picker
-      [favoritePosition]="form.get('best_position')?.value"
-      [positionsSelected]="form.get('positions')?.value || []"
-
-      (favoritePositionChange)="onFavoritePositionChange($event)"
-      (positionsSelectedChange)="onPositionsSelectedChange($event)"
-    ></app-position-picker>
-  </label>
-
-  <label class="champ">
-    Nationalité
-    <input type="text" formControlName="nationality">
-  </label>
-
-  <label class="champ">
-    Date de naissance
-    <input type="date" formControlName="date_of_birth">
-  </label>
-
-  <label class="champ">
-    Pied fort
-    <select formControlName="best_foot">
-        <option value="">Choisir</option>
-        <option value="left">Gauche</option>
-        <option value="right">Droit</option>
-    </select>
-  </label>
-
-  <label class="champ">
-    Taille (cm)
-    <input type="number" min=50 max=250 formControlName="height_cm">
-  </label>
-
-  <label
-    class="upload-box"
-    (dragover)="onDragOver($event)"
-    (dragleave)="onDragLeave($event)"
-    (drop)="onDrop($event)"
-  >
-    Drop image here or click to upload
-
-    <input
-      type="file"
-      accept="image/*"
-      (change)="onFileSelected($event)"
-    >
-  </label>
-
-  <div class="image-preview" *ngIf="imagePreview">
-    <p>Aperçu de l'image sélectionnée :</p>
-    <img [src]="imagePreview" alt="Aperçu de l'image" class="preview-img">
+<div class="page">
+  <!-- Zone de Preview Live : connectée sur l'objet réactif playerPreview -->
+  <div class="preview">
+    <span class="label-text">Prévisualisation</span>
+    <app-player-card [player]="playerPreview"></app-player-card>
   </div>
 
-  <label class="checkbox-label">
-    Actif
-    <input type="checkbox" formControlName="active">
-  </label>
+  <form [formGroup]="form" class="form-grid">
 
-  <button class="button" type="button" (click)="submit()" [disabled]="loading">
-    {{ mode === 'create' ? 'Créer' : 'Modifier' }}
-  </button>
+    <!-- BLOC DE GAUCHE : Tous les inputs classiques -->
+    <div class="left-fields-container">
+      <label class="champ">
+        <span class="label-text">Prénom</span>
+        <input type="text" formControlName="first_name" placeholder="Ex: Cristiano">
+      </label>
 
-</form>
+      <label class="champ">
+        <span class="label-text">Nom</span>
+        <input type="text" formControlName="last_name" placeholder="Ex: Ronaldo">
+      </label>
+
+      <label class="champ">
+        <span class="label-text">Nom affiché sur la carte</span>
+        <input type="text" formControlName="display_name" placeholder="Ex: C. RONALDO">
+      </label>
+
+      <label class="champ">
+        <span class="label-text">Numéro</span>
+        <input type="number" min="1" max="99" oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2);" formControlName="number" placeholder="7">
+      </label>
+
+      <label class="champ">
+        <span class="label-text">Nationalité</span>
+        <input type="text" formControlName="nationality" placeholder="Ex: Portugal">
+      </label>
+
+      <label class="champ">
+        <span class="label-text">Date de naissance</span>
+        <input type="date" formControlName="date_of_birth">
+      </label>
+
+      <label class="champ">
+        <span class="label-text">Pied fort</span>
+        <div class="select-wrapper">
+          <select formControlName="best_foot">
+            <option value="">Choisir...</option>
+            <option value="left">Gauche</option>
+            <option value="right">Droit</option>
+          </select>
+        </div>
+      </label>
+
+      <label class="champ">
+        <span class="label-text">Taille (cm)</span>
+        <input type="number" min="50" max="250" formControlName="height_cm" placeholder="187">
+      </label>
+
+      <!-- Zone média (nettoyée de l'aperçu doublon) -->
+      <div class="media">
+        <label
+          class="upload-box"
+          [class.drag-over]="dragActive"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)"
+        >
+          <div class="upload-content">
+            <span class="upload-icon">📸</span>
+            <span class="upload-text">Glissez ou changez la photo du joueur</span>
+          </div>
+          <input type="file" accept="image/*" (change)="onFileSelected($event)">
+        </label>
+      </div>
+    </div>
+
+    <!-- BLOC DE DROITE : Le sélecteur vertical -->
+    <div class="right-picker-container">
+      <span class="label-text">Postes sur le terrain</span>
+      <div class="picker-scroll-wrapper">
+        <app-position-picker
+          [favoritePosition]="form.get('best_position')?.value"
+          [positionsSelected]="form.get('positions')?.value || []"
+          (favoritePositionChange)="onFavoritePositionChange($event)"
+          (positionsSelectedChange)="onPositionsSelectedChange($event)"
+        ></app-position-picker>
+      </div>
+    </div>
+
+    <!-- LE FOOTER -->
+    <div class="form-footer">
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="active">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Joueur actif (disponible pour les matchs)</span>
+      </label>
+
+      <button class="button submit-btn" type="button" (click)="submit()" [disabled]="loading">
+        {{ mode === 'create' ? 'Créer le joueur' : 'Enregistrer les modifications' }}
+      </button>
+    </div>
+
+  </form>
+</div>

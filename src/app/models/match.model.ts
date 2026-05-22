@@ -9,6 +9,7 @@ export interface Match {
   opponent_score: number | null;
   status: string | null;
   created_at: string | null;
+  formation: string | null;
 }
 
 export type MatchPayload = Omit<Match, 'id' | 'created_at'>;

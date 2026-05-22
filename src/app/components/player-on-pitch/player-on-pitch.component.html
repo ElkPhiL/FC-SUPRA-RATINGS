@@ -3,7 +3,7 @@
       @if (player.photo_url) {
         <img [src]="player.photo_url" alt="{{ player.display_name }}" class="player-photo"/>
       } @else {
-        <img class="player-photo" src="../../../assets/genericPlayer.png" [alt]="player.display_name"/>
+        <img class="player-photo generic-player" src="../../../assets/genericPlayer.png" [alt]="player.display_name"/>
       }
     </div>
     <div class="name">{{ player.display_name }}</div>

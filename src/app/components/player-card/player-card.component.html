@@ -1,71 +1,74 @@
-<div class="player-card">
-  <div class="player-number">
-    {{ player.number }}
-  </div>
-  <div class="photo-wrapper">
-    @if (player.photo_url) {
-      <img
-        class="player-photo"
-        [src]="player.photo_url"
-        [alt]="player.display_name"
-      />
-    } @else {
-      <img
-        class="player-photo"
-        src="../../../assets/genericPlayer.png"
-        [alt]="player.display_name"
-      />
-    }
-  </div>
+<div class="player-card" [class.has-actions]="showActions">
+  <!-- État initial (Toujours visible) -->
+  <div class="card-main">
+    <div class="player-number">{{ player.number }}</div>
+    <div class="player-badge-pos">{{ player.best_position || 'N/A' }}</div>
 
-  <div class="player-header">
-    <div class="display-name">{{ player.display_name }}</div>
-
-    <div class="full-name">
-      {{ player.first_name || '' }} {{ player.last_name || '' }}
+    <div class="photo-wrapper">
+      @if (player.photo_url) {
+        <img class="player-photo" [src]="player.photo_url" [alt]="player.display_name" />
+      } @else {
+        <img class="player-photo generic-player" src="../../../assets/genericPlayer.png" [alt]="player.display_name" />
+      }
     </div>
 
-    <div class="badges">
-      <span class="badge best-position">
-        {{ player.best_position || 'N/A' }}
-      </span>
+    <div class="player-footer">
+      <div class="display-name">{{ player.display_name }}</div>
+    </div>
+  </div>
 
-      @for (position of player.positions; track position) {
-        @if (position !== player.best_position) {
-          <span class="badge position">{{ position }}</span>
-        }
+  <!-- Au survol : Le tiroir qui se déroule/glisse vers le haut -->
+  <div class="player-details-overlay">
+    <div class="details-content">
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Nom complet</span>
+          <span class="value">{{ player.first_name || '' }} {{ player.last_name || '' }}</span>
+        </div>
+        
+        <div class="info-item">
+          <span class="label">Âge</span>
+          <span class="value">
+            {{ player.date_of_birth ? calculateAge(player.date_of_birth) + ' ans' : 'N/A' }}
+          </span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Pied fort</span>
+          <span class="value text-capitalize">{{ player.best_foot || 'N/A' }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Taille</span>
+          <span class="value">{{ player.height_cm ? player.height_cm + ' cm' : 'N/A' }}</span>
+        </div>
+      </div>
+
+      <!-- Autres positions jouées -->
+      @if (player.positions && player.positions.length > 1) {
+        <div class="secondary-positions">
+          <div class="label">Autres postes</div>
+          <div class="positions-badges">
+            @for (position of player.positions; track position) {
+              @if (position !== player.best_position) {
+                <span class="pos-badge">{{ position }}</span>
+              }
+            }
+          </div>
+        </div>
       }
 
-      <span class="badge age">
-        @if (player.date_of_birth) {
-          {{ calculateAge(player.date_of_birth) }} ans
-        } @else {
-          Age inconnu
-        }
-      </span>
+      <!-- Actions d'administration (Optionnel) -->
+      @if (showActions) {
+        <div class="card-actions">
+          <a [routerLink]="['/admin/players', player.id, 'edit']" class="btn-action edit">
+            Modifier
+          </a>
+          <button type="button" class="btn-action delete" (click)="onDelete(player.id)">
+            Supprimer
+          </button>
+        </div>
+      }
     </div>
   </div>
-
-  @if (showActions) {
-
-    <div class="actions">
-
-      <a
-        [routerLink]="['/admin/players', player.id, 'edit']"
-        class="btn edit"
-      >
-        Modifier
-      </a>
-
-      <button
-        type="button"
-        class="btn delete"
-        (click)="onDelete(player.id)"
-      >
-        Supprimer
-      </button>
-
-    </div>
-
-  }
 </div>

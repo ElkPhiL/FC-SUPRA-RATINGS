@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnChanges, OnInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -17,7 +17,7 @@ import { PlayerCardComponent } from '../player-card/player-card.component';
 })
 export class PlayerFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() mode: 'create' | 'edit' = 'create';
-  @Input() player!: Player;
+  @Input() player?: Player;
   @Input() loading = false;
 
   @Output() submitForm = new EventEmitter<any>();
@@ -34,7 +34,7 @@ export class PlayerFormComponent implements OnInit, OnChanges, OnDestroy {
   // Pour éviter les fuites de mémoire avec valueChanges
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.form = this.fb.group({
       first_name: [''],
       last_name: [''],
@@ -129,6 +129,9 @@ export class PlayerFormComponent implements OnInit, OnChanges, OnDestroy {
       // On pousse la string base64 dans le control 'photo_url' du formulaire.
       // Cela va automatiquement déclencher le valueChanges et mettre à jour le playerPreview !
       this.form.patchValue({ photo_url: base64Image });
+
+      this.updatePreview(this.form.value);
+      this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);
   }

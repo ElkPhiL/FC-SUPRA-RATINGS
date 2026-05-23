@@ -4,12 +4,11 @@ import { RouterModule } from '@angular/router';
 import { PlayersService } from '../../../services/players.service';
 import { Player } from '../../../models/player.model';
 import { PlayerCardComponent } from '../../../components/player-card/player-card.component';
-import { SearchBarComponent } from '../../../components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-admin-players',
   standalone: true,
-  imports: [CommonModule, RouterModule, PlayerCardComponent, SearchBarComponent],
+  imports: [CommonModule, RouterModule, PlayerCardComponent],
   templateUrl: './admin-players.component.html',
   styleUrls: ['./admin-players.component.scss'],
 })

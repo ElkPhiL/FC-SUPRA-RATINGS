@@ -137,6 +137,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
+  margin-bottom: auto;
 }
 
 .info-item {
@@ -207,15 +208,15 @@
   transition: background 0.2s;
 
   &.edit {
-    background: #2563eb;
+    background: $modify-blue;
     color: white;
-    &:hover { background: #1d4ed8; }
+    &:hover { background: $modify-blue-hover; }
   }
 
   &.delete {
-    background: #dc2626;
+    background: $delete-red;
     color: white;
-    &:hover { background: #b91c1c; }
+    &:hover { background: $delete-red-hover; }
   }
 }
 

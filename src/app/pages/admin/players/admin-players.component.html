@@ -10,8 +10,6 @@
   <article class="panel">
     <h2>Liste des joueurs</h2>
 
-    <app-search-bar></app-search-bar>
-
     <div class="status-row">
       <p class="status-message" *ngIf="loading()">Chargement des joueurs…</p>
       <p class="status-message" *ngIf="!loading() && message()">{{ message() }}</p>

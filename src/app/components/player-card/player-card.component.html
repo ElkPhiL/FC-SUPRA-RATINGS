@@ -34,13 +34,18 @@
         </div>
 
         <div class="info-item">
-          <span class="label">Pied fort</span>
-          <span class="value text-capitalize">{{ player.best_foot || 'N/A' }}</span>
+          <span class="label">Nationalité</span>
+          <span class="value text-capitalize">{{ player.nationality || 'N/A' }}</span>
         </div>
 
         <div class="info-item">
           <span class="label">Taille</span>
           <span class="value">{{ player.height_cm ? player.height_cm + ' cm' : 'N/A' }}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="label">Pied fort</span>
+          <span class="value text-capitalize">{{ player.best_foot || 'N/A' }}</span>
         </div>
       </div>
 

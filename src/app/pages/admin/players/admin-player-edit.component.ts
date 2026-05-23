@@ -15,7 +15,6 @@ import { PlayerPositionsService } from '../../../services/player-positions.servi
 })
 export class AdminPlayerEditComponent implements OnInit {
   player = signal<Player | null>(null);
-
   loading = signal(true);
   saving = signal(false);
   message = signal('');

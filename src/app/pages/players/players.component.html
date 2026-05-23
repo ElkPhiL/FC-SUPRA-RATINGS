@@ -1,22 +1,91 @@
 <div class="page players-page">
   <header class="players-header">
     <div>
-      <h1>Joueurs actifs</h1>
+      <h1>Effectif de l'équipe</h1>
+      @if (!loading() && players().length) {
+        <p class="subtitle">
+          {{ players().length }} joueurs actifs
+        </p>
+      }
     </div>
+    
     @if (loading()) {
-      <div class="loader">Chargement des joueurs…</div>
+      <div class="loader-container">
+        <div class="spinner"></div>
+        <span>Mise en place de la feuille de match...</span>
+      </div>
     }
   </header>
 
   @if (message() && !loading()) {
-    <div class="message">{{ message() }}</div>
+    <div class="message-box">
+      <span class="info-icon">💡</span> {{ message() }}
+    </div>
   }
 
   @if (!loading() && players().length) {
-    <section class="players-grid">
-      @for (player of players(); track player.id) {
-        <app-player-card [player]="player"></app-player-card>
+    <div class="tactical-layout">
+      
+      <!-- 🧤 GARDIENS -->
+      @if (gardiens().length) {
+        <section class="position-section">
+          <div class="section-title-wrapper">
+            <h2>Gardiens</h2>
+            <span class="count-badge">{{ gardiens().length }}</span>
+          </div>
+          <div class="players-grid">
+            @for (player of gardiens(); track player.id) {
+              <app-player-card [player]="player"></app-player-card>
+            }
+          </div>
+        </section>
       }
-    </section>
+
+      <!-- 🛡️ DÉFENSEURS -->
+      @if (defenseurs().length) {
+        <section class="position-section">
+          <div class="section-title-wrapper">
+            <h2>Défenseurs</h2>
+            <span class="count-badge">{{ defenseurs().length }}</span>
+          </div>
+          <div class="players-grid">
+            @for (player of defenseurs(); track player.id) {
+              <app-player-card [player]="player"></app-player-card>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- 🎯 MILIEUX -->
+      @if (milieux().length) {
+        <section class="position-section">
+          <div class="section-title-wrapper">
+            <h2>Milieux de terrain</h2>
+            <span class="count-badge">{{ milieux().length }}</span>
+          </div>
+          <div class="players-grid">
+            @for (player of milieux(); track player.id) {
+              <app-player-card [player]="player"></app-player-card>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- ⚡ ATTAQUANTS -->
+      @if (attaquants().length) {
+        <section class="position-section">
+          <div class="section-title-wrapper">
+            <h2>Attaquants</h2>
+            <span class="count-badge">{{ attaquants().length }}</span>
+          </div>
+          <div class="players-grid">
+            @for (player of attaquants(); track player.id) {
+              <app-player-card [player]="player"></app-player-card>
+            }
+          </div>
+        </section>
+      }
+
+    </div>
   }
 </div>

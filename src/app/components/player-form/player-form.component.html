@@ -11,27 +11,27 @@
     <div class="left-fields-container">
       <label class="champ">
         <span class="label-text">Prénom</span>
-        <input type="text" formControlName="first_name" placeholder="Ex: Cristiano">
+        <input type="text" formControlName="first_name" placeholder="Prénom">
       </label>
 
       <label class="champ">
         <span class="label-text">Nom</span>
-        <input type="text" formControlName="last_name" placeholder="Ex: Ronaldo">
+        <input type="text" formControlName="last_name" placeholder="Nom">
       </label>
 
       <label class="champ">
-        <span class="label-text">Nom affiché sur la carte</span>
-        <input type="text" formControlName="display_name" placeholder="Ex: C. RONALDO">
+        <span class="label-text">Nom de maillot</span>
+        <input type="text" formControlName="display_name" placeholder="Nom de maillot">
       </label>
 
       <label class="champ">
         <span class="label-text">Numéro</span>
-        <input type="number" min="1" max="99" oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2);" formControlName="number" placeholder="7">
+        <input type="number" min="1" max="99" oninput="if (this.value.length > 2) this.value = this.value.slice(0, 2);" formControlName="number" placeholder="Numéro">
       </label>
 
       <label class="champ">
         <span class="label-text">Nationalité</span>
-        <input type="text" formControlName="nationality" placeholder="Ex: Portugal">
+        <input type="text" formControlName="nationality" placeholder="Nationalité">
       </label>
 
       <label class="champ">
@@ -52,7 +52,7 @@
 
       <label class="champ">
         <span class="label-text">Taille (cm)</span>
-        <input type="number" min="50" max="250" formControlName="height_cm" placeholder="187">
+        <input type="number" min="50" max="250" formControlName="height_cm" placeholder="Taille">
       </label>
 
       <!-- Zone média (nettoyée de l'aperçu doublon) -->
@@ -66,7 +66,7 @@
         >
           <div class="upload-content">
             <span class="upload-icon">📸</span>
-            <span class="upload-text">Glissez ou changez la photo du joueur</span>
+            <span class="upload-text">Glissez ou cliquez pour changer la photo du joueur</span>
           </div>
           <input type="file" accept="image/*" (change)="onFileSelected($event)">
         </label>

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed } from '@angular/core'; // 👈 Ajout de computed
 import { CommonModule } from '@angular/common';
 import { PlayersService } from '../../services/players.service';
 import { Player } from '../../models/player.model';
@@ -16,6 +16,30 @@ export class PlayersComponent {
   loading = signal(true);
   message = signal('');
 
+  // 🛠️ FONCTION DE TRI COMMUNE (Par numéro de maillot croissant)
+  private sortMethod = (a: Player, b: Player) => (a.number ?? 0) - (b.number ?? 0);
+
+  // 🔄 LISTES CALCULÉES ET TRIÉES DYNAMIQUEMENT
+  gardiens = computed(() => 
+    this.players().filter(p => ['GK', 'GARDIEN'].includes((p.best_position ?? '').toUpperCase()))
+                   .sort(this.sortMethod)
+  );
+
+  defenseurs = computed(() => 
+    this.players().filter(p => ['CB', 'RB', 'LB', 'LWB', 'RWB'].includes((p.best_position ?? '').toUpperCase()))
+                   .sort(this.sortMethod)
+  );
+
+  milieux = computed(() => 
+    this.players().filter(p => ['CM', 'CDM', 'CAM', 'RM', 'LM'].includes((p.best_position ?? '').toUpperCase()))
+                   .sort(this.sortMethod)
+  );
+
+  attaquants = computed(() => 
+    this.players().filter(p => ['ST', 'RW', 'LW'].includes((p.best_position ?? '').toUpperCase()))
+                   .sort(this.sortMethod)
+  );
+
   constructor(private playersService: PlayersService) {
     this.loadPlayers();
   }
@@ -26,9 +50,6 @@ export class PlayersComponent {
 
     try {
       const players = await this.playersService.getPlayersWithPositions();
-
-      console.log('Joueurs chargés avec positions:', players);
-
       this.players.set(players);
 
       if (!players.length) {
@@ -36,24 +57,9 @@ export class PlayersComponent {
       }
     } catch (error: any) {
       console.error('Erreur lors du chargement des joueurs', error);
-      console.error('Détails de l\'erreur:', {
-        message: error.message,
-        details: error.details,
-        hint: error.hint,
-        code: error.code
-      });
       this.message.set(`Erreur de chargement: ${error.message || 'Erreur inconnue'}`);
     } finally {
       this.loading.set(false);
     }
-  }
-
-  getAvatarInitial(player: Player) {
-    const label = player.display_name || player.first_name || player.last_name || 'Joueur';
-    return label.charAt(0).toUpperCase();
-  }
-
-  getPlayerName(player: Player) {
-    return player.display_name || `${player.first_name || ''} ${player.last_name || ''}`.trim() || 'Joueur inconnu';
   }
 }

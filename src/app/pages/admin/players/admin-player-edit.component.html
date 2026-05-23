@@ -5,7 +5,7 @@
 @if (player()) {
   <app-player-form
     mode="edit"
-    [player]="player()"
+    [player]="player() ?? undefined"
     [loading]="saving()"
     (submitForm)="update($event)">
   </app-player-form>

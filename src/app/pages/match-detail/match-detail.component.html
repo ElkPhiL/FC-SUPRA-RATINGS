@@ -1,82 +1,202 @@
-<div class="match-detail-container">
-  <!-- Loading state -->
-  @if (loading()) {
-    <div class="loading">
-      <p>Chargement du match...</p>
-    </div>
-  }
+<div class="match-detail-page">
 
-  <!-- Error state -->
-  @if (error()) {
-    <div class="error">
-      <p>{{ error() }}</p>
-    </div>
-  }
+  <!-- HERO -->
+  <section class="match-hero">
 
-  <!-- Match content -->
-  @if (match() && !loading()) {
-    <div class="match-header">
-      <h1>{{ match()!.opponent }}</h1>
-      <p class="competition">{{ match()!.competition }}</p>
-      <p class="match-date">{{ match()!.match_date | date: 'dd/MM/yyyy HH:mm' }}</p>
+    <div class="hero-top">
+      <div class="competition-badge">
+        {{ match()!.competition }}
+      </div>
+
+      <div class="match-meta">
+        <span>{{ match()!.match_date | date:'dd MMM yyyy' }}</span>
+        <span>•</span>
+        <span>{{ match()!.venue }}</span>
+      </div>
     </div>
 
-    <!-- Score Section -->
-    <section class="match-section score-section">
-      <h2>Score</h2>
-      <div class="score-display">
-        <div class="team-score">
-          <span class="team-name">FC Supra</span>
-          <span class="score">{{ match()!.fc_supra_score ?? '-' }}</span>
+    <div class="scoreboard">
+
+      <div class="team">
+        <div class="team-logo">
+          <img src="assets/logos/supra.png" alt="FC Supra">
         </div>
-        <div class="vs">vs</div>
-        <div class="team-score">
-          <span class="team-name">{{ match()!.opponent }}</span>
-          <span class="score">{{ match()!.opponent_score ?? '-' }}</span>
+
+        <div class="team-name">
+          FC Supra
         </div>
       </div>
-      <p class="venue">{{ match()!.venue }}</p>
-    </section>
 
-    <!-- Lineup Section -->
-    <section class="match-section lineup-section">
-      <h2>Composition</h2>
-      <div class="lineup-content">
-        <p class="placeholder">Contenu de la composition à venir...</p>
-      </div>
-    </section>
+      <div class="score-center">
 
-    <!-- Ratings Section -->
-    <section class="match-section ratings-section">
-      <h2>Notes</h2>
-      <div class="ratings-content">
-        <p class="placeholder">Notation des joueurs à venir...</p>
-      </div>
-    </section>
+        <div class="score-line">
+          <span class="score">
+            {{ match()!.fc_supra_score ?? '-' }}
+          </span>
 
-    <!-- Man of the Match Section -->
-    <section class="match-section motm-section">
-      <h2>Homme du Match</h2>
-      <div class="motm-content">
-        <p class="placeholder">Homme du match à venir...</p>
-      </div>
-    </section>
+          <span class="separator">:</span>
 
-    <!-- Stats Section -->
-    <section class="match-section stats-section">
-      <h2>Statistiques</h2>
-      <div class="stats-content">
-        <p class="placeholder">Statistiques détaillées à venir...</p>
-      </div>
-    </section>
+          <span class="score">
+            {{ match()!.opponent_score ?? '-' }}
+          </span>
+        </div>
 
-    <!-- Comments Section -->
-    <section class="match-section comments-section">
-      <h2>Commentaires</h2>
-      <div class="comments-content">
-        <p class="placeholder">Commentaires à venir...</p>
+        <div class="match-status">
+          {{ match()!.status }}
+        </div>
+
       </div>
-    </section>
-  }
+
+      <div class="team">
+        <div class="team-logo opponent-logo">
+          {{ match()!.opponent.charAt(0) }}
+        </div>
+
+        <div class="team-name">
+          {{ match()!.opponent }}
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- TABS -->
+  <section class="tabs-section">
+
+    <button
+      class="tab active">
+      Résumé
+    </button>
+
+    <button class="tab">
+      Composition
+    </button>
+
+    <button class="tab">
+      Ratings
+    </button>
+
+    <button class="tab">
+      Stats
+    </button>
+
+  </section>
+
+  <!-- CONTENT -->
+  <div class="content-grid">
+
+    <!-- LEFT -->
+    <div class="main-column">
+
+      <!-- MATCH EVENTS -->
+      <section class="card">
+
+        <div class="card-header">
+          <h2>Moments clés</h2>
+        </div>
+
+        <div class="timeline">
+
+          <!-- EVENT -->
+<!--           <app-match-event-item></app-match-event-item>
+
+          <app-match-event-item></app-match-event-item>
+
+          <app-match-event-item></app-match-event-item> -->
+
+        </div>
+
+      </section>
+
+      <!-- LINEUP -->
+      <section class="card">
+
+        <div class="card-header">
+          <h2>Composition</h2>
+        </div>
+
+      <app-lineup-pitch
+        [formation]="homeFormation()"
+        [lineup]="homeLineup()"
+      ></app-lineup-pitch>
+
+      </section>
+
+      <!-- RATINGS -->
+      <section class="card">
+
+        <div class="card-header">
+          <h2>Notes des joueurs</h2>
+        </div>
+
+        <div class="ratings-grid">
+
+<!--           @for (player of lineupPlayers(); track player.id) {
+
+            <app-player-rating-card
+              [player]="player">
+            </app-player-rating-card>
+
+          } -->
+
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="side-column">
+
+      <!-- MATCH INFO -->
+      <section class="card">
+
+        <div class="card-header">
+          <h2>Informations</h2>
+        </div>
+
+        <div class="info-list">
+
+          <div class="info-row">
+            <span>Domicile / Extérieur</span>
+            <strong>{{ match()!.home_away }}</strong>
+          </div>
+
+          <div class="info-row">
+            <span>Formation</span>
+            <strong>{{ match()!.formation }}</strong>
+          </div>
+
+          <div class="info-row">
+            <span>Compétition</span>
+            <strong>{{ match()!.competition }}</strong>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- MVP -->
+      <section class="card">
+
+        <div class="card-header">
+          <h2>Homme du match</h2>
+        </div>
+
+      </section>
+
+      <!-- TEAM STATS -->
+      <section class="card">
+
+        <div class="card-header">
+          <h2>Statistiques</h2>
+        </div>
+
+      </section>
+
+    </div>
+
+  </div>
+
 </div>
-

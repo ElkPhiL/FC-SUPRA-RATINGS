@@ -45,7 +45,6 @@ export class AdminLineupComponent {
   formations = FORMATIONS;
   selectedFormation = signal(this.formations[0]);
 
-  // Exemple de structure dans ton TS
   public benchFormation = signal({
     slots: [
       { key: 'sub_1', label: 'Sub' },
@@ -76,6 +75,7 @@ export class AdminLineupComponent {
       
       if (match && match.formation) {
         const savedFormation = this.formations.find(f => f.name === match.formation);
+        console.log(savedFormation);
         if (savedFormation) {
           this.selectedFormation.set(savedFormation);
         }
@@ -136,10 +136,14 @@ export class AdminLineupComponent {
   }
 
   resetLineup() {
-    const obj: any = {};
+    const obj: Record<string, Player | null> = {};
 
     this.selectedFormation().slots.forEach(slot => {
-        obj[slot.key] = null;
+      obj[slot.key] = null;
+    });
+
+    this.benchFormation().slots.forEach(slot => {
+      obj[slot.key] = null;
     });
 
     this.lineup.set(obj);

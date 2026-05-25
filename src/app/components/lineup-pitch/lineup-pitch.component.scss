@@ -1,0 +1,182 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.pitch-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.pitch {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 68 / 105;
+
+  border-radius: 24px;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #198754 0%,
+      #157347 100%
+    );
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.25);
+
+  border: 2px solid rgba(255,255,255,0.08);
+}
+
+/* Terrain stripes */
+
+.pitch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.03) 0%,
+      rgba(255,255,255,0.03) 10%,
+      transparent 10%,
+      transparent 20%
+    );
+
+  pointer-events: none;
+}
+
+/* Outer field */
+
+.pitch::after {
+  content: '';
+  position: absolute;
+
+  inset: 12px;
+
+  border: 2px solid rgba(255,255,255,0.35);
+
+  border-radius: 16px;
+
+  pointer-events: none;
+}
+
+/* Middle line */
+
+.half-line {
+  position: absolute;
+
+  top: 50%;
+  left: 12px;
+  right: 12px;
+
+  height: 2px;
+
+  background: rgba(255,255,255,0.35);
+
+  transform: translateY(-50%);
+}
+
+/* Center circle */
+
+.center-circle {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 110px;
+  height: 110px;
+
+  border-radius: 50%;
+
+  border: 2px solid rgba(255,255,255,0.35);
+
+  transform: translate(-50%, -50%);
+}
+
+/* Penalty boxes */
+
+.penalty-area {
+  position: absolute;
+
+  left: 50%;
+
+  width: 42%;
+  height: 14%;
+
+  border: 2px solid rgba(255,255,255,0.35);
+
+  transform: translateX(-50%);
+}
+
+.penalty-area.top {
+  top: 12px;
+  border-top: none;
+}
+
+.penalty-area.bottom {
+  bottom: 12px;
+  border-bottom: none;
+}
+
+/* Players */
+
+.slot {
+  position: absolute;
+
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 5;
+}
+
+/* Empty slot */
+
+.empty-slot {
+  width: 52px;
+  height: 52px;
+
+  border-radius: 50%;
+
+  border: 2px dashed rgba(255,255,255,0.4);
+
+  background: rgba(255,255,255,0.08);
+
+  color: white;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.empty-slot:hover {
+  transform: scale(1.08);
+  background: rgba(255,255,255,0.15);
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .pitch-container {
+    max-width: 100%;
+  }
+
+  .center-circle {
+    width: 80px;
+    height: 80px;
+  }
+
+}

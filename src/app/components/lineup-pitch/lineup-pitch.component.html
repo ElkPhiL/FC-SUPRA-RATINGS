@@ -1,0 +1,49 @@
+<div class="pitch-container">
+
+  <div class="pitch">
+
+    <!-- Centre line -->
+    <div class="half-line"></div>
+
+    <!-- Centre circle -->
+    <div class="center-circle"></div>
+
+    <!-- Top penalty area -->
+    <div class="penalty-area top"></div>
+
+    <!-- Bottom penalty area -->
+    <div class="penalty-area bottom"></div>
+
+    @for (slot of formation.slots; track slot.key) {
+
+      <div
+        class="slot"
+        [style.left.%]="slot.x"
+        [style.top.%]="slot.y"
+      >
+
+        @if (lineup[slot.key]; as player) {
+
+          <app-player-on-pitch
+            [player]="player"
+          />
+
+        } @else {
+
+          <button
+            *ngIf="editable"
+            class="empty-slot"
+            (click)="slotClick.emit(slot)"
+          >
+            +
+          </button>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

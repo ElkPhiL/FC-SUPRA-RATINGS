@@ -115,7 +115,7 @@
         <div class="card-header">
           <h2>Composition</h2>
         </div>
-
+      
       <app-lineup-pitch
         [formation]="homeFormation()"
         [lineup]="homeLineup()"
@@ -132,13 +132,11 @@
 
         <div class="ratings-grid">
 
-<!--           @for (player of lineupPlayers(); track player.id) {
-
+          @for (matchPlayer of lineupPlayers(); track matchPlayer.id) {
             <app-player-rating-card
-              [player]="player">
+              [matchPlayer]="matchPlayer">
             </app-player-rating-card>
-
-          } -->
+          }
 
         </div>
 

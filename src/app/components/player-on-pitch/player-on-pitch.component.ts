@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Input, Output, EventEmitter } from '@angular/core';
-import { Player } from '../../models/player.model';
 import { CommonModule } from '@angular/common';
+import { MatchPlayerWithPlayer } from '../../models/match-players.model';
 
 @Component({
   selector: 'app-player-on-pitch',
@@ -11,6 +11,6 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./player-on-pitch.component.scss'],
 })
 export class PlayerOnPitch {
-  @Input() player!: Player;
+  @Input() matchPlayer!: MatchPlayerWithPlayer;
   @Output() remove = new EventEmitter<void>();
 }

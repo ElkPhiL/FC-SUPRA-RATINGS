@@ -190,16 +190,9 @@
 
 .card {
   background: white;
-
   border-radius: 22px;
-
   padding: 1.5rem;
-
   border: 1px solid #e7ebf3;
-}
-
-.card-header {
-  margin-bottom: 1.5rem;
 }
 
 .card-header h2 {
@@ -226,6 +219,10 @@
     repeat(auto-fill, minmax(280px, 1fr));
 
   gap: 1rem;
+}
+
+app-lineup-pitch {
+  min-height: 600px;
 }
 
 /* INFO */

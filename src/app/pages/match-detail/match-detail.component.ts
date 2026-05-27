@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { SupabaseService } from '../../services/supabase.service';
@@ -10,10 +10,13 @@ import { FORMATIONS } from '../../shared/constants/formations';
 import { MatchesService } from '../../services/matches.service';
 import { MatchPlayersService } from '../../services/match-players.service';
 import { PlayersService } from '../../services/players.service';
+import { PlayerRatingCardComponent } from '../../components/player-rating-card/player-rating-card.component';
+import { MatchPlayerWithPlayer } from '../../models/match-players.model';
+import { PlayerRatingsService } from '../../services/player-ratings.service';
 
 @Component({
   selector: 'app-match-detail',
-  imports: [CommonModule, LineupPitchComponent],
+  imports: [CommonModule, LineupPitchComponent, PlayerRatingCardComponent],
   templateUrl: './match-detail.component.html',
   styleUrl: './match-detail.component.scss',
 })
@@ -22,6 +25,7 @@ export class MatchDetailComponent implements OnInit {
   private playersService = inject(PlayersService);
   private matchesService = inject(MatchesService);
   private matchPlayersService = inject(MatchPlayersService);
+  private ratingsService = inject(PlayerRatingsService);
   matchId = signal<number>(+this.route.snapshot.params['id']);
   match = signal<Match | null>(null);
   players = signal<Player[]>([]);
@@ -30,18 +34,30 @@ export class MatchDetailComponent implements OnInit {
 
   formations = FORMATIONS;
   homeFormation = signal<Formation>(this.formations[0]);
-  homeLineup = signal<Record<string, Player | null>>({});
+  homeLineup = signal<Record<string, MatchPlayerWithPlayer | null>>({});
+
+  lineupPlayers = computed(() => {
+    return Object.values(this.homeLineup())
+      .filter(
+        (player): player is MatchPlayerWithPlayer =>
+          player !== null
+      );
+  });
 
   constructor(private supabaseService: SupabaseService) {
     this.loadPlayers();
     this.loadHomeLineup();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadMatch(id);
     }
+
+    await this.ratingsService.loadRatings(
+      this.matchId()
+    );
   }
 
   async loadMatch(id: string) {
@@ -100,7 +116,7 @@ export class MatchDetailComponent implements OnInit {
     }
 
     // 3. Préparer les slots vides
-    const lineup: Record<string, Player | null> = {};
+    const lineup: Record<string, MatchPlayerWithPlayer | null> = {};
 
     this.homeFormation().slots.forEach(slot => {
       lineup[slot.key] = null;
@@ -119,7 +135,10 @@ export class MatchDetailComponent implements OnInit {
           this.players().find(p => p.id === mp.player_id);
 
         if (fullPlayer && mp.slot_key) {
-          lineup[mp.slot_key] = fullPlayer;
+          lineup[mp.slot_key] = {
+            ...mp,
+            player: fullPlayer
+          };
         }
       });
 

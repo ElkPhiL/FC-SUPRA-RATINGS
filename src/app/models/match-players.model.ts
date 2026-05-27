@@ -1,3 +1,5 @@
+import { Player } from "./player.model";
+
 export interface MatchPlayer {
   id: number;
   match_id: number;
@@ -10,3 +12,10 @@ export interface MatchPlayer {
 }
 
 export type MatchPlayerPayload = Omit<MatchPlayer, 'id' | 'created_at'>;
+
+export interface MatchPlayerWithPlayer
+  extends MatchPlayer {
+
+  player: Player;
+
+}

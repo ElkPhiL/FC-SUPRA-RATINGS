@@ -1,13 +1,10 @@
 <div class="player-on-pitch">
     <div class="photo-wrapper">
-      @if (player.photo_url) {
-        <img [src]="player.photo_url" alt="{{ player.display_name }}" class="player-photo"/>
+      @if (matchPlayer.player.photo_url) {
+        <img [src]="matchPlayer.player.photo_url" alt="{{ matchPlayer.player.display_name }}" class="player-photo"/>
       } @else {
-        <img class="player-photo generic-player" src="assets/genericPlayer.png" [alt]="player.display_name"/>
+        <img class="player-photo generic-player" src="assets/genericPlayer.png" [alt]="matchPlayer.player.display_name"/>
       }
     </div>
-    <div class="name">{{ player.display_name }}</div>
-
-    <button class="remove-btn" (click)="remove.emit()">×</button>
+    <div class="name">{{ matchPlayer.player.display_name }}</div>
 </div>
-

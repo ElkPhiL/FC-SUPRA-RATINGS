@@ -1,0 +1,23 @@
+<div class="slider">
+
+  @for (rating of ratings; track rating) {
+
+    <button
+      class="rating-button"
+
+      [class.active]="
+        rating <= (hoverValue() ?? value())
+      "
+
+      (mouseenter)="hoverValue.set(rating)"
+      (mouseleave)="hoverValue.set(null)"
+
+      (click)="setRating(rating)">
+
+      {{ rating }}
+
+    </button>
+
+  }
+
+</div>

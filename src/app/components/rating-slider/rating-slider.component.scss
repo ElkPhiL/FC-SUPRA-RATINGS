@@ -1,0 +1,30 @@
+.slider {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.rating-button {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background: #edf1f7;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.15s;
+}
+
+.rating-button:hover {
+  transform: scale(1.08);
+}
+
+.rating-button.active {
+  background: #071b4d;
+  color: white;
+}

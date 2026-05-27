@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Player } from '../../models/player.model';
 import { PlayerOnPitch } from '../player-on-pitch/player-on-pitch.component';
+import { MatchPlayerWithPlayer } from '../../models/match-players.model';
 
 @Component({
   selector: 'app-lineup-pitch',
@@ -18,7 +18,7 @@ export class LineupPitchComponent {
   formation!: any;
 
   @Input({ required: true })
-  lineup!: Record<string, Player | null>;
+  lineup!: Record<string, MatchPlayerWithPlayer | null>;
 
   @Input()
   editable = false;

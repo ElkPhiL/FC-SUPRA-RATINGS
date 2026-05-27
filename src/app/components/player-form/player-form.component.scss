@@ -200,25 +200,6 @@ select {
   }
 }
 
-.submit-btn {
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 14px;
-  font-size: 1rem;
-  font-weight: 800;
-  color: white;
-  text-transform: uppercase;
-  background: linear-gradient(120deg, rgba($supra-blue, 0.85), $supra-blue, rgba($supra-blue, 0.85));
-  box-shadow: 0 4px 15px rgba($supra-blue, 0.25);
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    filter: brightness(1.1);
-  }
-}
-
 // --- RESPONSIVE DE GRILLE (Bascule sur une seule colonne sur tablette/mobile) ---
 @media (max-width: 850px) {
   .form-grid {

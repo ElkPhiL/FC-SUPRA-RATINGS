@@ -1,33 +1,35 @@
+@use '../../../styles/abstracts/' as *;
+
 :host {
   display: block;
   width: 100%;
+  height: 100%;
 }
 
 .pitch-container {
+  height: 100%;
   width: 100%;
-  max-width: 700px;
   margin: 0 auto;
 }
 
 .pitch {
   position: relative;
+  
+  // Rendre le terrain intelligent face aux contraintes du parent
   width: 100%;
-  aspect-ratio: 68 / 105;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  margin: 0 auto; // Centre le terrain horizontalement s'il devient plus étroit
 
   border-radius: 24px;
   overflow: hidden;
 
-  background:
-    linear-gradient(
-      to bottom,
-      #198754 0%,
-      #157347 100%
-    );
-
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.25);
-
-  border: 2px solid rgba(255,255,255,0.08);
+  background: linear-gradient(
+    to bottom,
+    #198754 0%,
+    #157347 100%
+  );
 }
 
 /* Terrain stripes */
@@ -137,11 +139,42 @@
   z-index: 5;
 }
 
+.player-wrapper {
+  position: relative;
+
+  &:hover {
+    .remove-btn {
+      opacity: 1;
+    }
+  }
+}
+
+.remove-btn {
+  opacity: 0;
+  position: absolute;
+  top: 10px;
+  right: -12px;
+  background: $supra-red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+}
+
+.remove-btn:hover {
+  transform: scale(1.1);
+  background: #ff1f14;
+}
+
 /* Empty slot */
 
 .empty-slot {
-  width: 52px;
-  height: 52px;
+  width: 100px;
+  height: 100px;
 
   border-radius: 50%;
 

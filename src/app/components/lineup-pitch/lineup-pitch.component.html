@@ -24,9 +24,24 @@
 
         @if (lineup[slot.key]; as player) {
 
-          <app-player-on-pitch
-            [player]="player"
-          />
+            <div class="player-wrapper">
+
+                <app-player-on-pitch
+                [matchPlayer]="player"
+                />
+
+                @if (editable) {
+
+                <button
+                    class="remove-btn"
+                    (click)="removePlayer.emit(slot.key)"
+                >
+                    ×
+                </button>
+
+                }
+
+            </div>
 
         } @else {
 

@@ -1,80 +1,72 @@
-<div class="pitch-section">
+<div class="lineup-container">
+  
+  @if (message()) {
+    <div class="status-message" [class.loading]="loading()">
+      {{ message() }}
+    </div>
+  }
 
-  <div class="formation-selector">
-    <label for="formation">Formation:</label>
+  <header class="tactics-header">
+    <div class="formation-picker">
+      <label for="formation">Dispositif Tactique :</label>
       <select id="formation" name="formation" (change)="changeFormation($event)">
-        <option *ngFor="let f of formations" [value]="f.name">
-        {{ f.name }}
+        <option *ngFor="let f of formations" [value]="f.name" [selected]="f.name === selectedFormation().name">
+          {{ f.name }}
         </option>
       </select>
-    <button (click)="resetLineup()">Reset Lineup</button>
-  </div>
-
-  <div class="pitch-color">
-    <div class="pitch">
-      <div
-      *ngFor="let slot of selectedFormation().slots"
-      class="slot"
-      [id]="slot.key"
-      [style.left.%]="slot.x"
-      [style.top.%]="slot.y">
-
-      @if (previewingSlot() === slot.key && previewPlayer(); as p) {
-        <app-player-on-pitch [player]="p"></app-player-on-pitch>
-      } @else if (lineup()[slot.key]; as currentPlayer) {
-        <div>
-          <div class="player-placeholder"></div>
-          <app-player-on-pitch
-            [player]="currentPlayer"
-            (remove)="deleteFromSlot(slot.key)">
-          </app-player-on-pitch>
-        </div>
-      } @else {
-        <div class="empty-slot" (click)="openSearch(slot)">
-          {{ slot.label }}
-        </div>
-      }
-
-      </div>
-      <app-player-search
-          [visible]="searchOpen()"
-          [players]="availablePlayers()"
-          [slotLabel]="selectedSlot()?.label || ''"
-          (close)="searchOpen.set(false)"
-          (selectPlayer)="assignPlayerFromSearch($event)">
-      </app-player-search>
     </div>
-  </div>
+    <button class="btn btn-secondary" (click)="resetLineup()">Effacer la composition</button>
+  </header>
 
-</div>
+  <div class="workspace">
+    
+    <main class="pitch-section">
+      <div class="pitch-wrapper">
+        <app-lineup-pitch
+          [formation]="selectedFormation()"
+          [lineup]="lineup()"
+          [editable]="true"
+          (removePlayer)="deleteFromSlot($event)"
+          (slotClick)="openSearch($event)"
+        ></app-lineup-pitch>
+      </div>
+    </main>
 
-<div class="bench-section">
-  <h3>Remplaçants</h3>
-  <div class="bench-slots">
-    @for (slot of benchFormation().slots; track slot.key) {
-      <div class="bench-slot">
-        
-        @if (previewingSlot() === slot.key && previewPlayer(); as p) {
-          <app-player-on-pitch [player]="p"></app-player-on-pitch>
-        } @else if (lineup()[slot.key]; as currentPlayer) {
-          <div>
-            <div class="player-placeholder"></div>
-            <app-player-on-pitch
-              [player]="currentPlayer"
-              (remove)="deleteFromSlot(slot.key)">
-            </app-player-on-pitch>
-          </div>
-        } @else {
-          <div class="empty-slot bench-empty" (click)="openSearch(slot)">
-            + {{ slot.label }}
+    <aside class="bench-section">
+      <h3>Remplaçants</h3>
+      <div class="bench-grid">
+        @for (slot of benchFormation().slots; track slot.key) {
+          <div class="bench-slot-card">
+            @if (lineup()[slot.key]; as currentPlayer) {
+              <div class="filled-bench-slot">
+                <app-player-on-pitch
+                  [matchPlayer]="currentPlayer"
+                  (remove)="deleteFromSlot(slot.key)">
+                </app-player-on-pitch>
+              </div>
+            } @else {
+              <button class="empty-bench-slot" (click)="openSearch(slot)">
+                <span class="plus-icon">+</span>
+              </button>
+            }
           </div>
         }
-
       </div>
-    }
+    </aside>
+
+  </div>
+
+  <div class="actions-bar">
+    <button class="submit-btn" [disabled]="loading()" (click)="saveLineup()">
+      Enregistrer la composition
+    </button>
   </div>
 </div>
 
-<div class="actions">
-  <button (click)="saveLineup()">Enregistrer la composition</button>
-</div>
+<app-player-search
+  [visible]="searchOpen()"
+  [players]="availablePlayers()"
+  [slotLabel]="selectedSlot()?.label || ''"
+  (close)="searchOpen.set(false)"
+  (selectPlayer)="assignPlayerFromSearch($event)">
+</app-player-search>

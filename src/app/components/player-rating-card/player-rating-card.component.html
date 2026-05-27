@@ -1,0 +1,36 @@
+<div class="player-card">
+
+  <div class="player-top">
+
+    <img
+      class="player-photo"
+      [src]="matchPlayer.player.photo_url">
+
+    <div class="player-info">
+
+      <div class="player-name">
+        {{ matchPlayer.player.display_name }}
+      </div>
+
+      <div class="player-meta">
+        #{{ matchPlayer.player.number }}
+      </div>
+
+    </div>
+
+    <div class="rating-badge">
+      {{ averageRating() || '-' }}
+    </div>
+
+  </div>
+
+  <div class="votes">
+    {{ voteCount() }} votes
+  </div>
+
+  <app-rating-slider
+    [value]="userRating() || 0"
+    (valueChange)="onRate($event)">
+  </app-rating-slider>
+
+</div>

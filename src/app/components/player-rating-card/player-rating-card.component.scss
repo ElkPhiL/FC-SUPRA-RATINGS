@@ -1,0 +1,67 @@
+.player-card {
+  background: white;
+
+  border-radius: 20px;
+
+  padding: 1rem;
+
+  border: 1px solid #e7ebf3;
+}
+
+.player-top {
+  display: flex;
+  align-items: center;
+
+  gap: 1rem;
+
+  margin-bottom: 1rem;
+}
+
+.player-photo {
+  width: 60px;
+  height: 60px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+  transform: scale(1.4);
+}
+
+.player-info {
+  flex: 1;
+}
+
+.player-name {
+  font-weight: 800;
+  color: #071b4d;
+}
+
+.player-meta {
+  color: #6f7a90;
+  font-size: 0.9rem;
+}
+
+.rating-badge {
+  width: 52px;
+  height: 52px;
+
+  border-radius: 50%;
+
+  background: #071b4d;
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.votes {
+  margin-bottom: 1rem;
+
+  color: #6f7a90;
+  font-size: 0.9rem;
+}

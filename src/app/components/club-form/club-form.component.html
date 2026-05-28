@@ -1,0 +1,71 @@
+<form [formGroup]="form" class="form-grid" (ngSubmit)="submit()">
+
+  <label class="champ">
+    Nom
+    <input type="text" formControlName="name" placeholder="Ex: FC Supra">
+  </label>
+
+  <label class="champ">
+    Nom court (2 à 4 lettres)
+    <input type="text" formControlName="short_name" placeholder="Ex: FCS">
+  </label>
+
+  <label class="champ">
+    Slug
+    <input type="text" formControlName="slug" placeholder="Ex: fc-supra">
+  </label>
+
+  <label class="champ">
+    Logo URL
+    <input type="text" formControlName="logo_url" placeholder="https://...">
+  </label>
+
+  <label class="champ">
+    Ville
+    <input type="text" formControlName="city" placeholder="Ex: Lyon">
+  </label>
+
+  <label class="champ">
+    Pays
+    <input type="text" formControlName="country" placeholder="Ex: France">
+  </label>
+
+  <label class="champ">
+    Année de fondation
+    <input type="number" formControlName="founded_year" placeholder="Ex: 1994">
+  </label>
+
+  <div class="colors-section" formGroupName="colors">
+    <h3>Couleurs du club</h3>
+    
+    <div class="colors-grid">
+      <label class="champ-color">
+        <div class="color-picker-wrapper">
+          <input type="color" formControlName="primary">
+        </div>
+        <span>Principale</span>
+      </label>
+
+      <label class="champ-color">
+        <div class="color-picker-wrapper">
+          <input type="color" formControlName="secondary">
+        </div>
+        <span>Secondaire</span>
+      </label>
+
+      <label class="champ-color">
+        <div class="color-picker-wrapper">
+          <input type="color" formControlName="alternate">
+        </div>
+        <span>Alternative</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button class="button" type="submit" [disabled]="loading || form.invalid">
+      {{ loading ? 'Enregistrement...' : (mode === 'create' ? 'Créer le club' : 'Modifier le club') }}
+    </button>
+  </div>
+
+</form>

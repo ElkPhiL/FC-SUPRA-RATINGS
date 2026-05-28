@@ -16,6 +16,7 @@ export interface Player {
   best_foot: 'left' | 'right' | null;
   height_cm: number | null;
   weight_kg: number | null;
+  current_team_id: number | null;
 }
 
 export type PlayerPayload = Omit<Player, 'id' | 'created_at'>;

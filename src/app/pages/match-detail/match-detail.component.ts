@@ -109,7 +109,7 @@ export class MatchDetailComponent implements OnInit {
 
     // 2. Trouver la formation correspondante
     const formation =
-      this.formations.find(f => f.name === match.formation);
+      this.formations.find(f => f.name === match.home_formation);
 
     if (formation) {
       this.homeFormation.set(formation);

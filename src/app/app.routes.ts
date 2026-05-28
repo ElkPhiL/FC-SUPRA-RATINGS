@@ -21,6 +21,9 @@ import { AdminMatchCreateComponent } from './pages/admin/matches/admin-match-cre
 import { AdminMatchEditComponent } from './pages/admin/matches/admin-match-edit.component';
 import { AdminLineupComponent } from './pages/admin/matches/admin-lineup.component';
 import { AdminRatingsComponent } from './pages/admin/admin-ratings.component';
+import { AdminClubsComponent } from './pages/admin/clubs/admin-clubs.component';
+import { AdminClubCreateComponent } from './pages/admin/clubs/admin-club-create.component';
+import { AdminClubEditComponent } from './pages/admin/clubs/admin-club-edit.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -38,6 +41,9 @@ export const routes: Routes = [
     canActivate: [AdminGuard],
     children: [
       { path: '', component: AdminDashboardComponent },
+      { path: 'clubs', component: AdminClubsComponent },
+      { path: 'clubs/new', component: AdminClubCreateComponent },
+      { path: 'clubs/:id/edit', component: AdminClubEditComponent },
       { path: 'players', component: AdminPlayersComponent },
       { path: 'players/new', component: AdminPlayerCreateComponent },
       { path: 'players/:id/edit', component: AdminPlayerEditComponent },

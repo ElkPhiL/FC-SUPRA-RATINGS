@@ -3,13 +3,13 @@ export interface Match {
   match_date: string | null;
   opponent: string;
   competition: string | null;
-  home_away: string | null;
   venue: string | null;
-  fc_supra_score: number | null;
-  opponent_score: number | null;
+  home_score: number | null;
+  away_score: number | null;
   status: string | null;
   created_at: string | null;
-  formation: string | null;
+  home_formation: string | null;
+  away_formation: string | null;
 }
 
 export type MatchPayload = Omit<Match, 'id' | 'created_at'>;

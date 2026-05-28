@@ -1,0 +1,31 @@
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1>Clubs</h1>
+      <p>Gérer les clubs depuis l’administration.</p>
+    </div>
+    <a routerLink="/admin/clubs/new" class="button">Ajouter un club</a>
+  </header>
+
+  <article class="panel">
+    <h2>Clubs</h2>
+
+    <div class="status-row">
+      <p class="status-message" *ngIf="loading()">Chargement des clubs...</p>
+      <p class="status-message" *ngIf="!loading() && message()">{{ message() }}</p>
+    </div>
+
+    <ul class="club-table" *ngIf="!loading() && clubs().length">
+      <li *ngFor="let club of clubs()">
+        <div>
+          <strong>{{ club.name }}</strong>
+        </div>
+
+        <div class="club-actions">
+          <a routerLink="/admin/clubs/{{ club.id }}/edit" class="link-button">Modifier</a>
+          <button class="link-button danger" (click)="deleteClub(club.id)">Supprimer</button>
+        </div>
+      </li>
+    </ul>
+  </article>
+</section>

@@ -1,0 +1,9 @@
+<h1>Ajouter un club</h1>
+
+<app-club-form
+  mode="create"
+  [loading]="loading()"
+  (submitForm)="create($event)">
+</app-club-form>
+
+<p>{{ message() }}</p>

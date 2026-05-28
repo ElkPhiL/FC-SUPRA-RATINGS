@@ -79,8 +79,8 @@ export class AdminLineupComponent implements OnInit {
     try {
       const match = await this.matchesService.getById(currentMatchId); 
       
-      if (match?.formation) {
-        const savedFormation = this.formations.find(f => f.name === match.formation);
+      if (match?.home_formation) {
+        const savedFormation = this.formations.find(f => f.name === match.home_formation);
         if (savedFormation) {
           this.selectedFormation.set(savedFormation);
         }

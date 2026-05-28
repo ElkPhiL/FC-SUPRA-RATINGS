@@ -1,200 +1,199 @@
-<div class="match-detail-page">
+  @if (match()) {
+  <div class="match-detail-page">
 
-  <!-- HERO -->
-  <section class="match-hero">
+    <!-- HERO -->
+    <section class="match-hero">
 
-    <div class="hero-top">
-      <div class="competition-badge">
-        {{ match()!.competition }}
-      </div>
-
-      <div class="match-meta">
-        <span>{{ match()!.match_date | date:'dd MMM yyyy' }}</span>
-        <span>•</span>
-        <span>{{ match()!.venue }}</span>
-      </div>
-    </div>
-
-    <div class="scoreboard">
-
-      <div class="team">
-        <div class="team-logo">
-          <img src="assets/logos/supra.png" alt="FC Supra">
+      <div class="hero-top">
+        <div class="competition-badge">
+          {{ match()!.competition }}
         </div>
 
-        <div class="team-name">
-          FC Supra
+        <div class="match-meta">
+          <span>{{ match()!.match_date | date:'dd MMM yyyy' }}</span>
+          <span>•</span>
+          <span>{{ match()!.venue }}</span>
         </div>
       </div>
 
-      <div class="score-center">
+      <div class="scoreboard">
 
-        <div class="score-line">
-          <span class="score">
-            {{ match()!.fc_supra_score ?? '-' }}
-          </span>
-
-          <span class="separator">:</span>
-
-          <span class="score">
-            {{ match()!.opponent_score ?? '-' }}
-          </span>
-        </div>
-
-        <div class="match-status">
-          {{ match()!.status }}
-        </div>
-
-      </div>
-
-      <div class="team">
-        <div class="team-logo opponent-logo">
-          {{ match()!.opponent.charAt(0) }}
-        </div>
-
-        <div class="team-name">
-          {{ match()!.opponent }}
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- TABS -->
-  <section class="tabs-section">
-
-    <button
-      class="tab active">
-      Résumé
-    </button>
-
-    <button class="tab">
-      Composition
-    </button>
-
-    <button class="tab">
-      Ratings
-    </button>
-
-    <button class="tab">
-      Stats
-    </button>
-
-  </section>
-
-  <!-- CONTENT -->
-  <div class="content-grid">
-
-    <!-- LEFT -->
-    <div class="main-column">
-
-      <!-- MATCH EVENTS -->
-      <section class="card">
-
-        <div class="card-header">
-          <h2>Moments clés</h2>
-        </div>
-
-        <div class="timeline">
-
-          <!-- EVENT -->
-<!--           <app-match-event-item></app-match-event-item>
-
-          <app-match-event-item></app-match-event-item>
-
-          <app-match-event-item></app-match-event-item> -->
-
-        </div>
-
-      </section>
-
-      <!-- LINEUP -->
-      <section class="card">
-
-        <div class="card-header">
-          <h2>Composition</h2>
-        </div>
-      
-      <app-lineup-pitch
-        [formation]="homeFormation()"
-        [lineup]="homeLineup()"
-      ></app-lineup-pitch>
-
-      </section>
-
-      <!-- RATINGS -->
-      <section class="card">
-
-        <div class="card-header">
-          <h2>Notes des joueurs</h2>
-        </div>
-
-        <div class="ratings-grid">
-
-          @for (matchPlayer of lineupPlayers(); track matchPlayer.id) {
-            <app-player-rating-card
-              [matchPlayer]="matchPlayer">
-            </app-player-rating-card>
-          }
-
-        </div>
-
-      </section>
-
-    </div>
-
-    <!-- RIGHT -->
-    <div class="side-column">
-
-      <!-- MATCH INFO -->
-      <section class="card">
-
-        <div class="card-header">
-          <h2>Informations</h2>
-        </div>
-
-        <div class="info-list">
-
-          <div class="info-row">
-            <span>Domicile / Extérieur</span>
-            <strong>{{ match()!.home_away }}</strong>
+        <div class="team">
+          <div class="team-logo">
+            <img src="assets/logos/supra.png" alt="FC Supra">
           </div>
 
-          <div class="info-row">
-            <span>Formation</span>
-            <strong>{{ match()!.formation }}</strong>
+          <div class="team-name">
+            FC Supra
+          </div>
+        </div>
+
+        <div class="score-center">
+
+          <div class="score-line">
+            <span class="score">
+              {{ match()!.home_score ?? '-' }}
+            </span>
+
+            <span class="separator">:</span>
+
+            <span class="score">
+              {{ match()!.away_score ?? '-' }}
+            </span>
           </div>
 
-          <div class="info-row">
-            <span>Compétition</span>
-            <strong>{{ match()!.competition }}</strong>
+          <div class="match-status">
+            {{ match()!.status }}
           </div>
 
         </div>
 
-      </section>
+        <div class="team">
+          <div class="team-logo opponent-logo">
+            {{ match()!.opponent.charAt(0) }}
+          </div>
 
-      <!-- MVP -->
-      <section class="card">
-
-        <div class="card-header">
-          <h2>Homme du match</h2>
+          <div class="team-name">
+            {{ match()!.opponent }}
+          </div>
         </div>
 
-      </section>
+      </div>
 
-      <!-- TEAM STATS -->
-      <section class="card">
+    </section>
 
-        <div class="card-header">
-          <h2>Statistiques</h2>
-        </div>
+    <!-- TABS -->
+    <section class="tabs-section">
 
-      </section>
+      <button
+        class="tab active">
+        Résumé
+      </button>
+
+      <button class="tab">
+        Composition
+      </button>
+
+      <button class="tab">
+        Ratings
+      </button>
+
+      <button class="tab">
+        Stats
+      </button>
+
+    </section>
+
+    <!-- CONTENT -->
+    <div class="content-grid">
+
+      <!-- LEFT -->
+      <div class="main-column">
+
+        <!-- MATCH EVENTS -->
+        <section class="card">
+
+          <div class="card-header">
+            <h2>Moments clés</h2>
+          </div>
+
+          <div class="timeline">
+
+            <!-- EVENT -->
+  <!--           <app-match-event-item></app-match-event-item>
+
+            <app-match-event-item></app-match-event-item>
+
+            <app-match-event-item></app-match-event-item> -->
+
+          </div>
+
+        </section>
+
+        <!-- LINEUP -->
+        <section class="card">
+
+          <div class="card-header">
+            <h2>Composition</h2>
+          </div>
+        
+        <app-lineup-pitch
+          [formation]="homeFormation()"
+          [lineup]="homeLineup()"
+        ></app-lineup-pitch>
+
+        </section>
+
+        <!-- RATINGS -->
+        <section class="card">
+
+          <div class="card-header">
+            <h2>Notes des joueurs</h2>
+          </div>
+
+          <div class="ratings-grid">
+
+            @for (matchPlayer of lineupPlayers(); track matchPlayer.id) {
+              <app-player-rating-card
+                [matchPlayer]="matchPlayer">
+              </app-player-rating-card>
+            }
+
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- RIGHT -->
+      <div class="side-column">
+
+        <!-- MATCH INFO -->
+        <section class="card">
+
+          <div class="card-header">
+            <h2>Informations</h2>
+          </div>
+
+          <div class="info-list">
+
+            <div class="info-row">
+              <span>Formation</span>
+              <strong>{{ match()!.home_formation }}</strong>
+            </div>
+
+            <div class="info-row">
+              <span>Compétition</span>
+              <strong>{{ match()!.competition }}</strong>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- MVP -->
+        <section class="card">
+
+          <div class="card-header">
+            <h2>Homme du match</h2>
+          </div>
+
+        </section>
+
+        <!-- TEAM STATS -->
+        <section class="card">
+
+          <div class="card-header">
+            <h2>Statistiques</h2>
+          </div>
+
+        </section>
+
+      </div>
 
     </div>
 
   </div>
-
-</div>
+} @else {
+  <div class="loading">Chargement des détails du match...</div>
+}

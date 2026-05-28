@@ -1,0 +1,13 @@
+<h1>Modifier club</h1>
+
+<p *ngIf="loading()">Chargement...</p>
+
+<app-club-form
+  *ngIf="club()"
+  mode="edit"
+  [club]="club()"
+  [loading]="saving()"
+  (submitForm)="update($event)">
+</app-club-form>
+
+<p>{{ message() }}</p>

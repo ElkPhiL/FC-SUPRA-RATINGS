@@ -20,8 +20,8 @@
         <div>
           <strong>{{ getMatchTitle(match) }}</strong>
           <p>{{ match.match_date | date: 'dd/MM/yyyy HH:mm' }} · {{ match.competition || 'Compétition inconnue' }}</p>
-          <p>{{ match.home_away || 'Domicile/Extérieur' }} · {{ match.venue || 'Lieu non renseigné' }}</p>
-          <p>Score : {{ match.fc_supra_score ?? '?' }} - {{ match.opponent_score ?? '?' }}</p>
+          <p>{{ match.venue || 'Lieu non renseigné' }}</p>
+          <p>Score : {{ match.home_score ?? '?' }} - {{ match.away_score ?? '?' }}</p>
           <p>Status : {{ match.status || 'Inconnu' }}</p>
         </div>
 

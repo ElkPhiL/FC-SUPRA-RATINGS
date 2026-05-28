@@ -62,7 +62,7 @@ export class AdminMatchesComponent {
   }
 
   getMatchScore(match: Match) {
-    return `${match.fc_supra_score ?? '-'} - ${match.opponent_score ?? '-'}`;
+    return `${match.home_score ?? '-'} - ${match.away_score ?? '-'}`;
   }
 }
 

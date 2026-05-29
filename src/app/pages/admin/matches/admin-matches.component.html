@@ -18,7 +18,7 @@
     <ul class="match-table" *ngIf="!loading() && matches().length">
       <li *ngFor="let match of matches()">
         <div>
-          <strong>{{ getMatchTitle(match) }}</strong>
+          <strong>{{ match.opponent }}</strong>
           <p>{{ match.match_date | date: 'dd/MM/yyyy HH:mm' }} · {{ match.competition || 'Compétition inconnue' }}</p>
           <p>{{ match.venue || 'Lieu non renseigné' }}</p>
           <p>Score : {{ match.home_score ?? '?' }} - {{ match.away_score ?? '?' }}</p>

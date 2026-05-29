@@ -56,13 +56,5 @@ export class AdminMatchesComponent {
       this.loading.set(false);
     }
   }
-
-  getMatchTitle(match: Match) {
-    return match.opponent || 'Adversaire inconnu';
-  }
-
-  getMatchScore(match: Match) {
-    return `${match.home_score ?? '-'} - ${match.away_score ?? '-'}`;
-  }
 }
 

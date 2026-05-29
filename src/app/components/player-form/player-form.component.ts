@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnChanges, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, OnInit, OnDestroy, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -7,6 +7,8 @@ import { Player } from '../../models/player.model';
 import { PLAYER_POSITIONS, PlayerPosition } from '../../shared/constants/player.constants';
 import { PositionPickerComponent } from '../position-picker/position-picker.component';
 import { PlayerCardComponent } from '../player-card/player-card.component';
+import { Team } from '../../models/team.model';
+import { TeamsService } from '../../services/teams.service';
 
 @Component({
   selector: 'app-player-form',
@@ -24,6 +26,8 @@ export class PlayerFormComponent implements OnInit, OnChanges, OnDestroy {
 
   form: FormGroup;
   positions = PLAYER_POSITIONS;
+
+  activeTeams = signal<Team[]>([]);
   
   // Objet qui alimente directement la carte de preview
   playerPreview!: Player;
@@ -34,7 +38,7 @@ export class PlayerFormComponent implements OnInit, OnChanges, OnDestroy {
   // Pour éviter les fuites de mémoire avec valueChanges
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
+  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private teamsService: TeamsService) {
     this.form = this.fb.group({
       first_name: [''],
       last_name: [''],
@@ -49,10 +53,13 @@ export class PlayerFormComponent implements OnInit, OnChanges, OnDestroy {
       best_foot: [''],
       height_cm: [null, [Validators.min(0)]],
       weight_kg: [null, [Validators.min(0)]],
+      current_team_id: [null]
     });
   }
 
   ngOnInit() {
+    this.loadActiveTeams();
+
     // Initialise l'objet de preview par défaut
     this.updatePreview(this.form.value);
 
@@ -62,6 +69,17 @@ export class PlayerFormComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(formValues => {
         this.updatePreview(formValues);
       });
+  }
+
+  async loadActiveTeams() {
+    try {
+      // Supposons que ton service gère le filtre ou retourne tout et qu'on filtre ici
+      const teamsData = await this.teamsService.getAll(); 
+      // Filtrer pour ne garder que les équipes actives
+      this.activeTeams.set(teamsData.filter(t => t.active));
+    } catch (error) {
+      console.error('Erreur lors du chargement des équipes', error);
+    }
   }
 
   ngOnChanges() {

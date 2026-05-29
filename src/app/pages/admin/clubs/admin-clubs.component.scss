@@ -1,0 +1,58 @@
+.club-table {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.club-element {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    background-color: white;
+    padding: 10px;
+}
+
+// Alignement de l'identité du club (Logo + Texte)
+.club-identity {
+  display: flex;
+  align-items: center;
+  gap: 16px; // Espace entre le logo et le texte
+}
+
+.club-logo-wrapper {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  flex-shrink: 0; // Empêche le logo de s'écraser si le nom est trop long
+
+  .club-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; // Garde les proportions de l'image sans la déformer
+  }
+
+  .club-logo-placeholder {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+}
+
+// Structure textuelle optionnelle à côté du logo
+.club-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .club-name {
+    color: #1e293b;
+    font-size: 1rem;
+  }
+
+  .club-meta {
+    font-size: 0.8rem;
+    color: #64748b;
+  }
+}

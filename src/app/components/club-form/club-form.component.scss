@@ -119,6 +119,91 @@
   }
 }
 
+.logo-upload-container {
+  grid-column: span 1; // Ajuste si ta grille est en span 2
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .label-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1e293b;
+  }
+}
+
+.logo-uploader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+
+  .preview-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    &.empty span {
+      font-size: 1.5rem;
+      opacity: 0.5;
+    }
+  }
+
+  .upload-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .btn-upload {
+      display: inline-block;
+      padding: 6px 12px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: #0f172a;
+      transition: background 0.2s;
+      text-align: center;
+
+      &:hover:not(.disabled) {
+        background: #f1f5f9;
+      }
+
+      &.disabled {
+        background: #e2e8f0;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      input[type="file"] {
+        display: none; /* Cache l'input natif moche */
+      }
+    }
+
+    .upload-hint {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+  }
+}
+
 // Responsive : 1 seule colonne sur mobile
 @media (max-width: 640px) {
   .form-grid {

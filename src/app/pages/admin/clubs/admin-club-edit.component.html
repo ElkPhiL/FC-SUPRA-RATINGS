@@ -2,12 +2,130 @@
 
 <p *ngIf="loading()">Chargement...</p>
 
-<app-club-form
-  *ngIf="club()"
-  mode="edit"
-  [club]="club()"
-  [loading]="saving()"
-  (submitForm)="update($event)">
-</app-club-form>
+<div class="edit-container" *ngIf="!loading() && club()">
+  
+  <section class="club-section">
+    <app-club-form
+      mode="edit"
+      [club]="club()"
+      [loading]="saving()"
+      (submitForm)="update($event)">
+    </app-club-form>
+  </section>
 
-<p>{{ message() }}</p>
+  <hr />
+
+  <section class="teams-section">
+    <h2>Équipes associées</h2>
+
+    <div class="add-team-form">
+      <input 
+        type="text" 
+        [value]="newTeamName()" 
+        (input)="newTeamName.set($any($event.target).value)"
+        placeholder="Nom de l'équipe (ex: U21, Pro, C)" />
+      <button type="button" (click)="addTeam()" [disabled]="!newTeamName().trim()">
+        Ajouter l'équipe
+      </button>
+    </div>
+
+    <div class="teams-list" *ngIf="teams().length > 0; else noTeams">
+      <div class="teams-header">
+        <div class="col-main">Équipe</div>
+        <div class="col-info">Détails</div>
+        <div class="col-status">Statut</div>
+        <div class="col-actions">Actions</div>
+      </div>
+
+      <div class="team-row" *ngFor="let team of teams()">
+        <div class="col-main">
+          <div class="team-logo-wrapper">
+            <img *ngIf="team.logo_url" [src]="team.logo_url" alt="Logo {{ team.name }}" class="team-logo">
+            <span *ngIf="!team.logo_url" class="team-logo-placeholder">⚽</span>
+          </div>
+          <span class="team-name">{{ team.name }}</span>
+          <span class="team-gender" [ngClass]="team.gender.toLowerCase()">
+            {{ team.gender === 'M' ? 'Masculin' : team.gender === 'F' ? 'Féminin' : 'Mixte' }}
+          </span>
+        </div>
+
+        <div class="col-info">
+          <div class="team-tags">
+            <span class="tag age" *ngIf="team.age_group">{{ team.age_group }}</span>
+            <span class="tag level" *ngIf="team.level">{{ team.level }}</span>
+            <span class="no-data" *ngIf="!team.age_group && !team.level">Aucun critère</span>
+          </div>
+        </div>
+
+        <div class="col-status">
+          <span class="status-badge" [class.active]="team.active">
+            {{ team.active ? 'Actif' : 'Inactif' }}
+          </span>
+        </div>
+
+        <div class="col-actions">
+          <button class="btn btn-edit" (click)="openEditModal(team)" title="Modifier">Modifier</button>
+          <button class="btn btn-delete" (click)="deleteTeam(team.id)" title="Supprimer">Supprimer</button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noTeams>
+      <div class="empty-state">
+        <p>Aucune équipe n'est encore liée à ce club.</p>
+      </div>
+    </ng-template>
+  </section>
+</div>
+
+<div class="modal-backdrop" *ngIf="isModalOpen() && selectedTeam()">
+  <div class="modal-content">
+    <h3>Modifier l'équipe : {{ selectedTeam()?.name }}</h3>
+    
+    <form (ngSubmit)="saveTeamDetails()">
+      <div class="form-group">
+        <label>Nom de l'équipe</label>
+        <input type="text" [(ngModel)]="editFormState.name" name="name" required />
+      </div>
+
+      <div class="form-group">
+        <label>Genre</label>
+        <select [(ngModel)]="editFormState.gender" name="gender">
+          <option value="M">Masculin</option>
+          <option value="F">Féminin</option>
+          <option value="X">Mixte</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Catégorie d'âge (Age Group)</label>
+        <input type="text" [(ngModel)]="editFormState.age_group" name="age_group" placeholder="ex: U21, U17, Senior" />
+      </div>
+
+      <div class="form-group">
+        <label>Niveau (Level)</label>
+        <input type="text" [(ngModel)]="editFormState.level" name="level" placeholder="ex: Pro, Division 1, AAA" />
+      </div>
+
+      <div class="form-group">
+        <label>URL du Logo</label>
+        <input type="text" [(ngModel)]="editFormState.logo_url" name="logo_url" placeholder="https://..." />
+      </div>
+
+      <div class="form-group checkbox">
+        <label>
+          <input type="checkbox" [(ngModel)]="editFormState.active" name="active" /> Actif
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="closeModal()">Annuler</button>
+        <button type="submit" class="btn-save" [disabled]="savingTeam()">
+          {{ savingTeam() ? 'Enregistrement...' : 'Enregistrer' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p class="error-message" *ngIf="message()">{{ message() }}</p>

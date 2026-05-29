@@ -1,4 +1,6 @@
 import { PlayerPosition } from "../shared/constants/player.constants";
+// Importe tes interfaces Team et Club si elles sont dans des fichiers séparés
+// import { Team } from "./team.model"; 
 
 export interface Player {
   id: number;
@@ -17,9 +19,20 @@ export interface Player {
   height_cm: number | null;
   weight_kg: number | null;
   current_team_id: number | null;
+
+  team?: {
+    id: number;
+    name: string;
+    logo_url: string | null;
+    club?: {
+      id: number;
+      name: string;
+      logo_url: string | null;
+    };
+  } | null;
 }
 
-export type PlayerPayload = Omit<Player, 'id' | 'created_at'>;
+export type PlayerPayload = Omit<Player, 'id' | 'created_at' | 'team'>;
 
 export type PlayerFormPayload = PlayerPayload & {
   imageFile?: File | null;

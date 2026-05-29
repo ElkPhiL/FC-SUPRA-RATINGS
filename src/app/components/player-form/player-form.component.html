@@ -55,6 +55,18 @@
         <input type="number" min="50" max="250" formControlName="height_cm" placeholder="Taille">
       </label>
 
+      <label class="champ">
+        <span class="label-text">Équipe assignée</span>
+        <div class="select-wrapper">
+          <select formControlName="current_team_id">
+            <option [value]="null">Aucune équipe (Agent libre)</option>
+            <option *ngFor="let team of activeTeams()" [value]="team.id">
+              {{ team.name }}
+            </option>
+          </select>
+        </div>
+      </label>
+
       <!-- Zone média (nettoyée de l'aperçu doublon) -->
       <div class="media">
         <label

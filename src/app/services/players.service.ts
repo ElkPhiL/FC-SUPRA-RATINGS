@@ -124,7 +124,8 @@ export class PlayersService {
       date_of_birth: payload.date_of_birth,
       best_foot: payload.best_foot,
       height_cm: payload.height_cm,
-      weight_kg: payload.weight_kg
+      weight_kg: payload.weight_kg,
+      current_team_id: payload.current_team_id
     };
 
     const { data, error } = await this.supabase.supabase
@@ -175,7 +176,8 @@ export class PlayersService {
       date_of_birth: payload.date_of_birth,
       best_foot: payload.best_foot,
       height_cm: payload.height_cm,
-      weight_kg: payload.weight_kg
+      weight_kg: payload.weight_kg,
+      current_team_id: payload.current_team_id
     };
 
     const { data, error } = await this.supabase.supabase

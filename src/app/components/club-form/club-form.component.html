@@ -15,10 +15,28 @@
     <input type="text" formControlName="slug" placeholder="Ex: fc-supra">
   </label>
 
-  <label class="champ">
-    Logo URL
-    <input type="text" formControlName="logo_url" placeholder="https://...">
-  </label>
+  <div class="champ logo-upload-container">
+    <span class="label-title">Logo du club</span>
+    
+    <div class="logo-uploader">
+      <div class="preview-box" *ngIf="currentLogoUrl; else noPreview">
+        <img [src]="currentLogoUrl" alt="Logo preview">
+      </div>
+      <ng-template #noPreview>
+        <div class="preview-box empty">
+          <span>⚽</span>
+        </div>
+      </ng-template>
+
+      <div class="upload-actions">
+        <label class="btn-upload" [class.disabled]="uploading()">
+          <input type="file" accept="image/*" (change)="onFileSelected($event)" [disabled]="uploading()">
+          {{ uploading() ? 'Téléversement...' : 'Choisir une image' }}
+        </label>
+        <span class="upload-hint" *ngIf="!uploading()">PNG, JPG ou WEBP acceptés</span>
+      </div>
+    </div>
+  </div>
 
   <label class="champ">
     Ville
@@ -63,7 +81,7 @@
   </div>
 
   <div class="form-actions">
-    <button class="button" type="submit" [disabled]="loading || form.invalid">
+    <button class="button" type="submit" [disabled]="loading || form.invalid || uploading()">
       {{ loading ? 'Enregistrement...' : (mode === 'create' ? 'Créer le club' : 'Modifier le club') }}
     </button>
   </div>

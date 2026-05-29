@@ -16,9 +16,17 @@
     </div>
 
     <ul class="club-table" *ngIf="!loading() && clubs().length">
-      <li *ngFor="let club of clubs()">
-        <div>
-          <strong>{{ club.name }}</strong>
+      <li class="club-element" *ngFor="let club of clubs()">
+        <div class="club-identity">
+          <div class="club-logo-wrapper">
+            <img *ngIf="club.logo_url" [src]="club.logo_url" alt="Logo {{ club.name }}" class="club-logo">
+            <span *ngIf="!club.logo_url" class="club-logo-placeholder">⚽</span>
+          </div>
+          
+          <div class="club-info">
+            <strong class="club-name">{{ club.name }}</strong>
+            <span class="club-meta" *ngIf="club.city">{{ club.city }}<span *ngIf="club.country">, {{ club.country }}</span></span>
+          </div>
         </div>
 
         <div class="club-actions">

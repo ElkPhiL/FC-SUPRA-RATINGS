@@ -118,4 +118,28 @@ export class SupabaseService {
 
     return username ? username.charAt(0).toUpperCase() : '?';
   }
+
+  async uploadClubLogo(file: File): Promise<string> {
+    // Créer un nom unique pour éviter les conflits de cache (ex: club-171542152.png)
+    const fileExt = file.name.split('.').pop();
+    const fileName = `club-${Date.now()}.${fileExt}`;
+    const filePath = `logos/${fileName}`;
+
+    // 1. Envoyer le fichier dans le bucket "team-logos"
+    const { error: uploadError } = await this.supabase.storage
+      .from('team-logos')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      console.error('Détails erreur upload:', uploadError);
+      throw uploadError;
+    }
+
+    // 2. Générer l'URL d'accès public
+    const { data } = this.supabase.storage
+      .from('team-logos')
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  }
 }

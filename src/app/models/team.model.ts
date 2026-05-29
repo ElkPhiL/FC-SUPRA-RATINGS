@@ -2,23 +2,15 @@ export interface Team {
     id: number;
     club_id: number;
     name: string;
-    gender: Gender;
-    level: TeamLevel | null;
+    gender: 'M' | 'F' | 'X';
+    level: 'Pro' | 'Semipro' | 'Amateur' | null;
     age_group: TeamAgeGroup | null;
     logo_url: string | null;
     active: boolean;
+    created_at: string | null;
 }
 
-export enum Gender {
-    male,
-    female
-}
-
-export enum TeamLevel {
-    pro,
-    semipro,
-    amateur
-}
+export type TeamPayload = Omit<Team, 'id' | 'created_at'>;
 
 export enum TeamAgeGroup { 
     senior,

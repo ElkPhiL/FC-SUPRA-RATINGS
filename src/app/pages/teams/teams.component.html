@@ -1,0 +1,70 @@
+<div class="page teams-page">
+  <header class="teams-header">
+    <div>
+      <h1>Équipes</h1>
+      @if (!loading()) {
+        <p class="subtitle">Découvrez et gérez les équipes du club.</p>
+      }
+    </div>
+  </header>
+
+  @if (message() && !loading()) {
+    <div class="message">{{ message() }}</div>
+  }
+
+  @if (loading()) {
+    <section class="teams-grid">
+      @for (i of [1,2,3,4,5,6]; track i) {
+        <div class="team-card skeleton">
+          <div class="team-logo-container skeleton-blur"></div>
+          <div class="skeleton-line title"></div>
+          <div class="skeleton-line text"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      }
+    </section>
+  }
+
+  @if (!loading() && teams().length) {
+    <section class="teams-grid">
+      @for (team of teams(); track team.id) {
+        <article 
+          [routerLink]="['/teams', team.id]" 
+          class="team-card"
+        >
+          
+          <div class="team-logo-container">
+            @if (team.logo_url) {
+              <img [src]="team.logo_url" alt="Logo de {{ team.name }}" class="team-logo" />
+            } @else {
+              <div class="team-logo-placeholder">⚽</div>
+            }
+          </div>
+
+          <div class="team-details">
+            <h2>{{ team.name }}</h2>
+                    
+            <span class="status-badge" [class.active]="team.active">
+              {{ team.active ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+
+          <div class="team-actions">
+            <a 
+              [routerLink]="['/teams', team.id, 'roster']" 
+              (click)="$event.stopPropagation()" 
+              class="btn-roster"
+            >
+              Voir l'effectif
+            </a>
+          </div>
+          
+        </article>
+      }
+    </section>
+  } @else if (!loading() && !teams().length) {
+    <div class="empty-state">
+      <p>Aucune équipe n'a été trouvée.</p>
+    </div>
+  }
+</div>

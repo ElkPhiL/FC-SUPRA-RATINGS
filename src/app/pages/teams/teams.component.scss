@@ -1,0 +1,139 @@
+@use '../../../styles/abstracts/' as *;
+
+.teams-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.teams-header {
+  margin-bottom: 2.5rem;
+  h1 { font-size: 2.25rem; color: #0f172a; margin: 0 0 0.5rem 0; }
+  .subtitle { color: #64748b; font-size: 1rem; margin: 0; }
+}
+
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.team-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  height: 100%;
+
+  &:hover:not(.skeleton) {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.08);
+    .team-logo { transform: scale(1.05); }
+  }
+}
+
+.team-logo-container {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  .team-logo { width: 80%; height: 80%; object-fit: contain; transition: transform 0.25s ease; }
+  .team-logo-placeholder { font-size: 2.5rem; }
+}
+
+.team-details {
+  flex: 1;
+
+  h2 { font-size: 1.15rem; font-weight: 700; color: #1e293b; margin: 0 0 0.25rem 0; }
+  
+  .player-count {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+  }
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 12px;
+  background: #f1f5f9;
+  color: #64748b;
+  &.active { background: #dcfce7; color: #15803d; }
+}
+
+.team-actions {
+  width: 100%;
+  margin-top: auto; // S'aligne parfaitement au bas de la carte
+
+  .btn-roster {
+    display: block;
+    padding: 0.65rem 1rem;
+    background-color: #f1f5f9;
+    color: #1e293b;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #113b80; // Ton supra-blue
+      color: #ffffff;
+      border-color: #113b80;
+    }
+  }
+}
+
+// --- 🆕 STYLE DU SKELETON SCREEN (LOADING STYLES) ---
+.skeleton {
+  cursor: default;
+  pointer-events: none;
+
+  .skeleton-blur {
+    background: #e2e8f0;
+    position: relative;
+  }
+
+  .skeleton-line {
+    background: #e2e8f0;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    
+    &.title { width: 70%; height: 1.25rem; }
+    &.text { width: 40%; height: 0.85rem; }
+  }
+
+  .skeleton-button {
+    width: 100%;
+    height: 35px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    margin-top: auto;
+  }
+
+  // Animation globale d'impulsion fluide
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}

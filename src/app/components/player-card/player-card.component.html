@@ -2,8 +2,8 @@
   <div class="card-main">
     <div class="player-number">{{ player.number }}</div>
     
-    <div class="player-club-logo" *ngIf="playerTeam()?.logo_url || playerTeam()?.club?.logo_url">
-      <img [src]="playerTeam()?.club?.logo_url || playerTeam()?.logo_url" alt="Logo club" />
+    <div class="player-club-logo" *ngIf="player.team?.club?.logo_url || player.team?.logo_url">
+      <img [src]="player.team?.club?.logo_url || player.team?.logo_url" alt="Logo club" />
     </div>
 
     <div class="player-badge-pos">{{ player.best_position || 'N/A' }}</div>
@@ -28,7 +28,7 @@
         <div class="info-item col-span-2">
           <span class="label">Club</span>
           <span class="value club-highlight">
-            {{ playerTeam()?.club?.name || playerTeam()?.name || 'Agent Libre' }}
+            {{ player.team?.club?.name || player.team?.name || 'Agent Libre' }}
           </span>
         </div>
 

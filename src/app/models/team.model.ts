@@ -1,3 +1,5 @@
+import { ClubColors } from "./club.model";
+
 export interface Team {
     id: number;
     club_id: number;
@@ -8,6 +10,13 @@ export interface Team {
     logo_url: string | null;
     active: boolean;
     created_at: string | null;
+
+    club?: {
+      id: number;
+      name: string;
+      colors: ClubColors | null;
+      logo_url: string | null;
+    };
 }
 
 export type TeamPayload = Omit<Team, 'id' | 'created_at'>;

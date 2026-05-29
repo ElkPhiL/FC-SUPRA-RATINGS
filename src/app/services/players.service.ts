@@ -25,7 +25,19 @@ export class PlayersService {
   async getAll(): Promise<Player[]> {
     const { data, error } = await this.supabase.supabase
       .from('players')
-      .select('*')
+      .select(`
+        *,
+        team:teams (
+          id,
+          name,
+          logo_url,
+          club:clubs (
+            id,
+            name,
+            logo_url
+          )
+        )
+      `)
       .order('number');
 
     if (error) throw error;
@@ -36,37 +48,25 @@ export class PlayersService {
   async getById(id: number): Promise<Player> {
     const { data, error } = await this.supabase.supabase
       .from('players')
-      .select('*')
+      .select(`
+        *,
+        team:teams (
+          id,
+          name,
+          logo_url,
+          club:clubs (
+            id,
+            name,
+            logo_url
+          )
+        )
+      `)
       .eq('id', id)
       .single();
 
     if (error) throw error;
 
     return data as Player;
-  }
-
-  async getActive(): Promise<Player[]> {
-    const { data, error } = await this.supabase.supabase
-      .from('players')
-      .select('*')
-      .eq('active', true)
-      .order('number');
-
-    if (error) throw error;
-
-    return data as Player[];
-  }
-
-  async getNonActive(): Promise<Player[]> {
-    const { data, error } = await this.supabase.supabase
-      .from('players')
-      .select('*')
-      .eq('active', false)
-      .order('number');
-
-    if (error) throw error;
-
-    return data as Player[];
   }
 
   async getPlayersWithPositions() {
@@ -76,6 +76,16 @@ export class PlayersService {
         *,
         player_positions (
           position
+        ),
+        team:teams (
+          id,
+          name,
+          logo_url,
+          club:clubs (
+            id,
+            name,
+            logo_url
+          )
         )
       `);
 
@@ -83,17 +93,61 @@ export class PlayersService {
       throw error;
     }
 
-    return data.map(player => ({
-      ...player,
-      positions:
-        player.player_positions?.map((p: any) => p.position) || []
-        
-      .sort((a: PlayerPosition, b: PlayerPosition) => {
-        if (a === player.best_position) return -1;
-        if (b === player.best_position) return 1;
-        return 0;
-      })
-    }));
+    return data.map(player => {
+      // 1. Extraction et tri des positions (ton code existant corrigé pour la parenthèse du .map)
+      const sortedPositions = (player.player_positions?.map((p: any) => p.position) || [])
+        .sort((a: PlayerPosition, b: PlayerPosition) => {
+          if (a === player.best_position) return -1;
+          if (b === player.best_position) return 1;
+          return 0;
+        });
+
+      // 2. On retourne l'objet complet incluant les positions aplaties ET les relations team/club
+      return {
+        ...player,
+        positions: sortedPositions,
+        team: player.team ?? null // Évite les soucis de typage si le joueur n'a pas d'équipe
+      };
+    });
+  }
+
+  async getPlayersByTeam(teamId: number) {
+    const { data, error } = await this.supabase.supabase
+      .from('players')
+      .select(`
+        *,
+        player_positions (
+          position
+        ),
+        team:teams (
+          id,
+          name,
+          logo_url,
+          club:clubs (
+            id,
+            name,
+            logo_url
+          )
+        )
+      `)
+      .eq('current_team_id', teamId); // 🎯 Le filtre magique !
+
+    if (error) throw error;
+
+    return data.map(player => {
+      const sortedPositions = (player.player_positions?.map((p: any) => p.position) || [])
+        .sort((a: any, b: any) => {
+          if (a === player.best_position) return -1;
+          if (b === player.best_position) return 1;
+          return 0;
+        });
+
+      return {
+        ...player,
+        positions: sortedPositions,
+        team: player.team ?? null
+      };
+    });
   }
 
   // =====================================================

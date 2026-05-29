@@ -24,11 +24,15 @@ import { AdminRatingsComponent } from './pages/admin/admin-ratings.component';
 import { AdminClubsComponent } from './pages/admin/clubs/admin-clubs.component';
 import { AdminClubCreateComponent } from './pages/admin/clubs/admin-club-create.component';
 import { AdminClubEditComponent } from './pages/admin/clubs/admin-club-edit.component';
+import { TeamsComponent } from './pages/teams/teams.component';
+import { TeamRosterComponent } from './pages/teams/team-roster.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'matches', component: MatchesComponent },
   { path: 'matches/:id', component: MatchDetailComponent },
+  { path: 'teams', component: TeamsComponent },
+  { path: 'teams/:id/roster', component: TeamRosterComponent },
   { path: 'players', component: PlayersComponent },
   { path: 'standings', component: StandingsComponent },
   { path: 'lineup-builder', component: LineupBuilderComponent },

@@ -49,7 +49,7 @@ export class PlayersComponent {
     this.message.set('');
 
     try {
-      const players = await this.playersService.getPlayersWithPositions();
+      const players = await this.playersService.getAll();
       this.players.set(players);
 
       if (!players.length) {

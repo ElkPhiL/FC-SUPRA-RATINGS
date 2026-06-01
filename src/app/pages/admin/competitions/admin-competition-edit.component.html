@@ -1,0 +1,16 @@
+<h1>Modifier compétition</h1>
+
+<p *ngIf="loading()">Chargement...</p>
+
+<div class="edit-container" *ngIf="!loading() && competition()">
+  
+  <section class="competition-section">
+    <app-competition-form
+      mode="edit"
+      [competition]="competition()"
+      [loading]="saving()"
+      (submitForm)="update($event)">
+    </app-competition-form>
+  </section>
+
+<p class="error-message" *ngIf="message()">{{ message() }}</p>

@@ -1,16 +1,50 @@
 @use '../../styles/abstracts/' as *;
 
-.submit-btn {
-  padding: 1rem 2rem;
+.button {
+  text-decoration: none;
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 14px;
-  font-size: 1rem;
-  font-weight: 800;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: white;
   text-transform: uppercase;
+  background-color: $supra-blue;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+    background-color: $supra-blue;
+  }
+}
+
+.edit-btn {
+  @extend .button;
+  background-color: $modify-blue;
+}
+
+.delete-btn {
+  @extend .button;
+  background-color: $delete-red;
+}
+
+.add-btn {
+  @extend .button;
+  background-color: $add-green;
+}
+
+.submit-btn {
+  @extend .button;
   background: linear-gradient(120deg, rgba($supra-blue, 0.85), $supra-blue, rgba($supra-blue, 0.85));
   box-shadow: 0 4px 15px rgba($supra-blue, 0.25);
-  cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover:not(:disabled) {

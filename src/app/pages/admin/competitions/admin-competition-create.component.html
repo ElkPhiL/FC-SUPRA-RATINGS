@@ -1,0 +1,9 @@
+<h1>Ajouter une compétition</h1>
+
+<app-competition-form
+  mode="create"
+  [loading]="loading()"
+  (submitForm)="create($event)">
+</app-competition-form>
+
+<p>{{ message() }}</p>

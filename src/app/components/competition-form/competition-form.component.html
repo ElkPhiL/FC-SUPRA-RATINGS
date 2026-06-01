@@ -1,0 +1,102 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="competition-form">
+
+  <div class="form-grid">
+
+    <!-- Logo -->
+    <div class="logo-section">
+
+      <div class="logo-preview">
+        <img
+          *ngIf="currentLogoUrl"
+          [src]="currentLogoUrl"
+          alt="Competition Logo"
+        />
+
+        <div *ngIf="!currentLogoUrl" class="placeholder">
+          Aucun logo
+        </div>
+      </div>
+
+      <label class="upload-btn">
+        <input
+          type="file"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          hidden
+        />
+
+        <span *ngIf="!uploading()">Téléverser un logo</span>
+        <span *ngIf="uploading()">Téléversement...</span>
+      </label>
+
+    </div>
+
+    <!-- Informations -->
+    <div class="fields-section">
+
+      <div class="form-group">
+        <label>Nom *</label>
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="Ex: Première Ligue de Soccer du Québec"
+        />
+
+        <small
+          *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+          class="error"
+        >
+          Le nom est obligatoire.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Slug</label>
+        <input
+          type="text"
+          formControlName="slug"
+          placeholder="plsq"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Pays</label>
+        <input
+          type="text"
+          formControlName="country"
+          placeholder="Canada"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Niveau</label>
+        <input
+          type="number"
+          formControlName="level"
+          placeholder="1"
+        />
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="actions">
+    <button
+      type="submit"
+      [disabled]="loading || uploading()"
+      class="submit-btn"
+    >
+      <span *ngIf="!loading">
+        {{ mode === 'create'
+          ? 'Créer la compétition'
+          : 'Enregistrer les modifications' }}
+      </span>
+
+      <span *ngIf="loading">
+        Sauvegarde...
+      </span>
+    </button>
+  </div>
+
+</form>

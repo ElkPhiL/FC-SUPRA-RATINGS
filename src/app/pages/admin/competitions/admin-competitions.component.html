@@ -1,0 +1,100 @@
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <h1>Compétitions</h1>
+      <p>Gérer les compétitions depuis l'administration.</p>
+    </div>
+
+    <a
+      routerLink="/admin/competitions/new"
+      class="add-btn"
+    >
+      + Ajouter une compétition
+    </a>
+  </header>
+
+  <article class="panel">
+
+    <div class="panel-header">
+      <h2>Compétitions</h2>
+
+      <span class="competition-count" *ngIf="competitions().length">
+        {{ competitions().length }}
+      </span>
+    </div>
+
+    <div class="status-row">
+      <p class="status-message" *ngIf="loading()">
+        Chargement des compétitions...
+      </p>
+
+      <p class="status-message" *ngIf="!loading() && message()">
+        {{ message() }}
+      </p>
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="!loading() && competitions().length === 0"
+    >
+      <span>🏆</span>
+      <p>Aucune compétition trouvée.</p>
+    </div>
+
+    <ul class="competition-table" *ngIf="!loading() && competitions().length">
+
+      <li
+        class="competition-element"
+        *ngFor="let competition of competitions()"
+      >
+        <div class="competition-identity">
+
+          <div class="competition-logo-wrapper">
+            <img
+              *ngIf="competition.logo_url"
+              [src]="competition.logo_url"
+              [alt]="competition.name"
+              class="competition-logo"
+            />
+
+            <span
+              *ngIf="!competition.logo_url"
+              class="competition-logo-placeholder"
+            >
+              🏆
+            </span>
+          </div>
+
+          <div class="competition-info">
+            <strong class="competition-name">
+              {{ competition.name }}
+            </strong>
+
+            <span class="competition-meta">
+              {{ competition.country || 'Pays inconnu' }}
+            </span>
+          </div>
+
+        </div>
+
+        <div class="competition-actions">
+          <a
+            routerLink="/admin/competitions/{{ competition.id }}/edit"
+            class="edit-btn"
+          >
+            Modifier
+          </a>
+
+          <button
+            class="delete-btn"
+            (click)="deleteCompetition(competition.id)"
+          >
+            Supprimer
+          </button>
+        </div>
+      </li>
+
+    </ul>
+
+  </article>
+</section>

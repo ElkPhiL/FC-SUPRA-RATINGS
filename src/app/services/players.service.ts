@@ -22,29 +22,6 @@ export class PlayersService {
   // GET
   // =====================================================
 
-  async getAll(): Promise<Player[]> {
-    const { data, error } = await this.supabase.supabase
-      .from('players')
-      .select(`
-        *,
-        team:teams (
-          id,
-          name,
-          logo_url,
-          club:clubs (
-            id,
-            name,
-            logo_url
-          )
-        )
-      `)
-      .order('number');
-
-    if (error) throw error;
-
-    return data as Player[];
-  }
-
   async getById(id: number): Promise<Player> {
     const { data, error } = await this.supabase.supabase
       .from('players')
@@ -69,7 +46,7 @@ export class PlayersService {
     return data as Player;
   }
 
-  async getPlayersWithPositions() {
+  async getAll() {
     const { data, error } = await this.supabase.supabase
       .from('players')
       .select(`

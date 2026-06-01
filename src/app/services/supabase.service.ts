@@ -142,4 +142,25 @@ export class SupabaseService {
 
     return data.publicUrl;
   }
+
+  async uploadCompetitionLogo(file: File): Promise<string> {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `competition-${Date.now()}.${fileExt}`;
+    const filePath = `logos/${fileName}`;
+
+    const { error: uploadError } = await this.supabase.storage
+      .from('competition-logos')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      console.error('Détails erreur upload:', uploadError);
+      throw uploadError;
+    }
+
+    const { data } = this.supabase.storage
+      .from('competition-logos')
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  }
 }

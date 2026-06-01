@@ -89,7 +89,7 @@ export class MatchDetailComponent implements OnInit {
     this.loading.set(true);
 
     try {
-        const players = await this.playersService.getPlayersWithPositions();
+        const players = await this.playersService.getAll();
         this.players.set(players);
 
         if (!players.length) {

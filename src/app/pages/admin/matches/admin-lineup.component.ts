@@ -64,7 +64,7 @@ export class AdminLineupComponent implements OnInit {
 
   async loadPlayers(): Promise<void> {
     try {
-      const allPlayers = await this.playersService.getPlayersWithPositions();
+      const allPlayers = await this.playersService.getAll();
       this.players.set(allPlayers);
       if (!allPlayers.length) {
         this.message.set('Aucun joueur actif trouvé.');

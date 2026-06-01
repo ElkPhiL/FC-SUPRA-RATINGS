@@ -27,10 +27,6 @@ export class AdminClubsComponent {
     try {
       const matches = await this.clubsService.getAll();
       this.clubs.set(matches);
-
-      if (!this.clubs.length) {
-        this.message.set('Aucun club enregistré pour l’instant.');
-      }
     } catch (error: any) {
       console.error('Erreur lors du chargement des clubs', error);
       this.message.set(`Erreur de chargement: ${error?.message ?? 'Erreur inconnue'}`);

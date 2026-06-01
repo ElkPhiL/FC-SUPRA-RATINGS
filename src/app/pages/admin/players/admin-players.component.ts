@@ -25,7 +25,7 @@ export class AdminPlayersComponent {
     this.loading.set(true);
     try {
       const [players] = await Promise.all([
-        this.playersService.getPlayersWithPositions(),
+        this.playersService.getAll(),
       ]);
       this.players.set(players);
     } catch (error) {

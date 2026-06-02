@@ -23,7 +23,7 @@ export class CompetitionFormComponent implements OnChanges {
   @Output() submitForm = new EventEmitter<CompetitionPayload>();
 
   form: FormGroup;
-  uploading = signal(false); // État visuel pendant l'envoi du logo
+  uploading = signal(false);
 
   constructor(
     private fb: FormBuilder,
@@ -32,9 +32,15 @@ export class CompetitionFormComponent implements OnChanges {
     this.form = this.fb.group({
       name: ['', Validators.required],
       slug: [''],
-      logo_url: [''], // Garde la valeur de l'URL finale pour la DB
-      country: [''],
-      level: ['']
+      logo_url: [''],
+      // --- Nouveaux champs requis basés sur le modèle ---
+      type: ['league', Validators.required],
+      scope: ['national', Validators.required],
+      entity_type: ['clubs', Validators.required],
+      gender: ['men', Validators.required],
+      // --- Optionnels ---
+      geographic_zone: [''],
+      level: [null]
     });
   }
 
@@ -44,7 +50,6 @@ export class CompetitionFormComponent implements OnChanges {
     }
   }
 
-  // Permet de lire la valeur actuelle du logo pour la prévisualisation HTML
   get currentLogoUrl(): string {
     return this.form.get('logo_url')?.value;
   }
@@ -57,14 +62,9 @@ export class CompetitionFormComponent implements OnChanges {
 
     try {
       this.uploading.set(true);
-      
-      // Envoi sur Supabase Storage
       const publicUrl = await this.supabaseService.uploadCompetitionLogo(file);
-      
-      // Assigne l'URL publique générée au contrôle de formulaire réactif
       this.form.get('logo_url')?.setValue(publicUrl);
       this.form.get('logo_url')?.markAsDirty();
-
     } catch (error) {
       alert("Erreur lors du téléversement de l'image.");
     } finally {

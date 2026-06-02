@@ -16,8 +16,13 @@ import {
 })
 export class MatchFormComponent implements OnChanges {
   @Input() mode: 'create' | 'edit' = 'create';
-  @Input() match?: any | null;
+  @Input() match: any | null = null;
+
+  @Input() competitions: any[] = [];
+  @Input() teams: any[] = [];
+
   @Input() loading = false;
+
   @Output() submitForm = new EventEmitter<any>();
 
   form: FormGroup;
@@ -25,13 +30,21 @@ export class MatchFormComponent implements OnChanges {
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       match_date: [null, Validators.required],
-      opponent: ['', Validators.required],
-      competition: ['CPL'],
-      home_away: ['home'],
-      venue: ['Stade Boréale'],
-      fc_supra_score: [null, Validators.min(0)],
-      opponent_score: [null, Validators.min(0)],
-      status: ['scheduled'],
+
+      competition_id: [null],
+
+      home_team_id: [null, Validators.required],
+      away_team_id: [null, Validators.required],
+
+      venue: [''],
+
+      home_score: [null],
+      away_score: [null],
+
+      home_formation: ['4-3-3'],
+      away_formation: ['4-3-3'],
+
+      status: ['scheduled', Validators.required],
     });
   }
 
@@ -47,6 +60,6 @@ export class MatchFormComponent implements OnChanges {
       return;
     }
 
-    this.submitForm.emit(this.form.value);
+    this.submitForm.emit(this.form.getRawValue());
   }
 }

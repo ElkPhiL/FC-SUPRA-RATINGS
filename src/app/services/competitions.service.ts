@@ -12,6 +12,7 @@ export class CompetitionsService {
     const {data, error} = await this.supabaseService.supabase
       .from('competitions')
       .select('*')
+      .order('name', { ascending: true });
 
       if (error) {
         console.error('Error fetching competitions:', error);
@@ -20,6 +21,7 @@ export class CompetitionsService {
 
       return (data as Competition[]) ?? [];
   }
+  
   async create(competition: CompetitionPayload): Promise<Competition> {
     const { data, error } = await this.supabaseService.supabase
       .from('competitions')

@@ -1,44 +1,50 @@
+$primary: #1976d2;
+$primary-light: rgba(25, 118, 210, 0.15);
+$text-main: #2d3748;
+$text-muted: #718096;
+$border-color: #e2e8f0;
+$radius-lg: 14px;
+$radius-md: 10px;
+
+// Reset global pour le formulaire pour s'assurer que les hauteurs de ligne ne cassent rien
 .competition-form {
-  max-width: 900px;
+  max-width: 950px; 
   margin: 0 auto;
-}
-
-.form-header {
-  margin-bottom: 2rem;
-
-  h2 {
-    margin: 0;
-    font-size: 1.75rem;
-    font-weight: 700;
+  color: $text-main;
+  
+  // Force le box-sizing pour éviter les calculs de padding bizarres par le navigateur
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
 }
 
+// Grille principale
 .form-grid {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 2rem;
+  grid-template-columns: 200px 1fr;
+  gap: 3rem;
+  align-items: start;
 }
 
+// --- Section Logo ---
 .logo-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  position: sticky;
+  top: 20px;
 }
 
 .logo-preview {
-  width: 180px;
-  height: 180px;
-
-  border: 2px dashed #d6d6d6;
-  border-radius: 16px;
-
-  background: #fafafa;
-
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 2px dashed #cbd5e1;
+  border-radius: $radius-lg;
+  background: #f8fafc;
   display: flex;
   align-items: center;
   justify-content: center;
-
   overflow: hidden;
 
   img {
@@ -49,33 +55,39 @@
   }
 
   .placeholder {
-    color: #999;
-    font-size: 0.9rem;
+    color: $text-muted;
+    font-size: 0.85rem;
+    font-weight: 500;
   }
 }
 
 .upload-btn {
   cursor: pointer;
-
-  padding: 0.75rem 1rem;
-
-  border-radius: 10px;
-
-  background: #f1f3f5;
-
+  padding: 0.65rem;
+  border-radius: $radius-md;
+  background: #edf2f7;
   font-weight: 600;
-
-  transition: 0.2s;
+  font-size: 0.85rem;
+  width: 100%;
+  text-align: center;
+  transition: background 0.2s;
 
   &:hover {
-    background: #e6e8eb;
+    background: #e2e8f0;
   }
 }
 
+// --- Section Champs (La Grille) ---
 .fields-section {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 2rem;
+}
+
+.fields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem 1.5rem;
 }
 
 .form-group {
@@ -83,59 +95,116 @@
   flex-direction: column;
   gap: 0.5rem;
 
-  label {
-    font-weight: 600;
-    color: #444;
+  &.col-span-2 {
+    grid-column: span 2;
   }
 
-  input {
-    height: 48px;
+  label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #4a5568;
+  }
 
-    border: 1px solid #dcdcdc;
-    border-radius: 10px;
-
+  // Application stricte et identique des propriétés de hauteur
+  input, select {
+    height: 46px; 
+    line-height: 46px; /* Aligne le texte verticalement de manière identique */
+    border: 1px solid $border-color;
+    border-radius: $radius-md;
     padding: 0 1rem;
-
     font-size: 0.95rem;
+    background-color: #fff;
+    color: $text-main;
+    transition: all 0.2s ease;
+    width: 100%;
 
-    transition: 0.2s;
+    &::placeholder {
+      color: #a0aec0;
+    }
 
     &:focus {
       outline: none;
-      border-color: #1976d2;
-      box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
+      border-color: $primary;
+      box-shadow: 0 0 0 3px $primary-light;
+    }
+  }
+
+  // Fix complet pour les éléments Select
+  select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none; // Pour Safari / Chrome ancien
+    -moz-appearance: none;    // Pour Firefox ancien
+    
+    // Ajout d'une flèche en arrière-plan ultra-propre qui ne chevauchera jamais le texte
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234a5568' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.1rem;
+    padding-right: 2.5rem; /* Donne de l'air à droite pour que le texte ne touche pas la flèche */
+
+    // Supprime la flèche par défaut de l'horrible Internet Explorer / Edge historique
+    &::-ms-expand {
+      display: none;
     }
   }
 }
 
 .error {
-  color: #dc3545;
+  color: #e53e3e;
   font-size: 0.8rem;
+  font-weight: 500;
 }
 
+// --- Actions ---
 .actions {
-  margin-top: 2rem;
-
   display: flex;
   justify-content: flex-end;
+  border-top: 1px solid $border-color;
+  padding-top: 1.5rem;
 }
 
+.submit-btn {
+  cursor: pointer;
+  padding: 0.75rem 2.5rem;
+  border: none;
+  border-radius: $radius-md;
+  background: $primary;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #1565c0;
+  }
+
+  &:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+  }
+}
+
+// --- Mode Mobile ---
 @media (max-width: 768px) {
   .form-grid {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .logo-section {
-    align-items: center;
-  }
-
-  .logo-preview {
     width: 140px;
-    height: 140px;
+    margin: 0 auto;
+    position: relative;
+    top: 0;
   }
 
-  .actions {
-    justify-content: stretch;
+  .fields-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.col-span-2 {
+    grid-column: span 1;
   }
 
   .submit-btn {

@@ -1,66 +1,240 @@
+$primary: #2563eb;
+$primary-dark: #1d4ed8;
+$text-main: #1f2937;
+$text-muted: #6b7280;
+$border-color: #e5e7eb;
+
+.page-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-main;
+  }
+
+  p {
+    margin-top: 0.4rem;
+    color: $text-muted;
+  }
+}
+
+// Bouton ajouter
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: $primary;
+  color: white;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: $primary-dark;
+  }
+}
+
+.panel {
+  background: white;
+  border: 1px solid $border-color;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+
+  h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+}
+
+.club-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 24px;
+  padding: 0 0.6rem;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: $primary;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.status-row {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.status-message {
+  margin: 0;
+  color: $text-muted;
+  font-size: 0.95rem;
+}
+
+.empty-state {
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: #9ca3af;
+
+  span { font-size: 3rem; }
+  p { margin: 0; font-weight: 500; }
+}
+
 .club-table {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .club-element {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    background-color: white;
-    padding: 10px;
-    min-height: 60px;
-    border-radius: 20px;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #f1f5f9;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: #f8fafc;
+  }
 }
 
-// Alignement de l'identité du club (Logo + Texte)
 .club-identity {
   display: flex;
   align-items: center;
-  gap: 16px; // Espace entre le logo et le texte
+  gap: 1.25rem;
 }
 
 .club-logo-wrapper {
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid $border-color;
   display: flex;
-  justify-content: center;
   align-items: center;
-  overflow: hidden;
-  flex-shrink: 0; // Empêche le logo de s'écraser si le nom est trop long
-
-  .club-logo {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; // Garde les proportions de l'image sans la déformer
-  }
-
-  .club-logo-placeholder {
-    font-size: 1.2rem;
-    line-height: 1;
-  }
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-// Structure textuelle optionnelle à côté du logo
+.club-logo {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.club-logo-placeholder {
+  font-size: 1.25rem;
+}
+
 .club-info {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0.25rem;
+}
 
-  .club-name {
-    color: #1e293b;
-    font-size: 1rem;
+.club-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: $text-main;
+}
+
+.club-meta {
+  font-size: 0.875rem;
+  color: $text-muted;
+}
+
+// --- Boutons d'actions ---
+.club-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+
+  .edit-btn, .delete-btn {
+    padding: 0.5rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
   }
 
-  .club-meta {
-    font-size: 0.8rem;
-    color: #64748b;
+  .edit-btn {
+    background: #edf2f7;
+    color: #4a5568;
+    border: 1px solid #cbd5e1;
+
+    &:hover {
+      background: #e2e8f0;
+      color: #1a202c;
+    }
+  }
+
+  .delete-btn {
+    background: #fff5f5;
+    color: #c53030;
+    border: 1px solid #fed7d7;
+
+    &:hover {
+      background: #fff5f5;
+      border-color: #fc8181;
+      box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.15);
+    }
   }
 }
 
-.club-actions {
-  display: flex;
-  gap: 10px;
+// --- Responsive ---
+@media (max-width: 768px) {
+  .page-shell { padding: 1rem; }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    
+    .add-btn { width: 100%; }
+  }
+
+  .club-element {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .club-actions {
+    width: 100%;
+    justify-content: flex-end;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 0.75rem;
+  }
 }

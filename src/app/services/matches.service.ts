@@ -11,7 +11,24 @@ export class MatchesService {
   async getAll(): Promise<Match[]> {
     const { data, error } = await this.supabaseService.supabase
       .from('matches')
-      .select('*')
+      .select(`
+        *,
+        competition:competitions!matches_competition_id_fkey (
+          id,
+          name,
+          logo_url
+        ),
+        home_team:teams!matches_home_team_id_fkey (
+          id,
+          name,
+          logo_url
+        ),
+        away_team:teams!matches_away_team_id_fkey (
+          id,
+          name,
+          logo_url
+        )
+      `)
       .order('match_date');
 
     if (error) {
@@ -20,6 +37,38 @@ export class MatchesService {
     }
 
     return (data as Match[]) ?? [];
+  }
+
+  async getById(id: number): Promise<Match> {
+    const { data, error } = await this.supabaseService.supabase
+      .from('matches')
+      .select(`
+        *,
+        competition:competitions!matches_competition_id_fkey (
+          id,
+          name,
+          logo_url
+        ),
+        home_team:teams!matches_home_team_id_fkey (
+          id,
+          name,
+          logo_url
+        ),
+        away_team:teams!matches_away_team_id_fkey (
+          id,
+          name,
+          logo_url
+        )
+      `)
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      console.error(`Error fetching match with id ${id}:`, error);
+      throw error;
+    }
+
+    return data as Match;
   }
 
   async create(match: MatchPayload): Promise<Match> {
@@ -31,21 +80,6 @@ export class MatchesService {
 
     if (error) {
       console.error('Error creating match:', error);
-      throw error;
-    }
-
-    return data as Match;
-  }
-
-  async getById(id: number): Promise<Match> {
-    const { data, error } = await this.supabaseService.supabase
-      .from('matches')
-      .select('*')
-      .eq('id', id)
-      .single();
-
-    if (error) {
-      console.error(`Error fetching match with id ${id}:`, error);
       throw error;
     }
 

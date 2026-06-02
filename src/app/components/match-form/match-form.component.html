@@ -1,54 +1,170 @@
-<form [formGroup]="form" class="form-grid">
+<form
+  class="match-form"
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+>
 
-  <label class="champ">
-    Date du match
-    <input type="datetime-local" formControlName="match_date">
-  </label>
+  <div class="form-header">
+    <h2>
+      {{ mode === 'create'
+      ? 'Créer un match'
+      : 'Modifier le match' }}
+    </h2>
+  </div>
 
-  <label class="champ">
-    Adversaire
-    <input type="text" formControlName="opponent">
-  </label>
+  <div class="form-grid">
 
-  <label class="champ">
-    Compétition
-    <input type="text" formControlName="competition">
-  </label>
+    <div class="form-group">
+      <label>Date et heure</label>
+      <input
+        type="datetime-local"
+        formControlName="match_date"
+      >
+    </div>
 
-  <label class="champ">
-    Domicile / Extérieur
-    <select formControlName="home_away">
-        <option value="home">Domicile</option>
-        <option value="away">Extérieur</option>
-    </select>
-  </label>
+    <div class="form-group">
+      <label>Compétition</label>
 
-  <label class="champ">
-    Lieu
-    <input type="text" formControlName="venue">
-  </label>
+      <select formControlName="competition_id">
+        <option [ngValue]="null">
+          Aucune compétition
+        </option>
 
-  <label class="champ">
-    Score Supra
-    <input type="text" formControlName="fc_supra_score">
-  </label>
+        <option
+          *ngFor="let competition of competitions"
+          [value]="competition.id"
+        >
+          {{ competition.name }}
+        </option>
+      </select>
+    </div>
 
-  <label class="champ">
-    Score Adversaire
-    <input type="text" formControlName="opponent_score">
-  </label>
+    <div class="form-group">
+      <label>Équipe domicile</label>
 
-  <label class="checkbox-label">
-    Status
-    <select formControlName="status">
-        <option value="scheduled">Programmé</option>
-        <option value="played">Joué</option>
-        <option value="canceled">Annulé</option>
-    </select>
-  </label>
+      <select formControlName="home_team_id">
+        <option [ngValue]="null">Choisir...</option>
 
-  <button class="button" type="button" (click)="submit()" [disabled]="loading">
-    {{ mode === 'create' ? 'Créer' : 'Modifier' }}
+        <option
+          *ngFor="let team of teams"
+          [value]="team.id"
+        >
+          {{ team.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Équipe extérieure</label>
+
+      <select formControlName="away_team_id">
+        <option [ngValue]="null">Choisir...</option>
+
+        <option
+          *ngFor="let team of teams"
+          [value]="team.id"
+        >
+          {{ team.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Lieu</label>
+
+      <input
+        type="text"
+        formControlName="venue"
+        placeholder="Stade Boréale"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Statut</label>
+
+      <select formControlName="status">
+        <option value="scheduled">
+          Programmé
+        </option>
+
+        <option value="played">
+          Joué
+        </option>
+
+        <option value="cancelled">
+          Annulé
+        </option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="score-section">
+
+    <h3>Résultat</h3>
+
+    <div class="score-grid">
+
+      <div class="form-group">
+        <label>Buts domicile</label>
+        <input
+          type="number"
+          min="0"
+          formControlName="home_score"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Buts extérieur</label>
+        <input
+          type="number"
+          min="0"
+          formControlName="away_score"
+        >
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="formation-section">
+
+    <h3>Formations</h3>
+
+    <div class="score-grid">
+
+      <div class="form-group">
+        <label>Formation domicile</label>
+
+        <input
+          type="text"
+          formControlName="home_formation"
+          placeholder="4-3-3"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Formation extérieur</label>
+
+        <input
+          type="text"
+          formControlName="away_formation"
+          placeholder="4-2-3-1"
+        >
+      </div>
+
+    </div>
+
+  </div>
+
+  <button
+    type="submit"
+    class="submit-btn"
+    [disabled]="loading"
+  >
+    {{ mode === 'create'
+      ? 'Créer le match'
+      : 'Enregistrer les modifications' }}
   </button>
 
 </form>

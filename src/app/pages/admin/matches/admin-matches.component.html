@@ -1,36 +1,175 @@
 <section class="page-shell">
+
   <header class="page-header">
     <div>
-      <h1>Matches</h1>
-      <p>Gérer les matchs futurs et passés depuis l’administration.</p>
+      <h1>Matchs</h1>
+      <p>Gérer les matchs futurs et passés depuis l'administration.</p>
     </div>
-    <a routerLink="/admin/matches/new" class="button">Nouveau match</a>
+
+    <a
+      routerLink="/admin/matches/new"
+      class="add-btn"
+    >
+      + Nouveau match
+    </a>
   </header>
 
   <article class="panel">
-    <h2>Matchs</h2>
 
-    <div class="status-row">
-      <p class="status-message" *ngIf="loading()">Chargement des matchs…</p>
-      <p class="status-message" *ngIf="!loading() && message()">{{ message() }}</p>
+    <div class="panel-header">
+      <h2>Matchs</h2>
+
+      <span class="match-count" *ngIf="matches().length">
+        {{ matches().length }}
+      </span>
     </div>
 
-    <ul class="match-table" *ngIf="!loading() && matches().length">
-      <li *ngFor="let match of matches()">
-        <div>
-          <strong>{{ match.opponent }}</strong>
-          <p>{{ match.match_date | date: 'dd/MM/yyyy HH:mm' }} · {{ match.competition || 'Compétition inconnue' }}</p>
-          <p>{{ match.venue || 'Lieu non renseigné' }}</p>
-          <p>Score : {{ match.home_score ?? '?' }} - {{ match.away_score ?? '?' }}</p>
-          <p>Status : {{ match.status || 'Inconnu' }}</p>
+    <div class="status-row">
+      <p class="status-message" *ngIf="loading()">
+        Chargement des matchs...
+      </p>
+
+      <p class="status-message" *ngIf="!loading() && message()">
+        {{ message() }}
+      </p>
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="!loading() && matches().length === 0"
+    >
+      <span>⚽</span>
+      <p>Aucun match trouvé.</p>
+    </div>
+
+    <ul
+      class="match-table"
+      *ngIf="!loading() && matches().length"
+    >
+
+      <li
+        *ngFor="let match of matches()"
+        class="match-card"
+      >
+
+        <div class="match-main">
+
+          <div class="competition-row">
+
+            <img
+              *ngIf="match.competition?.logo_url"
+              [src]="match.competition?.logo_url"
+              class="competition-logo"
+            >
+
+            <span>
+              {{ match.competition?.name || 'Match amical' }}
+            </span>
+
+          </div>
+
+          <div class="teams-row">
+
+            <div class="team">
+
+              <img
+                *ngIf="match.home_team?.logo_url"
+                [src]="match.home_team?.logo_url"
+                class="team-logo"
+              >
+
+              <span>
+                {{ match.home_team?.name }}
+              </span>
+
+            </div>
+
+            <div class="score">
+
+              <ng-container *ngIf="match.status === 'played'; else notPlayed">
+                {{ match.home_score ?? 0 }}
+                -
+                {{ match.away_score ?? 0 }}
+              </ng-container>
+
+              <ng-template #notPlayed>
+                VS
+              </ng-template>
+
+            </div>
+
+            <div class="team">
+
+              <img
+                *ngIf="match.away_team?.logo_url"
+                [src]="match.away_team?.logo_url"
+                class="team-logo"
+              >
+
+              <span>
+                {{ match.away_team?.name }}
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="match-meta">
+
+            <span>
+              {{ match.match_date | date:'dd MMM yyyy - HH:mm' }}
+            </span>
+
+            <span *ngIf="match.venue">
+              • {{ match.venue }}
+            </span>
+
+          </div>
+
         </div>
 
-        <div class="match-actions">
-          <a routerLink="/admin/matches/{{ match.id }}/lineup" class="link-button">Effectif</a>
-          <a routerLink="/admin/matches/{{ match.id }}/edit" class="link-button">Modifier</a>
-          <button class="link-button danger" (click)="deleteMatch(match.id)">Supprimer</button>
+        <div class="match-side">
+
+          <span
+            class="status-badge"
+            [class.played]="match.status === 'played'"
+            [class.scheduled]="match.status === 'scheduled'"
+            [class.cancelled]="match.status === 'cancelled'"
+          >
+            {{ match.status }}
+          </span>
+
+          <div class="match-actions">
+
+            <a
+              routerLink="/admin/matches/{{ match.id }}/lineup"
+              class="edit-btn"
+            >
+              Effectif
+            </a>
+
+            <a
+              routerLink="/admin/matches/{{ match.id }}/edit"
+              class="edit-btn"
+            >
+              Modifier
+            </a>
+
+            <button
+              class="delete-btn"
+              (click)="deleteMatch(match.id)"
+            >
+              Supprimer
+            </button>
+
+          </div>
+
         </div>
+
       </li>
+
     </ul>
+
   </article>
+
 </section>

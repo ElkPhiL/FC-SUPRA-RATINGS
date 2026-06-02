@@ -3,6 +3,8 @@
 <app-match-form
   mode="create"
   [loading]="loading()"
+  [competitions]="competitions()"
+  [teams]="teams()"
   (submitForm)="create($event)">
 </app-match-form>
 

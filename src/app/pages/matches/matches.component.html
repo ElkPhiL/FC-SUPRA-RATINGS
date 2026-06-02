@@ -18,7 +18,6 @@
       @for (match of matches(); track match.id) {
         <article [routerLink]="['/matches', match.id]" class="match-card">
           <div class="match-details">
-            <h2>{{ match.opponent }}</h2>
             <p class="match-date">{{ match.match_date }}</p>
             @if (match.competition) {
               <p class="match-competition">{{ match.competition }}</p>

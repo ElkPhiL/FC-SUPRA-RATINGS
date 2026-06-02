@@ -2,16 +2,13 @@
 
   <div class="form-grid">
 
-    <!-- Logo -->
     <div class="logo-section">
-
       <div class="logo-preview">
         <img
           *ngIf="currentLogoUrl"
           [src]="currentLogoUrl"
           alt="Competition Logo"
         />
-
         <div *ngIf="!currentLogoUrl" class="placeholder">
           Aucun logo
         </div>
@@ -24,79 +21,116 @@
           (change)="onFileSelected($event)"
           hidden
         />
-
         <span *ngIf="!uploading()">Téléverser un logo</span>
         <span *ngIf="uploading()">Téléversement...</span>
       </label>
-
     </div>
 
-    <!-- Informations -->
     <div class="fields-section">
+      
+      <div class="fields-grid">
+        
+        <div class="form-group col-span-2">
+          <label>Nom de la compétition *</label>
+          <input
+            type="text"
+            formControlName="name"
+            placeholder="Ex: UEFA Champions League"
+          />
+          <small
+            *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+            class="error"
+          >
+            Le nom est obligatoire.
+          </small>
+        </div>
 
-      <div class="form-group">
-        <label>Nom *</label>
-        <input
-          type="text"
-          formControlName="name"
-          placeholder="Ex: Première Ligue de Soccer du Québec"
-        />
+        <div class="form-group">
+          <label>Slug (URL)</label>
+          <input
+            type="text"
+            formControlName="slug"
+            placeholder="uefa-champions-league"
+          />
+        </div>
 
-        <small
-          *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
-          class="error"
+        <div class="form-group">
+          <label>Catégorie (Genre) *</label>
+          <select formControlName="gender">
+            <option value="men">Masculin</option>
+            <option value="women">Féminin</option>
+            <option value="mixed">Mixte</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Format *</label>
+          <select formControlName="type">
+            <option value="league">Championnat (Ligue)</option>
+            <option value="cup">Coupe</option>
+            <option value="super_cup">Supercoupe</option>
+            <option value="friendly">Amical</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Type de participants *</label>
+          <select formControlName="entity_type">
+            <option value="clubs">Clubs</option>
+            <option value="nations">Sélections nationales</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Portée géographique *</label>
+          <select formControlName="scope">
+            <option value="provincial">Provincial (Province)</option>
+            <option value="national">National (Pays)</option>
+            <option value="continental">Continental (Continent)</option>
+            <option value="international">International (Mondial)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Niveau hiérarchique</label>
+          <input
+            type="number"
+            formControlName="level"
+            min="1"
+            max="20"
+            placeholder="Ex: 1 (D1), 2 (D2)..."
+          />
+        </div>
+
+        <div class="form-group col-span-2" *ngIf="form.get('scope')?.value !== 'international'">
+          <label *ngIf="form.get('scope')?.value === 'provincial'">Province *</label>
+          <label *ngIf="form.get('scope')?.value === 'national'">Pays *</label>
+          <label *ngIf="form.get('scope')?.value === 'continental'">Continent *</label>
+          
+          <input
+            type="text"
+            formControlName="geographic_zone"
+            [placeholder]="form.get('scope')?.value === 'provincial' ? 'Ex: Québec' : (form.get('scope')?.value === 'national' ? 'Ex: Canada' : 'Ex: Amérique du Nord')"
+          />
+        </div>
+
+      </div>
+
+      <div class="actions">
+        <button
+          type="submit"
+          [disabled]="loading || uploading()"
+          class="submit-btn"
         >
-          Le nom est obligatoire.
-        </small>
-      </div>
-
-      <div class="form-group">
-        <label>Slug</label>
-        <input
-          type="text"
-          formControlName="slug"
-          placeholder="plsq"
-        />
-      </div>
-
-      <div class="form-group">
-        <label>Pays</label>
-        <input
-          type="text"
-          formControlName="country"
-          placeholder="Canada"
-        />
-      </div>
-
-      <div class="form-group">
-        <label>Niveau</label>
-        <input
-          type="number"
-          formControlName="level"
-          placeholder="1"
-        />
+          <span *ngIf="!loading">
+            {{ mode === 'create' ? 'Créer la compétition' : 'Enregistrer' }}
+          </span>
+          <span *ngIf="loading">Sauvegarde...</span>
+        </button>
       </div>
 
     </div>
 
-  </div>
-
-  <div class="actions">
-    <button
-      type="submit"
-      [disabled]="loading || uploading()"
-      class="submit-btn"
-    >
-      <span *ngIf="!loading">
-        {{ mode === 'create'
-          ? 'Créer la compétition'
-          : 'Enregistrer les modifications' }}
-      </span>
-
-      <span *ngIf="loading">
-        Sauvegarde...
-      </span>
-    </button>
   </div>
 
 </form>

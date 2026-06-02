@@ -2,38 +2,99 @@
   <header class="page-header">
     <div>
       <h1>Clubs</h1>
-      <p>Gérer les clubs depuis l’administration.</p>
+      <p>Gérer les clubs depuis l'administration.</p>
     </div>
-    <a routerLink="/admin/clubs/new" class="button">Ajouter un club</a>
+
+    <a
+      routerLink="/admin/clubs/new"
+      class="add-btn"
+    >
+      + Ajouter un club
+    </a>
   </header>
 
   <article class="panel">
-    <h2>Clubs</h2>
 
-    <div class="status-row">
-      <p class="status-message" *ngIf="loading()">Chargement des clubs...</p>
-      <p class="status-message" *ngIf="!loading() && message()">{{ message() }}</p>
+    <div class="panel-header">
+      <h2>Liste des clubs</h2>
+
+      <span class="club-count" *ngIf="clubs().length">
+        {{ clubs().length }}
+      </span>
+    </div>
+
+    <div class="status-row" *ngIf="loading() || message()">
+      <p class="status-message" *ngIf="loading()">
+        Chargement des clubs...
+      </p>
+
+      <p class="status-message" *ngIf="!loading() && message()">
+        {{ message() }}
+      </p>
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="!loading() && clubs().length === 0"
+    >
+      <span>⚽</span>
+      <p>Aucun club trouvé.</p>
     </div>
 
     <ul class="club-table" *ngIf="!loading() && clubs().length">
-      <li class="club-element" *ngFor="let club of clubs()">
+
+      <li
+        class="club-element"
+        *ngFor="let club of clubs()"
+      >
         <div class="club-identity">
+
           <div class="club-logo-wrapper">
-            <img *ngIf="club.logo_url" [src]="club.logo_url" alt="Logo {{ club.name }}" class="club-logo">
-            <span *ngIf="!club.logo_url" class="club-logo-placeholder">⚽</span>
+            <img
+              *ngIf="club.logo_url"
+              [src]="club.logo_url"
+              [alt]="'Logo ' + club.name"
+              class="club-logo"
+            />
+
+            <span
+              *ngIf="!club.logo_url"
+              class="club-logo-placeholder"
+            >
+              ⚽
+            </span>
           </div>
-          
+
           <div class="club-info">
-            <strong class="club-name">{{ club.name }}</strong>
-            <span class="club-meta" *ngIf="club.city">{{ club.city }}<span *ngIf="club.country">, {{ club.country }}</span></span>
+            <strong class="club-name">
+              {{ club.name }}
+            </strong>
+
+            <span class="club-meta" *ngIf="club.city || club.country">
+              {{ club.city }}<span *ngIf="club.city && club.country">, </span>{{ club.country }}
+            </span>
           </div>
+
         </div>
 
         <div class="club-actions">
-          <a routerLink="/admin/clubs/{{ club.id }}/edit" class="link-button">Modifier</a>
-          <button class="link-button danger" (click)="deleteClub(club.id)">Supprimer</button>
+          <a
+            routerLink="/admin/clubs/{{ club.id }}/edit"
+            class="edit-btn"
+          >
+            Modifier
+          </a>
+
+          <button
+            class="delete-btn"
+            (click)="deleteClub(club.id)"
+          >
+            Supprimer
+          </button>
         </div>
       </li>
+
     </ul>
+
   </article>
 </section>

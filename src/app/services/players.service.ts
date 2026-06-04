@@ -46,6 +46,32 @@ export class PlayersService {
     return data as Player;
   }
 
+  async getByTeam(teamId: number): Promise<Player[]> {
+    const { data, error } = await this.supabase.supabase
+      .from('players')
+      .select(`
+        *,
+        player_positions (
+          position
+        ),
+        team:teams (
+          id,
+          name,
+          logo_url,
+          club:clubs (
+            id,
+            name,
+            logo_url
+          )
+        )
+      `)
+      .eq('current_team_id', teamId);
+
+    if (error) throw error;
+
+    return data as Player[];
+  }
+
   async getAll() {
     const { data, error } = await this.supabase.supabase
       .from('players')

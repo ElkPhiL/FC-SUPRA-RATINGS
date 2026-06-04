@@ -1,5 +1,24 @@
 <div class="lineup-container">
   
+  <div class="team-tabs">
+    <button 
+      type="button"
+      class="tab-btn" 
+      [class.active]="activeTeam() === 'home'"
+      (click)="activeTeam.set('home')"
+    >
+      {{ matchData()?.home_team?.name || 'Équipe Domicile' }}
+    </button>
+    <button 
+      type="button"
+      class="tab-btn" 
+      [class.active]="activeTeam() === 'away'"
+      (click)="activeTeam.set('away')"
+    >
+      {{ matchData()?.away_team?.name || 'Équipe Extérieur' }}
+    </button>
+  </div>
+
   @if (message()) {
     <div class="status-message" [class.loading]="loading()">
       {{ message() }}
@@ -10,12 +29,14 @@
     <div class="formation-picker">
       <label for="formation">Dispositif Tactique :</label>
       <select id="formation" name="formation" (change)="changeFormation($event)">
-        <option *ngFor="let f of formations" [value]="f.name" [selected]="f.name === selectedFormation().name">
+        <option *ngFor="let f of formations" [value]="f.name" [selected]="f.name === currentFormation().name">
           {{ f.name }}
         </option>
       </select>
     </div>
-    <button class="btn btn-secondary" (click)="resetLineup()">Effacer la composition</button>
+    <button class="btn btn-secondary" (click)="clearCurrentTeamLineup()">
+      Effacer cette composition
+    </button>
   </header>
 
   <div class="workspace">
@@ -23,10 +44,11 @@
     <main class="pitch-section">
       <div class="pitch-wrapper">
         <app-lineup-pitch
-          [formation]="selectedFormation()"
-          [lineup]="lineup()"
+          [formation]="currentFormation()"
+          [lineup]="getCurrentTeamPitchLineup()"
           [editable]="true"
           (removePlayer)="deleteFromSlot($event)"
+          (setCaptain)="assignCaptainToSlot($event)"
           (slotClick)="openSearch($event)"
         ></app-lineup-pitch>
       </div>
@@ -37,10 +59,11 @@
       <div class="bench-grid">
         @for (slot of benchFormation().slots; track slot.key) {
           <div class="bench-slot-card">
-            @if (lineup()[slot.key]; as currentPlayer) {
+            @if (getSlotPlayer(slot.key); as currentPlayer) {
               <div class="filled-bench-slot">
                 <app-player-on-pitch
                   [matchPlayer]="currentPlayer"
+                  [editable]=true
                   (remove)="deleteFromSlot(slot.key)">
                 </app-player-on-pitch>
               </div>
@@ -58,7 +81,7 @@
 
   <div class="actions-bar">
     <button class="submit-btn" [disabled]="loading()" (click)="saveLineup()">
-      Enregistrer la composition
+      Enregistrer les modifications
     </button>
   </div>
 </div>
@@ -66,7 +89,7 @@
 <app-player-search
   [visible]="searchOpen()"
   [players]="availablePlayers()"
-  [slotLabel]="selectedSlot()?.label || ''"
+  [slotLabel]="selectedSlot()?.label"
   (close)="searchOpen.set(false)"
   (selectPlayer)="assignPlayerFromSearch($event)">
 </app-player-search>

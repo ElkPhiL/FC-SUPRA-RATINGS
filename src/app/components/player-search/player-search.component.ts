@@ -40,41 +40,50 @@ export class PlayerSearchComponent {
   filteredPlayers = computed(() => {
     const term = this.search().toLowerCase().trim();
     const slot = this.slotLabel();
+    const allPlayers = this.players() || [];
 
-    const filtered = this.players().filter(player => {
-      const matchesSearch =
-        !term ||
-        player.display_name.toLowerCase().includes(term) ||
-        player.number.toString().includes(term);
+    // 1. On applique une passe de nettoyage pour transformer la structure Supabase en tableau de strings
+    const mappedPlayers = allPlayers.map(player => {
+      if (!player) return null;
 
-      return matchesSearch;
+      // On extrait dynamiquement les abréviations de postes du sous-tableau d'objets player_positions
+      // Note : Ajuste 'p.position' si la clé dans l'objet est différente (ex: p.position_name ou p.name)
+      const secondaryPositions: string[] = (player as any).player_positions
+        ? (player as any).player_positions.map((p: any) => p.position || p.name || p.position_played).filter(Boolean)
+        : [];
+
+      return {
+        ...player,
+        positions: secondaryPositions // On injecte le tableau propre de strings ici !
+      };
+    }).filter(Boolean) as (Player & { positions: string[] })[];
+
+    // 2. Filtrage intelligent
+    const filtered = mappedPlayers.filter(player => {
+      const nameMatch = player.display_name?.toLowerCase().includes(term);
+      const numberMatch = player.number?.toString().includes(term);
+      const positionMatch = player.positions?.some(p => p?.toLowerCase().includes(term));
+
+      return !term || nameMatch || numberMatch || positionMatch;
     });
 
-    const getPriority = (player: Player) => {
-      if (player.best_position === slot) return 2;
-      if (player.positions?.includes(slot)) return 1;
-      return 0;
-    };
-
+    // 3. Tri par pertinence de poste puis par numéro
     return filtered.sort((a, b) => {
-      const prioDiff =
-        getPriority(b) - getPriority(a);
-
+      const prioDiff = this.getPriority(b, slot) - this.getPriority(a, slot);
       if (prioDiff !== 0) return prioDiff;
-
-      return a.number - b.number;
+      
+      return (a.number || 0) - (b.number || 0);
     });
   });
 
-  getPriority(player: Player): 0 | 1 | 2 {
-    const slot = this.slotLabel();
-
+  private getPriority(player: any, slot: PlayerPosition | undefined): number {
+    if (!player || !slot) return 0;
     if (player.best_position === slot) return 2;
-    if (player.positions?.includes(slot)) return 1;
+    if (player.positions && player.positions.includes(slot)) return 1;
     return 0;
   }
 
-  choose(player: Player) {
+  choose(player: any) {
     this.selectPlayer.emit(player);
     this.close.emit();
   }

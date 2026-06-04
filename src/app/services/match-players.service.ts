@@ -47,7 +47,7 @@ export class MatchPlayersService {
   async addMany(payloads: MatchPlayerPayload[]): Promise<MatchPlayer[]> {
     const { data, error } = await this.supabase.supabase
       .from('match_players')
-      .insert(payloads)
+      .upsert(payloads, { onConflict: 'match_id,player_id' })
       .select();
 
     if (error) throw error;

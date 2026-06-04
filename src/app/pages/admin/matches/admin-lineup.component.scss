@@ -173,3 +173,37 @@ $text-muted: #94a3b8;
     &:hover { background: #475569; }
   }
 }
+
+.team-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+
+  .tab-btn {
+    flex: 1;
+    cursor: pointer;
+    padding: 1rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+    border: none;
+    background: #f8fafc;
+    color: #64748b;
+    border-radius: 12px 12px 0 0;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+    border-bottom: none;
+
+    &:hover {
+      background: #edf2f7;
+      color: #1e293b;
+    }
+
+    &.active {
+      background: #2563eb;
+      color: white;
+      border-color: #2563eb;
+    }
+  }
+}

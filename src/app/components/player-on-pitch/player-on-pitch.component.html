@@ -1,10 +1,32 @@
-<div class="player-on-pitch">
-    <div class="photo-wrapper">
-      @if (matchPlayer.player.photo_url) {
-        <img [src]="matchPlayer.player.photo_url" alt="{{ matchPlayer.player.display_name }}" class="player-photo"/>
-      } @else {
-        <img class="player-photo generic-player" src="assets/genericPlayer.png" [alt]="matchPlayer.player.display_name"/>
-      }
-    </div>
-    <div class="name">{{ matchPlayer.player.display_name }}</div>
+<div class="player-on-pitch" [class.is-captain]="matchPlayer.is_captain">
+  
+@if (editable) {
+    <button 
+      class="admin-btn btn-captain" 
+      [class.active]="matchPlayer.is_captain"
+      (click)="makeCaptain.emit()"
+      title="Nommer Capitaine">
+      C
+    </button>
+
+    <button 
+      class="admin-btn btn-remove" 
+      (click)="remove.emit()"
+      title="Retirer le joueur">
+      ×
+    </button>
+  }
+
+  <div class="photo-wrapper">
+    @if (!editable && matchPlayer.is_captain) {
+      <div class="captain-armband">C</div>
+    }
+
+    @if (matchPlayer.player.photo_url) {
+      <img [src]="matchPlayer.player.photo_url" alt="{{ matchPlayer.player.display_name }}" class="player-photo"/>
+    } @else {
+      <img class="player-photo generic-player" src="assets/genericPlayer.png" [alt]="matchPlayer.player.display_name"/>
+    }
+  </div>
+  <div class="name">{{ matchPlayer.player.display_name }}</div>
 </div>

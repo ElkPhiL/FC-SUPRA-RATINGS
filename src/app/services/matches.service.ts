@@ -98,10 +98,13 @@ export class MatchesService {
     }
   }
 
-  async updateFormation(id: number, formation: string): Promise<void> {
+  async updateFormations(id: number, homeFormation: string, awayFormation: string): Promise<void> {
     const { error } = await this.supabaseService.supabase
       .from('matches')
-      .update({ formation })
+      .update({
+        home_formation: homeFormation,
+        away_formation: awayFormation
+      })
       .eq('id', id);
 
     if (error) {

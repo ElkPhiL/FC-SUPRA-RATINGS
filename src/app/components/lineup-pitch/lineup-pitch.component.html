@@ -2,16 +2,9 @@
 
   <div class="pitch">
 
-    <!-- Centre line -->
     <div class="half-line"></div>
-
-    <!-- Centre circle -->
     <div class="center-circle"></div>
-
-    <!-- Top penalty area -->
     <div class="penalty-area top"></div>
-
-    <!-- Bottom penalty area -->
     <div class="penalty-area bottom"></div>
 
     @for (slot of formation.slots; track slot.key) {
@@ -25,22 +18,12 @@
         @if (lineup[slot.key]; as player) {
 
             <div class="player-wrapper">
-
-                <app-player-on-pitch
+              <app-player-on-pitch
                 [matchPlayer]="player"
-                />
-
-                @if (editable) {
-
-                <button
-                    class="remove-btn"
-                    (click)="removePlayer.emit(slot.key)"
-                >
-                    ×
-                </button>
-
-                }
-
+                [editable]="editable"
+                (remove)="removePlayer.emit(slot.key)"
+                (makeCaptain)="setCaptain.emit(slot.key)"
+              ></app-player-on-pitch>
             </div>
 
         } @else {
@@ -58,7 +41,5 @@
       </div>
 
     }
-
   </div>
-
 </div>

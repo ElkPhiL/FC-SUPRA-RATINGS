@@ -14,20 +14,13 @@ import { MatchPlayerWithPlayer } from '../../models/match-players.model';
 
 export class LineupPitchComponent {
 
-  @Input({ required: true })
-  formation!: any;
+  @Input({ required: true }) formation!: any;
+  @Input({ required: true }) lineup!: Record<string, MatchPlayerWithPlayer | null>;
+  @Input() editable = false;
 
-  @Input({ required: true })
-  lineup!: Record<string, MatchPlayerWithPlayer | null>;
-
-  @Input()
-  editable = false;
-
-  @Output()
-  slotClick = new EventEmitter<any>();
-
-  @Output()
-  removePlayer = new EventEmitter<string>();
+  @Output() slotClick = new EventEmitter<any>();
+  @Output() removePlayer = new EventEmitter<string>();
+  @Output() setCaptain = new EventEmitter<string>(); // Émet la clé du slot (ex: '1', '9')
 
   getPlayer(slotKey: string) {
     return this.lineup[slotKey];

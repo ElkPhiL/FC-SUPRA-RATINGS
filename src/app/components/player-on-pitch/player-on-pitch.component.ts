@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatchPlayerWithPlayer } from '../../models/match-players.model';
 
@@ -8,9 +7,12 @@ import { MatchPlayerWithPlayer } from '../../models/match-players.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './player-on-pitch.component.html',
-  styleUrls: ['./player-on-pitch.component.scss'],
+  styleUrls: ['./player-on-pitch.component.scss']
 })
 export class PlayerOnPitch {
-  @Input() matchPlayer!: MatchPlayerWithPlayer;
+  @Input({ required: true }) matchPlayer!: MatchPlayerWithPlayer;
+  @Input() editable: boolean = false;
+
   @Output() remove = new EventEmitter<void>();
+  @Output() makeCaptain = new EventEmitter<void>();
 }

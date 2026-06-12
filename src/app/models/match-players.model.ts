@@ -1,4 +1,5 @@
 import { Player } from "./player.model";
+import { Match } from "./match.model";
 
 export interface MatchPlayer {
   id: number;
@@ -17,5 +18,12 @@ export interface MatchPlayerWithPlayer
   extends MatchPlayer {
 
   player: Player;
+
+}
+
+export interface MatchPlayerWithMatch
+  extends MatchPlayer {
+
+  match: Match;
 
 }

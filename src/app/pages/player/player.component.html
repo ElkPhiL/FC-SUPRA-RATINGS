@@ -1,0 +1,145 @@
+<div class="page player-page">
+  <div class="player-shell">
+    <aside class="player-sidebar">
+      @if (loading()) {
+        <div class="loading-card">
+          <div class="loading-line short"></div>
+          <div class="loading-line medium"></div>
+          <div class="loading-line long"></div>
+        </div>
+      } @else {
+        @if (player()) {
+          <div class="player-card-header">
+            <div class="photo-frame">
+              @if (player()?.photo_url) {
+                <img [src]="player()?.photo_url" [alt]="player()?.display_name || 'Photo joueur'" />
+              } @else {
+                <img src="assets/genericPlayer.png" alt="Joueur sans photo" />
+              }
+            </div>
+
+            <div class="player-meta">
+              <div class="meta-top">
+                <div class="player-number">#{{ player()?.number || '-' }}</div>
+                <div class="player-position">{{ player()?.best_position || 'N/A' }}</div>
+              </div>
+              <h1 class="player-name">{{ player()?.display_name }}</h1>
+              <p class="player-subtitle">
+                {{ player()?.nationality || 'Nationalité inconnue' }} •
+                {{ age() !== null ? age() + ' ans' : 'Âge inconnu' }}
+              </p>
+            </div>
+          </div>
+
+          <div class="current-club-card">
+            <div class="club-logo-wrapper">
+              @if (currentClubLogo()) {
+                <img [src]="currentClubLogo()" [alt]="currentClubName()" />
+              } @else {
+                <div class="club-logo-placeholder">Club</div>
+              }
+            </div>
+            <div>
+              <span class="label">Club actuel</span>
+              <p class="club-name">{{ currentClubName() }}</p>
+            </div>
+          </div>
+
+          <section class="player-info-section">
+            <h2>Informations</h2>
+            <dl class="info-grid">
+              <div>
+                <dt>Nom complet</dt>
+                <dd>{{ player()?.first_name || '' }} {{ player()?.last_name || '' }}</dd>
+              </div>
+              <div>
+                <dt>Numéro</dt>
+                <dd>{{ player()?.number ?? 'N/A' }}</dd>
+              </div>
+              <div>
+                <dt>Poste préféré</dt>
+                <dd>{{ player()?.best_position || 'N/A' }}</dd>
+              </div>
+              <div>
+                <dt>Autres postes</dt>
+                <dd>
+                  @if (getSecondaryPositions().length) {
+                    {{ getSecondaryPositions().join(', ') }}
+                  } @else {
+                    Aucun
+                  }
+                </dd>
+              </div>
+              <div>
+                <dt>Taille</dt>
+                <dd>{{ player()?.height_cm ? player()?.height_cm + ' cm' : 'N/A' }}</dd>
+              </div>
+              <div>
+                <dt>Poids</dt>
+                <dd>{{ player()?.weight_kg ? player()?.weight_kg + ' kg' : 'N/A' }}</dd>
+              </div>
+              <div>
+                <dt>Pied fort</dt>
+                <dd>{{ player()?.best_foot || 'N/A' }}</dd>
+              </div>
+            </dl>
+          </section>
+        }
+      }
+    </aside>
+
+    <main class="player-main">
+      <div class="section-header">
+        <h2>Historique des matchs</h2>
+        <span class="match-count">{{ matchHistory().length }} rencontres</span>
+      </div>
+
+      @if (error() && !loading()) {
+        <div class="empty-state error-state">
+          <p>{{ error() }}</p>
+        </div>
+      } @else {
+        @if (!matchHistory().length && !loading()) {
+          <div class="empty-state">
+            <p>Aucun match trouvé pour ce joueur.</p>
+          </div>
+        }
+
+        <div class="match-history-grid">
+          @for (matchPlayer of matchHistory(); track matchPlayer.id) {
+            <article class="match-card">
+              <div class="match-card-top">
+                <span class="match-date">{{ getMatchDate(matchPlayer.match.match_date) }}</span>
+                <span class="status-pill {{ matchStatusClass(matchPlayer.match.status) }}">
+                  {{ matchPlayer.match.status || 'Statut inconnu' }}
+                </span>
+              </div>
+
+              <div class="match-teams">
+                <div class="team-block">
+                  <span class="team-name">{{ matchPlayer.match.home_team?.name || 'Dom' }}</span>
+                  <span class="team-score">{{ matchPlayer.match.home_score ?? '-' }}</span>
+                </div>
+                <div class="vs-label">vs</div>
+                <div class="team-block away">
+                  <span class="team-name">{{ matchPlayer.match.away_team?.name || 'Ext' }}</span>
+                  <span class="team-score">{{ matchPlayer.match.away_score ?? '-' }}</span>
+                </div>
+              </div>
+
+              <div class="match-details-row">
+                <span class="role-badge {{ matchPlayer.role }}">{{ getRoleLabel(matchPlayer.role) }}</span>
+                <span class="match-opponent">{{ getOpponentLabel(matchPlayer) }}</span>
+              </div>
+
+              <div class="position-played">
+                <span>Poste joué :</span>
+                <strong>{{ matchPlayer.position_played || 'Non renseigné' }}</strong>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </main>
+  </div>
+</div>

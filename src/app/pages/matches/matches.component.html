@@ -2,29 +2,98 @@
   <header class="matches-header">
     <div>
       <h1>Matchs</h1>
-      <p>Liste des matchs triés par date, récupérée depuis la table <code>matches</code>.</p>
+      <p>Affiche tous les matchs avec recherche et tri.</p>
     </div>
-    @if (loading()) {
-      <div class="loader">Chargement des matchs…</div>
-    }
+
+    <div class="matches-controls">
+      <div class="control-group">
+        <label for="match-search">Recherche</label>
+        <input
+          id="match-search"
+          type="search"
+          [value]="filter()"
+          (input)="filter.set($any($event.target).value)"
+          placeholder="Équipe, compétition, lieu, statut..."
+        />
+      </div>
+
+      <div class="control-group">
+        <label for="match-sort">Trier par</label>
+        <select id="match-sort" [value]="sortBy()" (change)="sortBy.set($any($event.target).value)">
+          <option value="date">Date</option>
+          <option value="competition">Compétition</option>
+          <option value="home">Domicile</option>
+          <option value="away">Visiteur</option>
+          <option value="status">Statut</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="sort-direction">Ordre</label>
+        <select id="sort-direction" [value]="sortDirection()" (change)="sortDirection.set($any($event.target).value)">
+          <option value="asc">Ascendant</option>
+          <option value="desc">Descendant</option>
+        </select>
+      </div>
+    </div>
   </header>
 
   @if (message() && !loading()) {
     <div class="message">{{ message() }}</div>
   }
 
-  @if (!loading() && matches().length) {
+  @if (!loading() && filteredMatches().length) {
     <section class="matches-grid">
-      @for (match of matches(); track match.id) {
+      @for (match of filteredMatches(); track match.id) {
         <article [routerLink]="['/matches', match.id]" class="match-card">
-          <div class="match-details">
-            <p class="match-date">{{ match.match_date }}</p>
-            @if (match.competition) {
-              <p class="match-competition">{{ match.competition }}</p>
-            }
+          <div class="match-header">
+            <div class="competition-info">
+              @if (match.competition?.logo_url) {
+                <img [src]="match.competition?.logo_url" alt="Logo compétition" class="competition-logo" />
+              }
+              <div>
+                <p class="competition-name">{{ match.competition?.name || 'Match amical' }}</p>
+                <p class="match-date">{{ match.match_date ? (match.match_date | date:'dd MMM yyyy - HH:mm') : 'Date inconnue' }}</p>
+              </div>
+            </div>
+            <span class="status-badge {{ match.status }}">{{ match.status || 'inconnu' }}</span>
           </div>
+
+          <div class="teams-row">
+            <div class="team-block">
+              @if (match.home_team?.logo_url) {
+                <img [src]="match.home_team?.logo_url" alt="Logo {{ match.home_team?.name }}" class="team-logo" />
+              }
+              <span class="team-name">{{ match.home_team?.name || 'Équipe domicile' }}</span>
+            </div>
+
+            <div class="score-block">
+              @if (match.status === 'played') {
+                <span class="score">{{ match.home_score ?? 0 }}</span>
+                <span class="divider">-</span>
+                <span class="score">{{ match.away_score ?? 0 }}</span>
+              } @else {
+                <span class="vs">VS</span>
+              }
+            </div>
+
+            <div class="team-block team-away">
+              @if (match.away_team?.logo_url) {
+                <img [src]="match.away_team?.logo_url" alt="Logo {{ match.away_team?.name }}" class="team-logo" />
+              }
+              <span class="team-name">{{ match.away_team?.name || 'Équipe visiteuse' }}</span>
+            </div>
+          </div>
+
+          @if (match.venue) {
+            <p class="match-venue">Lieu : {{ match.venue }}</p>
+          }
         </article>
       }
     </section>
+  } @else if (!loading() && !filteredMatches().length) {
+    <div class="empty-state">
+      <p>Aucun match ne correspond aux critères de recherche.</p>
+    </div>
   }
 </div>

@@ -35,7 +35,9 @@
           </div>
           <div class="players-grid">
             @for (player of gardiens(); track player.id) {
-              <app-player-card [player]="player"></app-player-card>
+              <a [routerLink]="['/players', player.id]" class="player-card-link">
+                <app-player-card [player]="player"></app-player-card>
+              </a>
             }
           </div>
         </section>
@@ -50,7 +52,9 @@
           </div>
           <div class="players-grid">
             @for (player of defenseurs(); track player.id) {
-              <app-player-card [player]="player"></app-player-card>
+              <a [routerLink]="['/players', player.id]" class="player-card-link">
+                <app-player-card [player]="player"></app-player-card>
+              </a>
             }
           </div>
         </section>
@@ -65,7 +69,9 @@
           </div>
           <div class="players-grid">
             @for (player of milieux(); track player.id) {
-              <app-player-card [player]="player"></app-player-card>
+              <a [routerLink]="['/players', player.id]" class="player-card-link">
+                <app-player-card [player]="player"></app-player-card>
+              </a>
             }
           </div>
         </section>
@@ -80,7 +86,9 @@
           </div>
           <div class="players-grid">
             @for (player of attaquants(); track player.id) {
-              <app-player-card [player]="player"></app-player-card>
+              <a [routerLink]="['/players', player.id]" class="player-card-link">
+                <app-player-card [player]="player"></app-player-card>
+              </a>
             }
           </div>
         </section>

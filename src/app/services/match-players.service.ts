@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from '../services/supabase.service';
-import { MatchPlayer, MatchPlayerPayload } from '../models/match-players.model';
+import { MatchPlayer, MatchPlayerPayload, MatchPlayerWithMatch } from '../models/match-players.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +22,41 @@ export class MatchPlayersService {
     if (error) throw error;
 
     return data as MatchPlayer[];
+  }
+
+  async getByPlayer(playerId: number): Promise<MatchPlayerWithMatch[]> {
+    const { data, error } = await this.supabase.supabase
+      .from('match_players')
+      .select(`
+        *,
+        match:matches!match_players_match_id_fkey (
+          id,
+          match_date,
+          status,
+          home_score,
+          away_score,
+          competition:competitions!matches_competition_id_fkey (
+            id,
+            name,
+            logo_url
+          ),
+          home_team:teams!matches_home_team_id_fkey (
+            id,
+            name,
+            logo_url
+          ),
+          away_team:teams!matches_away_team_id_fkey (
+            id,
+            name,
+            logo_url
+          )
+        )
+      `)
+      .eq('player_id', playerId);
+
+    if (error) throw error;
+
+    return data as MatchPlayerWithMatch[];
   }
 
   // =====================================================

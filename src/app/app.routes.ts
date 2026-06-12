@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { MatchesComponent } from './pages/matches/matches.component';
 import { PlayersComponent } from './pages/players/players.component';
+import { PlayerComponent } from './pages/player/player.component';
 import { StandingsComponent } from './pages/standings/standings.component';
 import { LineupBuilderComponent } from './pages/lineup-builder/lineup-builder.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -37,6 +38,7 @@ export const routes: Routes = [
   { path: 'teams', component: TeamsComponent },
   { path: 'teams/:id/roster', component: TeamRosterComponent },
   { path: 'players', component: PlayersComponent },
+  { path: 'players/:id', component: PlayerComponent },
   { path: 'standings', component: StandingsComponent },
   { path: 'lineup-builder', component: LineupBuilderComponent },
   { path: 'login', component: LoginComponent },

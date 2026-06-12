@@ -1,5 +1,6 @@
 import { Component, signal, computed } from '@angular/core'; // 👈 Ajout de computed
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { PlayersService } from '../../services/players.service';
 import { Player } from '../../models/player.model';
 import { PlayerCardComponent } from '../../components/player-card/player-card.component';
@@ -7,7 +8,7 @@ import { PlayerCardComponent } from '../../components/player-card/player-card.co
 @Component({
   selector: 'app-players',
   standalone: true,
-  imports: [CommonModule, PlayerCardComponent],
+  imports: [CommonModule, PlayerCardComponent, RouterModule],
   templateUrl: './players.component.html',
   styleUrls: ['./players.component.scss'],
 })
